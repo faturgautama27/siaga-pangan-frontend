@@ -1,0 +1,82 @@
+<div class="harga-harian">
+
+  <app-page-header
+    title="Harga Harian"
+    subtitle="Data harga komoditi pangan per wilayah"
+    [showExport]="true"
+    (export)="onExportPdf()"
+  ></app-page-header>
+
+  <app-filter-bar
+    [form]="filterForm"
+    [wilayahOptions]="wilayahOptions"
+    [komoditiOptions]="komoditiOptions"
+    [showDateRange]="true"
+    [showWilayah]="true"
+    [showKomoditi]="true"
+    [isLoading]="isLoading"
+    (filter)="onFilter()"
+    (reset)="onReset()"
+  ></app-filter-bar>
+
+  <p-card id="harga-harian-table">
+    <p-table
+      [value]="data"
+      [loading]="isLoading"
+      [paginator]="true"
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [lazy]="true"
+      (onPage)="onPageChange($event)"
+      styleClass="p-datatable-sm p-datatable-striped"
+      [rowHover]="true"
+      dataKey="id"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="tanggal" class="w-32">
+            Tanggal <p-sortIcon field="tanggal"></p-sortIcon>
+          </th>
+          <th pSortableColumn="wilayah">
+            Wilayah <p-sortIcon field="wilayah"></p-sortIcon>
+          </th>
+          <th pSortableColumn="komoditi">
+            Komoditi <p-sortIcon field="komoditi"></p-sortIcon>
+          </th>
+          <th class="w-32 text-right">Satuan</th>
+          <th pSortableColumn="harga" class="w-36 text-right">
+            Harga <p-sortIcon field="harga"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>{{ row.tanggal | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <span class="wilayah-cell">{{ row.wilayah }}</span>
+          </td>
+          <td>{{ row.komoditi }}</td>
+          <td class="text-right text-sm text-gray">{{ row.satuan }}</td>
+          <td class="text-right font-semibold">{{ row.harga | rupiah }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="empty-state">
+            Tidak ada data. Gunakan filter di atas untuk menampilkan data.
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        <div class="table-summary">
+          Menampilkan {{ data.length }} dari {{ totalRecords }} baris
+        </div>
+      </ng-template>
+
+    </p-table>
+  </p-card>
+
+</div>

@@ -1,0 +1,26 @@
+.harga-harian {
+  display: flex;
+  flex-direction: column;
+}
+
+.wilayah-cell {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.text-right { text-align: right; }
+.text-sm    { font-size: 0.8125rem; }
+.text-gray  { color: #9ca3af; }
+.font-semibold { font-weight: 600; }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+  font-size: 0.9375rem;
+}
+
+.table-summary {
+  font-size: 0.8125rem;
+  color: #6b7280;
+}

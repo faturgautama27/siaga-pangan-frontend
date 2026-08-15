@@ -1,0 +1,17 @@
+<div class="apex-line-chart">
+  @if (title) {
+    <h3 class="apex-line-chart__title">{{ title }}</h3>
+  }
+  <apx-chart
+    [series]="chartSeries"
+    [chart]="chartOptions"
+    [xaxis]="xaxis"
+    [yaxis]="yaxis"
+    [stroke]="stroke"
+    [legend]="legend"
+    [dataLabels]="dataLabels"
+    [tooltip]="tooltip"
+    [grid]="grid"
+    [noData]="noData"
+  ></apx-chart>
+</div>

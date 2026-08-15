@@ -1,0 +1,104 @@
+<div class="grafik-perbandingan">
+
+  <app-page-header
+    title="Grafik Perbandingan Harga"
+    subtitle="Tren harga komoditi per wilayah — harian, mingguan, atau bulanan"
+    [showExport]="series.length > 0"
+    (export)="onExportPdf()"
+  ></app-page-header>
+
+  <!-- Filter -->
+  <div class="grafik-filter" [formGroup]="filterForm">
+
+    <div class="filter-row">
+
+      <!-- Date Range -->
+      <div class="filter-field">
+        <label class="filter-label">Rentang Tanggal</label>
+        <p-datepicker
+          formControlName="dateRange"
+          selectionMode="range"
+          [readonlyInput]="true"
+          dateFormat="dd/mm/yy"
+          placeholder="Pilih rentang tanggal"
+          [showButtonBar]="true"
+        ></p-datepicker>
+      </div>
+
+      <!-- Komoditi -->
+      <div class="filter-field">
+        <label class="filter-label">Komoditi <span class="required">*</span></label>
+        <p-select
+          formControlName="komoditiId"
+          [options]="komoditiOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Pilih Komoditi"
+          [filter]="true"
+          filterBy="label"
+          [showClear]="true"
+        ></p-select>
+      </div>
+
+      <!-- Wilayah Multi-select (maks 5) -->
+      <div class="filter-field filter-field--wide">
+        <label class="filter-label">Wilayah (maks 5)</label>
+        <p-multiselect
+          formControlName="wilayahIds"
+          [options]="wilayahOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Semua Wilayah"
+          [filter]="true"
+          filterBy="label"
+          [maxSelectedLabels]="2"
+          selectedItemsLabel="{0} wilayah dipilih"
+        ></p-multiselect>
+      </div>
+
+      <!-- Mode Toggle -->
+      <div class="filter-field">
+        <label class="filter-label">Granularitas</label>
+        <p-selectbutton
+          formControlName="mode"
+          [options]="modeOptions"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectbutton>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="filter-actions">
+      @if (errorMessage) {
+        <p-message severity="warn" [text]="errorMessage" styleClass="mr-2"></p-message>
+      }
+      <button class="btn btn--primary" (click)="onFilter()" [disabled]="isLoading">
+        Tampilkan Grafik
+      </button>
+      <button class="btn btn--secondary" (click)="onReset()">Reset</button>
+    </div>
+
+  </div>
+
+  <!-- Chart -->
+  <p-card id="grafik-content">
+    @if (isLoading) {
+      <p-skeleton height="350px"></p-skeleton>
+    } @else if (series.length > 0) {
+      <app-apex-line-chart
+        [series]="series"
+        [height]="400"
+        [title]="selectedKomoditiName"
+        yAxisLabel="Harga (Rp/Kg)"
+      ></app-apex-line-chart>
+    } @else {
+      <div class="chart-empty">
+        <lucide-icon [img]="TrendingUp" [size]="40" class="chart-empty__icon"></lucide-icon>
+        <p class="chart-empty__text">Pilih komoditi dan klik <strong>Tampilkan Grafik</strong> untuk melihat tren harga.</p>
+      </div>
+    }
+  </p-card>
+
+</div>

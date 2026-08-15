@@ -1,0 +1,78 @@
+<div class="filter-bar" [formGroup]="form">
+  <div class="filter-bar__fields">
+
+    @if (showDateRange) {
+      <div class="filter-bar__field">
+        <label class="filter-bar__label">Rentang Tanggal</label>
+        <p-datepicker
+          formControlName="dateRange"
+          selectionMode="range"
+          [readonlyInput]="true"
+          dateFormat="dd/mm/yy"
+          placeholder="Pilih rentang tanggal"
+          styleClass="filter-bar__input"
+          [showButtonBar]="true"
+        ></p-datepicker>
+      </div>
+    }
+
+    @if (showWilayah && wilayahOptions.length > 0) {
+      <div class="filter-bar__field">
+        <label class="filter-bar__label">Wilayah</label>
+        <p-select
+          formControlName="wilayahId"
+          [options]="wilayahOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Semua Wilayah"
+          [filter]="true"
+          filterBy="label"
+          styleClass="filter-bar__input"
+          [showClear]="true"
+        ></p-select>
+      </div>
+    }
+
+    @if (showKomoditi && komoditiOptions.length > 0) {
+      <div class="filter-bar__field">
+        <label class="filter-bar__label">Komoditi</label>
+        <p-select
+          formControlName="komoditiId"
+          [options]="komoditiOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Semua Komoditi"
+          [filter]="true"
+          filterBy="label"
+          styleClass="filter-bar__input"
+          [showClear]="true"
+        ></p-select>
+      </div>
+    }
+
+    @if (showMode && modeOptions.length > 0) {
+      <div class="filter-bar__field">
+        <label class="filter-bar__label">Tampilan</label>
+        <p-selectbutton
+          formControlName="mode"
+          [options]="modeOptions"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectbutton>
+      </div>
+    }
+
+  </div>
+
+  <div class="filter-bar__actions">
+    <button class="filter-bar__btn filter-bar__btn--primary" (click)="onFilter()" [disabled]="isLoading">
+      <lucide-icon [img]="Search" [size]="14"></lucide-icon>
+      <span>Tampilkan</span>
+    </button>
+    <button class="filter-bar__btn filter-bar__btn--secondary" (click)="onReset()" [disabled]="isLoading">
+      <lucide-icon [img]="X" [size]="14"></lucide-icon>
+      <span>Reset</span>
+    </button>
+  </div>
+
+</div>
