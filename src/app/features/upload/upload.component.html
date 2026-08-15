@@ -1,0 +1,118 @@
+<div class="upload-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-header__title">Upload Data Harga</h1>
+    <p class="page-header__subtitle">
+      Upload file Excel tabulasi harga harian (.xlsx, maks 10 MB)
+    </p>
+  </div>
+
+  <!-- Upload Card -->
+  <p-card styleClass="upload-card">
+    <div class="upload-hint">
+      <lucide-icon [img]="FileSpreadsheet" [size]="16" class="upload-hint__icon"></lucide-icon>
+      <span>Format: Kolom A = Kode Kemendagri, B = Kab/Kota, C = Nama Variant, D+ = Harga per Tanggal (DD/MM/YY)</span>
+    </div>
+
+    <p-fileupload
+      name="file"
+      accept=".xlsx"
+      [maxFileSize]="10485760"
+      [customUpload]="true"
+      (uploadHandler)="onUpload($event)"
+      [auto]="false"
+      chooseLabel="Pilih File"
+      uploadLabel="Upload & Proses"
+      cancelLabel="Batal"
+      [disabled]="isUploading"
+    >
+      <ng-template pTemplate="empty">
+        <div class="upload-dropzone">
+          <lucide-icon [img]="Upload" [size]="40" class="upload-dropzone__icon"></lucide-icon>
+          <p class="upload-dropzone__text">Drag & drop file .xlsx ke sini, atau klik <strong>Pilih File</strong></p>
+          <p class="upload-dropzone__hint">Maksimal 10 MB</p>
+        </div>
+      </ng-template>
+    </p-fileupload>
+
+    @if (isUploading) {
+      <div class="upload-progress">
+        <p class="upload-progress__label">Memproses file, harap tunggu...</p>
+        <p-progressBar mode="indeterminate" styleClass="upload-progress__bar"></p-progressBar>
+      </div>
+    }
+  </p-card>
+
+  <!-- Error Message -->
+  @if (errorMessage) {
+    <p-message severity="error" [text]="errorMessage" styleClass="w-full"></p-message>
+  }
+
+  <!-- Hasil Upload -->
+  @if (result) {
+    <p-card styleClass="result-card">
+      <ng-template pTemplate="header">
+        <div class="result-header">
+          <lucide-icon [img]="CheckCircle" [size]="20" class="result-header__icon"></lucide-icon>
+          <span class="result-header__title">Hasil Upload</span>
+        </div>
+      </ng-template>
+
+      <!-- Summary Stats -->
+      <div class="result-stats">
+        <div class="stat-card stat-card--green">
+          <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
+          <div class="stat-card__body">
+            <span class="stat-card__value">{{ result.inserted }}</span>
+            <span class="stat-card__label">Data Baru</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--blue">
+          <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
+          <div class="stat-card__body">
+            <span class="stat-card__value">{{ result.updated }}</span>
+            <span class="stat-card__label">Diperbarui</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--yellow">
+          <lucide-icon [img]="AlertTriangle" [size]="24"></lucide-icon>
+          <div class="stat-card__body">
+            <span class="stat-card__value">{{ result.skipped }}</span>
+            <span class="stat-card__label">Dilewati</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skip Detail Table -->
+      @if (result && result.skip_detail && result.skip_detail.length > 0) {
+        <div class="skip-detail">
+          <h3 class="skip-detail__title">Detail Baris yang Dilewati</h3>
+          <p-table
+            [value]="result.skip_detail"
+            [paginator]="true"
+            [rows]="10"
+            styleClass="p-datatable-sm p-datatable-striped"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">Baris</th>
+                <th>Alasan</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.row }}</td>
+                <td class="skip-detail__reason">{{ item.reason }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+
+    </p-card>
+  }
+
+</div>
+
+<p-toast></p-toast>

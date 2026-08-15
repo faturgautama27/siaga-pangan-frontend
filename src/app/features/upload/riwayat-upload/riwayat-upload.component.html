@@ -1,0 +1,102 @@
+<div class="riwayat-upload">
+
+  <app-page-header
+    title="Riwayat Upload"
+    subtitle="Histori upload file Excel harga harian"
+  ></app-page-header>
+
+  <!-- Filter -->
+  <div class="riwayat-upload__filter" [formGroup]="filterForm">
+    <div class="filter-field">
+      <label class="filter-label">Rentang Tanggal</label>
+      <p-datepicker
+        formControlName="dateRange"
+        selectionMode="range"
+        [readonlyInput]="true"
+        dateFormat="dd/mm/yy"
+        placeholder="Filter berdasarkan tanggal upload"
+        [showButtonBar]="true"
+      ></p-datepicker>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn--primary" (click)="onFilter()">Tampilkan</button>
+      <button class="btn btn--secondary" (click)="onReset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <p-card>
+    <p-table
+      [value]="logs"
+      [loading]="isLoading"
+      [paginator]="true"
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [lazy]="true"
+      (onPage)="onPageChange($event)"
+      styleClass="p-datatable-sm p-datatable-striped"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nama File</th>
+          <th class="w-40">Diupload Oleh</th>
+          <th class="w-44">Waktu Upload</th>
+          <th class="w-24 text-center">Insert</th>
+          <th class="w-24 text-center">Update</th>
+          <th class="w-24 text-center">Skip</th>
+          <th class="w-16 text-center">Detail</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-log>
+        <tr>
+          <td>
+            <div class="file-cell">
+              <lucide-icon [img]="History" [size]="14" class="file-icon"></lucide-icon>
+              <span>{{ log.nama_file }}</span>
+            </div>
+          </td>
+          <td>{{ log.uploaded_by }}</td>
+          <td>{{ log.uploaded_at | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="text-center">
+            <span class="badge badge--green">{{ log.jumlah_insert }}</span>
+          </td>
+          <td class="text-center">
+            <span class="badge badge--blue">{{ log.jumlah_update }}</span>
+          </td>
+          <td class="text-center">
+            @if (log.jumlah_skip > 0) {
+              <span class="badge badge--yellow">{{ log.jumlah_skip }}</span>
+            } @else {
+              <span class="badge badge--gray">0</span>
+            }
+          </td>
+          <td class="text-center">
+            @if (getSkipDetail(log).length > 0) {
+              <lucide-icon
+                [img]="AlertTriangle"
+                [size]="16"
+                class="text-yellow-500"
+                [pTooltip]="getSkipDetail(log)[0]?.reason"
+                tooltipPosition="left"
+              ></lucide-icon>
+            } @else {
+              <lucide-icon [img]="CheckCircle" [size]="16" class="text-green-500"></lucide-icon>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center py-8 text-gray-400">
+            Belum ada riwayat upload.
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </p-card>
+
+</div>
