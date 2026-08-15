@@ -1,0 +1,74 @@
+<div class="layout-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.sidebar--collapsed]="!sidebarOpen">
+
+    <!-- Logo -->
+    <div class="sidebar__logo">
+      <lucide-icon [img]="ShieldAlert" [size]="28" class="sidebar__logo-icon"></lucide-icon>
+      @if (sidebarOpen) {
+        <span class="sidebar__logo-text">SIAGA<br>PANGAN</span>
+      }
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar__nav">
+      @for (item of navItems; track item.route) {
+        @if (!item.roles || item.roles.includes(userRole)) {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="sidebar__nav-item--active"
+            class="sidebar__nav-item"
+            [title]="!sidebarOpen ? item.label : ''"
+          >
+            <lucide-icon [img]="item.icon" [size]="18" class="sidebar__nav-icon"></lucide-icon>
+            @if (sidebarOpen) {
+              <span class="sidebar__nav-label">{{ item.label }}</span>
+            }
+          </a>
+        }
+      }
+    </nav>
+
+    <!-- User Panel -->
+    <div class="sidebar__user">
+      <p-avatar
+        [label]="userInitial"
+        styleClass="sidebar__avatar"
+        shape="circle"
+      ></p-avatar>
+      @if (sidebarOpen) {
+        <div class="sidebar__user-info">
+          <p class="sidebar__user-name">{{ userName }}</p>
+          <p class="sidebar__user-role">{{ userRole }}</p>
+        </div>
+        <button class="sidebar__logout-btn" (click)="logout()" title="Keluar">
+          <lucide-icon [img]="LogOut" [size]="16"></lucide-icon>
+        </button>
+      }
+    </div>
+
+  </aside>
+
+  <!-- Main -->
+  <div class="main-wrapper">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="topbar__toggle" (click)="toggleSidebar()">
+        <lucide-icon [img]="sidebarOpen ? X : Menu" [size]="20"></lucide-icon>
+      </button>
+      <div class="topbar__spacer"></div>
+      <span class="topbar__date">{{ today }}</span>
+    </header>
+
+    <!-- Page Content -->
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>
+
+<p-toast></p-toast>
