@@ -1,0 +1,17 @@
+<div class="apex-bar-chart">
+  @if (title) {
+    <h3 class="apex-bar-chart__title">{{ title }}</h3>
+  }
+  <apx-chart
+    [series]="chartSeries"
+    [chart]="chartOptions"
+    [xaxis]="xaxis"
+    [yaxis]="yaxis"
+    [plotOptions]="plotOptions"
+    [dataLabels]="dataLabels"
+    [tooltip]="tooltip"
+    [grid]="grid"
+    [legend]="legend"
+    [noData]="noData"
+  ></apx-chart>
+</div>

@@ -49,9 +49,18 @@ export const routes: Routes = [
           ),
         canActivate: [roleGuard(['admin', 'operator'])],
       },
-      // Placeholder — akan diimplementasi fase berikutnya
-      { path: 'ihk',              redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'analisa-provinsi', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'ihk',
+        loadComponent: () =>
+          import('./features/ihk/ihk.component').then((m) => m.IhkComponent),
+      },
+      {
+        path: 'analisa-provinsi',
+        loadComponent: () =>
+          import('./features/analisa-provinsi/analisa-provinsi.component').then(
+            (m) => m.AnalisaProvinsiComponent
+          ),
+      },
       { path: 'ews',              redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'prognosa',         redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'pasar',            redirectTo: 'dashboard', pathMatch: 'full' },

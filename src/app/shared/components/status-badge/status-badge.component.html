@@ -1,0 +1,8 @@
+<span
+  class="status-badge"
+  [class.status-badge--sm]="size === 'sm'"
+  [class]="status ? config.bg + ' ' + config.text : ''"
+>
+  <span class="status-badge__dot" [class]="config.dot"></span>
+  <span class="status-badge__label">{{ status || '-' }}</span>
+</span>

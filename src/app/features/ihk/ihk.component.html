@@ -1,0 +1,128 @@
+<div class="ihk-page">
+
+  <app-page-header
+    title="Analisa 9 Kab/Kota IHK"
+    subtitle="Perbandingan harga dua tanggal untuk kabupaten/kota IHK"
+    [showExport]="data.length > 0"
+    (export)="onExportPdf()"
+  ></app-page-header>
+
+  <!-- Filter -->
+  <div class="ihk-filter" [formGroup]="filterForm">
+    <div class="filter-row">
+
+      <div class="filter-field">
+        <label class="filter-label">Wilayah IHK <span class="required">*</span></label>
+        <p-select
+          formControlName="wilayahId"
+          [options]="wilayahIhkOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Pilih Wilayah IHK"
+          [filter]="true"
+          filterBy="label"
+          [showClear]="true"
+        ></p-select>
+      </div>
+
+      <div class="filter-field">
+        <label class="filter-label">Tanggal 1 <span class="required">*</span></label>
+        <p-datepicker
+          formControlName="tanggal1"
+          dateFormat="dd/mm/yy"
+          placeholder="Pilih tanggal pertama"
+          [showButtonBar]="true"
+        ></p-datepicker>
+      </div>
+
+      <div class="filter-field">
+        <label class="filter-label">Tanggal 2 <span class="required">*</span></label>
+        <p-datepicker
+          formControlName="tanggal2"
+          dateFormat="dd/mm/yy"
+          placeholder="Pilih tanggal kedua"
+          [showButtonBar]="true"
+        ></p-datepicker>
+      </div>
+
+      <div class="filter-actions">
+        @if (errorMessage) {
+          <p class="error-msg">{{ errorMessage }}</p>
+        }
+        <button class="btn btn--primary" (click)="onFilter()" [disabled]="isLoading">Tampilkan</button>
+        <button class="btn btn--secondary" (click)="onReset()">Reset</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Chart -->
+  @if (chartSeries.length > 0) {
+    <p-card styleClass="mb-4">
+      <app-apex-bar-chart
+        [series]="chartSeries"
+        [categories]="chartCategories"
+        [height]="320"
+        title="Perbandingan Harga"
+        yAxisLabel="Harga (Rp)"
+      ></app-apex-bar-chart>
+    </p-card>
+  }
+
+  <!-- Table -->
+  <p-card id="ihk-content">
+    @if (isLoading) {
+      <p-skeleton height="300px"></p-skeleton>
+    } @else {
+      <p-table
+        [value]="data"
+        styleClass="p-datatable-sm p-datatable-striped"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Komoditi</th>
+            <th class="text-right">Satuan</th>
+            <th class="text-right">Harga Tgl 1</th>
+            <th class="text-right">Harga Tgl 2</th>
+            <th class="text-center">Perubahan</th>
+            <th class="text-center">Status HET/HAP</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td class="font-medium">{{ row.komoditi }}</td>
+            <td class="text-right text-sm text-gray">{{ row.satuan }}</td>
+            <td class="text-right">{{ row.harga_tanggal1 | rupiah }}</td>
+            <td class="text-right font-semibold">{{ row.harga_tanggal2 | rupiah }}</td>
+            <td class="text-center">
+              @if (row.status_perubahan) {
+                <app-status-badge [status]="row.status_perubahan.status"></app-status-badge>
+                <span class="selisih" [class.pos]="row.status_perubahan.selisih > 0" [class.neg]="row.status_perubahan.selisih < 0">
+                  {{ row.status_perubahan.selisih | rupiah }}
+                </span>
+              } @else {
+                <span class="text-gray">-</span>
+              }
+            </td>
+            <td class="text-center">
+              @if (row.status_het_hap) {
+                <app-status-badge [status]="row.status_het_hap"></app-status-badge>
+              } @else {
+                <span class="text-gray">-</span>
+              }
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="empty-state">
+              Pilih wilayah dan dua tanggal, lalu klik Tampilkan.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </p-card>
+
+</div>
