@@ -61,7 +61,18 @@ export const routes: Routes = [
             (m) => m.AnalisaProvinsiComponent
           ),
       },
-      { path: 'ews',              redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'ews',
+        loadComponent: () =>
+          import('./features/ews/ews-list/ews-list.component').then((m) => m.EwsListComponent),
+      },
+      {
+        path: 'ews/riwayat',
+        loadComponent: () =>
+          import('./features/ews/laporan-riwayat/laporan-riwayat.component').then(
+            (m) => m.LaporanRiwayatComponent
+          ),
+      },
       { path: 'prognosa',         redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'pasar',            redirectTo: 'dashboard', pathMatch: 'full' },
     ],

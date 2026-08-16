@@ -1,0 +1,96 @@
+<p-dialog
+  [(visible)]="visible"
+  (onHide)="onHide()"
+  [modal]="true"
+  [style]="{ width: '560px' }"
+  [header]="isReadOnly ? 'Detail Alert EWS' : 'Laporan Koordinasi'"
+  [draggable]="false"
+  [resizable]="false"
+>
+
+  @if (alert) {
+    <!-- Alert Info -->
+    <div class="alert-info">
+      <div class="alert-info__row">
+        <span class="alert-info__label">Wilayah</span>
+        <span class="alert-info__value">{{ alert.wilayah }}</span>
+      </div>
+      <div class="alert-info__row">
+        <span class="alert-info__label">Komoditi</span>
+        <span class="alert-info__value">{{ alert.komoditi }}</span>
+      </div>
+      <div class="alert-info__row">
+        <span class="alert-info__label">Harga</span>
+        <span class="alert-info__value font-semibold">{{ alert.harga | rupiah }}</span>
+      </div>
+      <div class="alert-info__row">
+        <span class="alert-info__label">Deviasi</span>
+        <span class="alert-info__value" [class.text-red]="alert.deviasi_persen > 0" [class.text-green]="alert.deviasi_persen < 0">
+          {{ alert.deviasi_persen > 0 ? '+' : '' }}{{ alert.deviasi_persen }}%
+        </span>
+      </div>
+      <div class="alert-info__row">
+        <span class="alert-info__label">Status</span>
+        <app-status-badge [status]="alert.status_laporan"></app-status-badge>
+      </div>
+    </div>
+
+    <!-- Form -->
+    @if (!isReadOnly) {
+      <form [formGroup]="form" class="laporan-form">
+
+        @if (errorMessage) {
+          <p-message severity="error" [text]="errorMessage" styleClass="w-full mb-3"></p-message>
+        }
+
+        <div class="field">
+          <label class="field-label">Isi Laporan <span class="required">*</span></label>
+          <textarea
+            pTextarea
+            formControlName="isi_laporan"
+            rows="4"
+            placeholder="Jelaskan kondisi harga, penyebab, dan tindakan yang sudah dilakukan..."
+            style="width: 100%"
+            [class.ng-invalid]="form.get('isi_laporan')?.invalid && form.get('isi_laporan')?.touched"
+          ></textarea>
+          @if (form.get('isi_laporan')?.invalid && form.get('isi_laporan')?.touched) {
+            <small class="field-error">Isi laporan minimal 10 karakter.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field-label">Status Penanganan</label>
+          <p-select
+            formControlName="status"
+            [options]="statusOptions"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+        </div>
+
+        <div class="form-meta">
+          <span class="form-meta__label">Dilaporkan oleh:</span>
+          <span class="form-meta__value">{{ userNama }}</span>
+        </div>
+
+      </form>
+    } @else {
+      <p class="readonly-notice">Anda memiliki akses baca saja. Hanya PIC, Koordinator, dan Admin yang dapat mengisi laporan.</p>
+    }
+  }
+
+  <ng-template pTemplate="footer">
+    <button class="btn btn--secondary" (click)="onHide()">Tutup</button>
+    @if (!isReadOnly) {
+      <button
+        class="btn btn--primary"
+        (click)="onSubmit()"
+        [disabled]="form.invalid || isSaving"
+      >
+        <lucide-icon [img]="Send" [size]="14"></lucide-icon>
+        <span>{{ isSaving ? 'Menyimpan...' : 'Simpan Laporan' }}</span>
+      </button>
+    }
+  </ng-template>
+
+</p-dialog>

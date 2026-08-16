@@ -1,0 +1,135 @@
+<div class="ews-page">
+
+  <app-page-header
+    title="Early Warning System (EWS)"
+    subtitle="Deteksi dini gejolak harga komoditi pangan"
+    [showExport]="true"
+    (export)="onExportPdf()"
+  ></app-page-header>
+
+  <!-- Header Bar: Filter Tanggal + Countdown -->
+  <div class="ews-header-bar">
+    <div class="ews-header-bar__filter" [formGroup]="filterForm">
+      <label class="filter-label">Tanggal Pantau</label>
+      <p-datepicker
+        formControlName="tanggal"
+        dateFormat="dd/mm/yy"
+        (onSelect)="onTanggalChange()"
+        [showButtonBar]="true"
+      ></p-datepicker>
+    </div>
+
+    <div class="ews-countdown">
+      <lucide-icon [img]="Clock" [size]="18" class="ews-countdown__icon"></lucide-icon>
+      <div class="ews-countdown__body">
+        <span class="ews-countdown__label">Batas Lapor (17:00 WIB)</span>
+        <span class="ews-countdown__value">{{ countdown$ | async }}</span>
+      </div>
+    </div>
+
+    <button class="btn-refresh" (click)="loadAlerts()" title="Refresh data">
+      <lucide-icon [img]="RefreshCw" [size]="16"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- Summary Cards -->
+  @if (alerts$ | async; as alerts) {
+    <div class="ews-summary">
+      <div class="summary-card summary-card--red">
+        <lucide-icon [img]="AlertTriangle" [size]="24"></lucide-icon>
+        <div>
+          <p class="summary-card__value">{{ alerts.length }}</p>
+          <p class="summary-card__label">Total Alert</p>
+        </div>
+      </div>
+      <div class="summary-card summary-card--yellow">
+        <lucide-icon [img]="FileText" [size]="24"></lucide-icon>
+        <div>
+          <p class="summary-card__value">{{ getKoordinasiCount(alerts) }}</p>
+          <p class="summary-card__label">Perlu Koordinasi</p>
+        </div>
+      </div>
+      <div class="summary-card summary-card--green">
+        <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
+        <div>
+          <p class="summary-card__value">{{ getAmanCount(alerts) }}</p>
+          <p class="summary-card__label">Sudah Aman</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- EWS Table -->
+  <p-card id="ews-content">
+    @if (isLoading$ | async) {
+      <p-skeleton height="350px"></p-skeleton>
+    } @else {
+      <p-table
+        [value]="(alerts$ | async) ?? []"
+        styleClass="p-datatable-sm p-datatable-striped"
+        [rowHover]="true"
+        dataKey="wilayah_id"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Wilayah</th>
+            <th>Komoditi</th>
+            <th class="text-right">Harga</th>
+            <th class="text-right">Rata Prov</th>
+            <th class="text-right">Deviasi</th>
+            <th class="text-center">Status</th>
+            <th>PIC</th>
+            <th>Koordinator</th>
+            <th class="text-center w-24">Aksi</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row>
+          <tr [class.row--koordinasi]="row.status_laporan !== 'Aman'">
+            <td class="font-medium">{{ row.wilayah }}</td>
+            <td>{{ row.komoditi }}</td>
+            <td class="text-right">{{ row.harga | rupiah }}</td>
+            <td class="text-right text-gray">{{ row.rata_provinsi | rupiah }}</td>
+            <td class="text-right">
+              <span [class]="row.deviasi_persen > 0 ? 'deviasi--pos' : 'deviasi--neg'">
+                {{ row.deviasi_persen > 0 ? '+' : '' }}{{ row.deviasi_persen | number:'1.1-1' }}%
+              </span>
+            </td>
+            <td class="text-center">
+              <app-status-badge [status]="row.status_laporan"></app-status-badge>
+            </td>
+            <td class="text-sm">{{ row.pic ?? '-' }}</td>
+            <td class="text-sm">{{ row.koordinator ?? '-' }}</td>
+            <td class="text-center">
+              @if (isAllowedToReport) {
+                <button class="btn-lapor" (click)="openLaporanDialog(row)" title="Isi Laporan">
+                  <lucide-icon [img]="FileText" [size]="14"></lucide-icon>
+                  <span>Lapor</span>
+                </button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9" class="empty-state">
+              <lucide-icon [img]="CheckCircle" [size]="32" class="text-green-500 mx-auto block mb-2"></lucide-icon>
+              Tidak ada alert EWS untuk tanggal ini.
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    }
+  </p-card>
+
+  <!-- Dialog Form Laporan -->
+  <app-laporan-form
+    [(visible)]="showLaporanDialog"
+    [alert]="selectedAlert"
+    [tanggal]="tanggal"
+    (saved)="onLaporanSaved()"
+  ></app-laporan-form>
+
+</div>
