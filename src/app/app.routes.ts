@@ -18,7 +18,7 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./features/executive-summary/executive-summary.component').then(
-            (m) => m.DashboardComponent
+            (m) => m.ExecutiveSummaryComponent
           ),
       },
       {
@@ -34,20 +34,6 @@ export const routes: Routes = [
           import('./features/grafik-perbandingan/grafik-perbandingan.component').then(
             (m) => m.GrafikPerbandinganComponent
           ),
-      },
-      {
-        path: 'upload',
-        loadComponent: () =>
-          import('./features/upload/upload.component').then((m) => m.UploadComponent),
-        canActivate: [roleGuard(['admin', 'operator'])],
-      },
-      {
-        path: 'upload/riwayat',
-        loadComponent: () =>
-          import('./features/upload/riwayat-upload/riwayat-upload.component').then(
-            (m) => m.RiwayatUploadComponent
-          ),
-        canActivate: [roleGuard(['admin', 'operator'])],
       },
       {
         path: 'ihk',
@@ -73,8 +59,34 @@ export const routes: Routes = [
             (m) => m.LaporanRiwayatComponent
           ),
       },
-      { path: 'prognosa',         redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'pasar',            redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'prognosa',
+        loadComponent: () =>
+          import('./features/prognosa-stok/prognosa-stok.component').then(
+            (m) => m.PrognosaStokComponent
+          ),
+      },
+      {
+        path: 'pasar',
+        loadComponent: () =>
+          import('./features/pasar-pantauan/pasar-pantauan.component').then(
+            (m) => m.PasarPantauanComponent
+          ),
+      },
+      {
+        path: 'upload',
+        loadComponent: () =>
+          import('./features/upload/upload.component').then((m) => m.UploadComponent),
+        canActivate: [roleGuard(['admin', 'operator'])],
+      },
+      {
+        path: 'upload/riwayat',
+        loadComponent: () =>
+          import('./features/upload/riwayat-upload/riwayat-upload.component').then(
+            (m) => m.RiwayatUploadComponent
+          ),
+        canActivate: [roleGuard(['admin', 'operator'])],
+      },
     ],
   },
   { path: '**', redirectTo: 'login' },

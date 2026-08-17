@@ -1,29 +1,134 @@
-<div class="dashboard">
+<div class="executive-page" id="executive-content">
 
-  <div class="dashboard__header">
-    <h1 class="dashboard__title">Dashboard</h1>
-    <p class="dashboard__subtitle">Selamat datang di Sistem Informasi Siaga Pangan</p>
+  <!-- Header + Filter -->
+  <div class="executive-header">
+    <app-page-header
+      title="Executive Summary"
+      subtitle="Ringkasan kondisi harga pangan Jawa Tengah"
+      [showExport]="!!summaryData"
+      (export)="onExportPdf()"
+    ></app-page-header>
+
+    <div class="date-filter" [formGroup]="filterForm">
+      <label class="date-label">Tanggal</label>
+      <p-datepicker
+        formControlName="tanggal"
+        dateFormat="dd/mm/yy"
+        (onSelect)="onTanggalChange()"
+        [showButtonBar]="true"
+      ></p-datepicker>
+    </div>
   </div>
 
-  <div class="dashboard__cards">
-    <p-card>
-      <div class="kpi-card">
-        <lucide-icon [img]="BarChart2" [size]="32" class="kpi-card__icon kpi-card__icon--green"></lucide-icon>
-        <div class="kpi-card__body">
-          <p class="kpi-card__label">Modul Aktif</p>
-          <p class="kpi-card__value">8 Fitur Tersedia</p>
+  @if (isLoading) {
+    <div class="loading-grid">
+      <p-skeleton height="120px"></p-skeleton>
+      <p-skeleton height="120px"></p-skeleton>
+      <p-skeleton height="120px"></p-skeleton>
+    </div>
+    <p-skeleton height="350px" styleClass="mt-4"></p-skeleton>
+  }
+
+  @if (summaryData && !isLoading) {
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <p-card styleClass="kpi-card kpi-card--red">
+        <div class="kpi-inner">
+          <lucide-icon [img]="AlertTriangle" [size]="28"></lucide-icon>
+          <div class="kpi-body">
+            <span class="kpi-value">{{ summaryData.kpi.komoditi_di_atas_het_hap }}</span>
+            <span class="kpi-label">Komoditi Di Atas HET/HAP</span>
+          </div>
         </div>
-      </div>
-    </p-card>
-    <p-card>
-      <div class="kpi-card">
-        <lucide-icon [img]="AlertTriangle" [size]="32" class="kpi-card__icon kpi-card__icon--yellow"></lucide-icon>
-        <div class="kpi-card__body">
-          <p class="kpi-card__label">Early Warning</p>
-          <p class="kpi-card__value">Pantau EWS Harian</p>
+      </p-card>
+      <p-card styleClass="kpi-card kpi-card--yellow">
+        <div class="kpi-inner">
+          <lucide-icon [img]="AlertTriangle" [size]="28"></lucide-icon>
+          <div class="kpi-body">
+            <span class="kpi-value">{{ summaryData.kpi.alert_ews_aktif }}</span>
+            <span class="kpi-label">Alert EWS Aktif</span>
+          </div>
         </div>
-      </div>
-    </p-card>
-  </div>
+      </p-card>
+      <p-card styleClass="kpi-card kpi-card--green">
+        <div class="kpi-inner">
+          <lucide-icon [img]="FileText" [size]="28"></lucide-icon>
+          <div class="kpi-body">
+            <span class="kpi-value">{{ summaryData.kpi.laporan_masuk }}</span>
+            <span class="kpi-label">Laporan Masuk</span>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="main-grid">
+
+      <!-- Peta Choropleth -->
+      <p-card header="Status Wilayah">
+        <div id="jateng-map" class="leaflet-map"></div>
+        <div class="map-legend">
+          <span class="legend-item legend-item--green">Aman</span>
+          <span class="legend-item legend-item--yellow">Waspada</span>
+          <span class="legend-item legend-item--red">Koordinasi</span>
+        </div>
+      </p-card>
+
+      <!-- Komoditi Volatil -->
+      <p-card header="5 Komoditi Paling Volatil (7 Hari)">
+        <p-table [value]="summaryData.komoditi_volatil" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Komoditi</th>
+              <th class="text-right">Range Harga</th>
+              <th class="text-right">Rata-rata</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr>
+              <td>
+                <div class="rank-cell">
+                  <span class="rank">{{ i + 1 }}</span>
+                  <span>{{ row.nama }}</span>
+                </div>
+              </td>
+              <td class="text-right text-red font-semibold">{{ row.range_harga | rupiah }}</td>
+              <td class="text-right text-gray">{{ row.rata | rupiah }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+
+    </div>
+
+    <!-- Tindak Lanjut EWS -->
+    @if (summaryData.tindak_lanjut.length > 0) {
+      <p-card header="Tindak Lanjut EWS">
+        <p-table
+          [value]="summaryData.tindak_lanjut"
+          styleClass="p-datatable-sm p-datatable-striped"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Wilayah</th>
+              <th>Komoditi</th>
+              <th>Isi Laporan</th>
+              <th class="text-center">Status</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td class="font-medium">{{ row.wilayah }}</td>
+              <td>{{ row.komoditi }}</td>
+              <td class="text-sm laporan-text">{{ row.isi_laporan }}</td>
+              <td class="text-center">
+                <app-status-badge [status]="row.status" size="sm"></app-status-badge>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    }
+
+  }
 
 </div>

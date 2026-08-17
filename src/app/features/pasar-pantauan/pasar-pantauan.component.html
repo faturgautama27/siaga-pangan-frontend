@@ -1,0 +1,83 @@
+<div class="pasar-page">
+
+  <app-page-header
+    title="Pasar Pantauan"
+    subtitle="Daftar pasar yang dipantau harga komoditinya"
+  ></app-page-header>
+
+  <!-- Filter -->
+  <div class="pasar-filter" [formGroup]="filterForm">
+    <div class="filter-field">
+      <label class="filter-label">Wilayah</label>
+      <p-select
+        formControlName="wilayahId"
+        [options]="wilayahOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Semua Wilayah"
+        [filter]="true"
+        filterBy="label"
+        [showClear]="true"
+        (onChange)="onFilter()"
+      ></p-select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <p-card>
+    <p-table
+      [value]="data"
+      [loading]="isLoading"
+      styleClass="p-datatable-sm p-datatable-striped"
+      [rowHover]="true"
+      [globalFilterFields]="['nama_pasar','wilayah','alamat']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nama Pasar</th>
+          <th>Wilayah</th>
+          <th>Alamat</th>
+          <th class="text-center w-32">Lokasi</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td class="font-medium">{{ row.nama_pasar }}</td>
+          <td>{{ row.wilayah }}</td>
+          <td class="text-sm text-gray">{{ row.alamat ?? '-' }}</td>
+          <td class="text-center">
+            @if (row.maps_url) {
+              <button
+                class="btn-maps"
+                (click)="openMaps(row.maps_url)"
+                title="Buka di Google Maps"
+              >
+                <lucide-icon [img]="MapPin" [size]="14"></lucide-icon>
+                <span>Buka Peta</span>
+                <lucide-icon [img]="ExternalLink" [size]="12"></lucide-icon>
+              </button>
+            } @else {
+              <span class="text-gray text-sm">-</span>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="empty-state">
+            <lucide-icon [img]="MapPin" [size]="32" class="empty-icon mx-auto block mb-2"></lucide-icon>
+            Tidak ada data pasar pantauan.
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        <span class="text-sm text-gray">{{ data.length }} pasar terdaftar</span>
+      </ng-template>
+
+    </p-table>
+  </p-card>
+
+</div>

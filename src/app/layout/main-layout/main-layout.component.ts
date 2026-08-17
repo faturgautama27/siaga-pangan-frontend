@@ -67,6 +67,7 @@ export class MainLayoutComponent {
     { label: 'Prognosa Stok',       icon: TrendingDown,    route: '/prognosa' },
     { label: 'Pasar Pantauan',      icon: MapPin,          route: '/pasar' },
     { label: 'Upload Data',         icon: Upload,          route: '/upload', roles: ['admin', 'operator'] },
+    { label: 'Riwayat Upload',      icon: Upload,          route: '/upload/riwayat', roles: ['admin', 'operator'] },
   ];
 
   toggleSidebar(): void {

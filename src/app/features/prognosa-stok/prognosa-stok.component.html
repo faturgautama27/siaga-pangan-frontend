@@ -1,0 +1,86 @@
+<div class="prognosa-page">
+
+  <app-page-header
+    title="Prognosa Stok"
+    subtitle="Potensi defisit dan surplus berdasarkan disparitas harga wilayah"
+    [showExport]="data.length > 0"
+    (export)="onExportPdf()"
+  ></app-page-header>
+
+  <!-- Filter Tanggal -->
+  <div class="prognosa-filter" [formGroup]="filterForm">
+    <div class="filter-field">
+      <label class="filter-label">Tanggal Referensi</label>
+      <p-datepicker
+        formControlName="tanggal"
+        dateFormat="dd/mm/yy"
+        (onSelect)="onTanggalChange()"
+        [showButtonBar]="true"
+      ></p-datepicker>
+    </div>
+  </div>
+
+  <!-- Content -->
+  @if (isLoading) {
+    <p-skeleton height="400px"></p-skeleton>
+  } @else if (data.length === 0) {
+    <p-card>
+      <div class="empty-state">
+        <lucide-icon [img]="Package" [size]="40" class="empty-icon"></lucide-icon>
+        <p>Tidak ada data prognosa untuk tanggal ini.</p>
+      </div>
+    </p-card>
+  } @else {
+    <div id="prognosa-content" class="prognosa-grid">
+      @for (item of data; track item.komoditi_id) {
+        <p-card>
+          <div class="komoditi-header">
+            <h3 class="komoditi-name">{{ item.komoditi }}</h3>
+            <span class="rata-prov">Rata Prov: {{ item.rata_provinsi | rupiah }}</span>
+          </div>
+
+          <div class="prognosa-columns">
+
+            <!-- Potensi Defisit -->
+            <div class="prognosa-col prognosa-col--defisit">
+              <div class="col-header">
+                <lucide-icon [img]="TrendingDown" [size]="16"></lucide-icon>
+                <span>Potensi Defisit (Harga Tinggi)</span>
+              </div>
+              @if (item.potensi_defisit.length === 0) {
+                <p class="col-empty">Tidak ada data</p>
+              } @else {
+                @for (w of item.potensi_defisit; track w.wilayah) {
+                  <div class="wilayah-row">
+                    <span class="wilayah-name">{{ w.wilayah }}</span>
+                    <span class="wilayah-harga defisit">{{ w.harga | rupiah }}</span>
+                  </div>
+                }
+              }
+            </div>
+
+            <!-- Potensi Surplus -->
+            <div class="prognosa-col prognosa-col--surplus">
+              <div class="col-header">
+                <lucide-icon [img]="TrendingUp" [size]="16"></lucide-icon>
+                <span>Potensi Surplus (Harga Rendah)</span>
+              </div>
+              @if (item.potensi_surplus.length === 0) {
+                <p class="col-empty">Tidak ada data</p>
+              } @else {
+                @for (w of item.potensi_surplus; track w.wilayah) {
+                  <div class="wilayah-row">
+                    <span class="wilayah-name">{{ w.wilayah }}</span>
+                    <span class="wilayah-harga surplus">{{ w.harga | rupiah }}</span>
+                  </div>
+                }
+              }
+            </div>
+
+          </div>
+        </p-card>
+      }
+    </div>
+  }
+
+</div>
