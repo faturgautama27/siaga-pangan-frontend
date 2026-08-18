@@ -5,10 +5,9 @@ import { TableModule } from 'primeng/table';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { LucideAngularModule, AlertTriangle, CheckCircle, TrendingUp, BarChart2, FileText } from 'lucide-angular';
+import { LucideAngularModule, AlertTriangle, FileText } from 'lucide-angular';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
-import { ApexLineChartComponent, LineChartSeries } from '../../shared/components/apex-line-chart/apex-line-chart.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
 import { ApiService } from '../../core/services/api.service';
 
@@ -53,7 +52,6 @@ export interface ExecutiveSummaryData {
     LucideAngularModule,
     PageHeaderComponent,
     StatusBadgeComponent,
-    ApexLineChartComponent,
     RupiahPipe,
   ],
   templateUrl: './executive-summary.component.html',
@@ -65,9 +63,6 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
   private leafletMap: any = null;
 
   readonly AlertTriangle = AlertTriangle;
-  readonly CheckCircle = CheckCircle;
-  readonly TrendingUp = TrendingUp;
-  readonly BarChart2 = BarChart2;
   readonly FileText = FileText;
 
   summaryData: ExecutiveSummaryData | null = null;

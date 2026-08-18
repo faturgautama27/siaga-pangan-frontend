@@ -1,8 +1,20 @@
 <span
-  class="status-badge"
-  [class.status-badge--sm]="size === 'sm'"
-  [class]="status ? config.bg + ' ' + config.text : ''"
+  class="inline-flex items-center gap-1.5 rounded-full font-medium whitespace-nowrap"
+  [class.px-2]="size === 'sm'"
+  [class.py-0.5]="size === 'sm'"
+  [class.text-xs]="size === 'sm'"
+  [class.px-2.5]="size !== 'sm'"
+  [class.py-1]="size !== 'sm'"
+  [class.text-xs]="size !== 'sm'"
+  [ngClass]="status ? config.bg + ' ' + config.text : 'bg-gray-100 text-gray-500'"
 >
-  <span class="status-badge__dot" [class]="config.dot"></span>
-  <span class="status-badge__label">{{ status || '-' }}</span>
+  <span
+    class="rounded-full flex-shrink-0"
+    [class.w-1.5]="size === 'sm'"
+    [class.h-1.5]="size === 'sm'"
+    [class.w-2]="size !== 'sm'"
+    [class.h-2]="size !== 'sm'"
+    [ngClass]="config.dot"
+  ></span>
+  <span>{{ status || '-' }}</span>
 </span>

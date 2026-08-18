@@ -1,18 +1,17 @@
-<div class="upload-page">
+<div class="flex flex-col gap-5">
 
   <!-- Page Header -->
-  <div class="page-header">
-    <h1 class="page-header__title">Upload Data Harga</h1>
-    <p class="page-header__subtitle">
-      Upload file Excel tabulasi harga harian (.xlsx, maks 10 MB)
-    </p>
+  <div class="flex flex-col gap-1">
+    <h1 class="text-xl font-bold text-gray-900">Upload Data Harga</h1>
+    <p class="text-sm text-gray-500">Upload file Excel tabulasi harga harian (.xlsx, maks 10 MB)</p>
   </div>
 
   <!-- Upload Card -->
-  <p-card styleClass="upload-card">
-    <div class="upload-hint">
-      <lucide-icon [img]="FileSpreadsheet" [size]="16" class="upload-hint__icon"></lucide-icon>
-      <span>Format: Kolom A = Kode Kemendagri, B = Kab/Kota, C = Nama Variant, D+ = Harga per Tanggal (DD/MM/YY)</span>
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-4">
+    <!-- Format hint -->
+    <div class="flex items-center gap-2.5 bg-green-50 border border-green-100 rounded-lg px-4 py-2.5">
+      <lucide-icon [img]="FileSpreadsheet" [size]="15" class="text-green-600 flex-shrink-0"></lucide-icon>
+      <span class="text-sm text-green-800">Format: Kolom A = Kode Kemendagri, B = Kab/Kota, C = Nama Variant, D+ = Harga per Tanggal (DD/MM/YY)</span>
     </div>
 
     <p-fileupload
@@ -28,89 +27,92 @@
       [disabled]="isUploading"
     >
       <ng-template pTemplate="empty">
-        <div class="upload-dropzone">
-          <lucide-icon [img]="Upload" [size]="40" class="upload-dropzone__icon"></lucide-icon>
-          <p class="upload-dropzone__text">Drag & drop file .xlsx ke sini, atau klik <strong>Pilih File</strong></p>
-          <p class="upload-dropzone__hint">Maksimal 10 MB</p>
+        <div class="flex flex-col items-center gap-3 py-10 text-gray-400">
+          <lucide-icon [img]="Upload" [size]="40" class="text-gray-300"></lucide-icon>
+          <p class="text-sm text-gray-500">Drag & drop file .xlsx ke sini, atau klik <strong class="text-green-600">Pilih File</strong></p>
+          <p class="text-xs text-gray-400">Maksimal 10 MB</p>
         </div>
       </ng-template>
     </p-fileupload>
 
     @if (isUploading) {
-      <div class="upload-progress">
-        <p class="upload-progress__label">Memproses file, harap tunggu...</p>
-        <p-progressBar mode="indeterminate" styleClass="upload-progress__bar"></p-progressBar>
+      <div class="flex flex-col gap-2 pt-2">
+        <p class="text-sm text-gray-600 font-medium">Memproses file, harap tunggu...</p>
+        <p-progressBar mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
       </div>
     }
-  </p-card>
+  </div>
 
   <!-- Error Message -->
   @if (errorMessage) {
-    <p-message severity="error" [text]="errorMessage" styleClass="w-full"></p-message>
+    <div class="flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+      <i class="pi pi-exclamation-circle text-red-500 flex-shrink-0"></i>
+      <p class="text-sm text-red-700">{{ errorMessage }}</p>
+    </div>
   }
 
   <!-- Hasil Upload -->
   @if (result) {
-    <p-card styleClass="result-card">
-      <ng-template pTemplate="header">
-        <div class="result-header">
-          <lucide-icon [img]="CheckCircle" [size]="20" class="result-header__icon"></lucide-icon>
-          <span class="result-header__title">Hasil Upload</span>
-        </div>
-      </ng-template>
-
-      <!-- Summary Stats -->
-      <div class="result-stats">
-        <div class="stat-card stat-card--green">
-          <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
-          <div class="stat-card__body">
-            <span class="stat-card__value">{{ result.inserted }}</span>
-            <span class="stat-card__label">Data Baru</span>
-          </div>
-        </div>
-        <div class="stat-card stat-card--blue">
-          <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
-          <div class="stat-card__body">
-            <span class="stat-card__value">{{ result.updated }}</span>
-            <span class="stat-card__label">Diperbarui</span>
-          </div>
-        </div>
-        <div class="stat-card stat-card--yellow">
-          <lucide-icon [img]="AlertTriangle" [size]="24"></lucide-icon>
-          <div class="stat-card__body">
-            <span class="stat-card__value">{{ result.skipped }}</span>
-            <span class="stat-card__label">Dilewati</span>
-          </div>
-        </div>
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <!-- Header -->
+      <div class="flex items-center gap-3 px-6 py-4 border-b border-gray-100">
+        <lucide-icon [img]="CheckCircle" [size]="20" class="text-green-600"></lucide-icon>
+        <h3 class="font-semibold text-gray-800">Hasil Upload</h3>
       </div>
 
-      <!-- Skip Detail Table -->
-      @if (result && result.skip_detail && result.skip_detail.length > 0) {
-        <div class="skip-detail">
-          <h3 class="skip-detail__title">Detail Baris yang Dilewati</h3>
-          <p-table
-            [value]="result.skip_detail"
-            [paginator]="true"
-            [rows]="10"
-            styleClass="p-datatable-sm p-datatable-striped"
-          >
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 80px">Baris</th>
-                <th>Alasan</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-              <tr>
-                <td>{{ item.row }}</td>
-                <td class="skip-detail__reason">{{ item.reason }}</td>
-              </tr>
-            </ng-template>
-          </p-table>
+      <div class="p-6 flex flex-col gap-6">
+        <!-- Summary Stats -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex items-center gap-4 bg-green-50 border border-green-100 rounded-xl p-4">
+            <lucide-icon [img]="CheckCircle" [size]="28" class="text-green-600 flex-shrink-0"></lucide-icon>
+            <div>
+              <p class="text-2xl font-bold text-green-700 leading-none">{{ result.inserted }}</p>
+              <p class="text-xs text-green-600 mt-1 font-medium">Data Baru</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-blue-50 border border-blue-100 rounded-xl p-4">
+            <lucide-icon [img]="CheckCircle" [size]="28" class="text-blue-600 flex-shrink-0"></lucide-icon>
+            <div>
+              <p class="text-2xl font-bold text-blue-700 leading-none">{{ result.updated }}</p>
+              <p class="text-xs text-blue-600 mt-1 font-medium">Diperbarui</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-amber-50 border border-amber-100 rounded-xl p-4">
+            <lucide-icon [img]="AlertTriangle" [size]="28" class="text-amber-600 flex-shrink-0"></lucide-icon>
+            <div>
+              <p class="text-2xl font-bold text-amber-700 leading-none">{{ result.skipped }}</p>
+              <p class="text-xs text-amber-600 mt-1 font-medium">Dilewati</p>
+            </div>
+          </div>
         </div>
-      }
 
-    </p-card>
+        <!-- Skip Detail Table -->
+        @if (result && result.skip_detail && result.skip_detail.length > 0) {
+          <div class="flex flex-col gap-3">
+            <h4 class="text-sm font-semibold text-gray-700">Detail Baris yang Dilewati</h4>
+            <p-table
+              [value]="result.skip_detail"
+              [paginator]="true"
+              [rows]="10"
+              styleClass="p-datatable-sm p-datatable-striped"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="w-20">Baris</th>
+                  <th>Alasan</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-item>
+                <tr>
+                  <td class="text-sm text-gray-600">{{ item.row }}</td>
+                  <td class="text-sm text-gray-600">{{ item.reason }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        }
+      </div>
+    </div>
   }
 
 </div>

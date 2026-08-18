@@ -13,6 +13,7 @@ import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { AuthState } from './store/auth/auth.state';
 import { MasterState } from './store/master/master.state';
 import { EwsState } from './store/ews/ews.state';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,7 +36,8 @@ export const appConfig: ApplicationConfig = {
     provideStore(
       [AuthState, MasterState, EwsState],
       withNgxsStoragePlugin({ keys: ['auth'] }),
-      withNgxsRouterPlugin()
+      withNgxsRouterPlugin(),
     ),
+    MessageService
   ],
 };

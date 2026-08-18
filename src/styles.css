@@ -1,4 +1,22 @@
-@import "tailwindcss";
+/* Define CSS layers order — wajib ada sebelum @import tailwindcss */
+@layer tailwind-base, primeng, tailwind-utilities;
 
-/* PrimeNG Aura theme */
+@import "tailwindcss";
 @import "primeicons/primeicons.css";
+
+/* Scan semua file Angular untuk utility classes */
+@source "./app/**/*.{html,ts}";
+
+/* Global font */
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -1,4 +1,4 @@
-<div class="harga-harian">
+<div class="flex flex-col gap-5">
 
   <app-page-header
     title="Harga Harian"
@@ -19,7 +19,7 @@
     (reset)="onReset()"
   ></app-filter-bar>
 
-  <p-card id="harga-harian-table">
+  <div id="harga-harian-table" class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
     <p-table
       [value]="data"
       [loading]="isLoading"
@@ -52,31 +52,29 @@
 
       <ng-template pTemplate="body" let-row>
         <tr>
-          <td>{{ row.tanggal | date:'dd/MM/yyyy' }}</td>
-          <td>
-            <span class="wilayah-cell">{{ row.wilayah }}</span>
-          </td>
-          <td>{{ row.komoditi }}</td>
-          <td class="text-right text-sm text-gray">{{ row.satuan }}</td>
-          <td class="text-right font-semibold">{{ row.harga | rupiah }}</td>
+          <td class="text-sm text-gray-600">{{ row.tanggal | date:'dd/MM/yyyy' }}</td>
+          <td class="font-medium text-gray-800">{{ row.wilayah }}</td>
+          <td class="text-gray-700">{{ row.komoditi }}</td>
+          <td class="text-right text-sm text-gray-400">{{ row.satuan }}</td>
+          <td class="text-right font-semibold text-gray-900">{{ row.harga | rupiah }}</td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="empty-state">
+          <td colspan="5" class="text-center py-12 text-gray-400 text-sm">
             Tidak ada data. Gunakan filter di atas untuk menampilkan data.
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="summary">
-        <div class="table-summary">
+        <div class="text-xs text-gray-400">
           Menampilkan {{ data.length }} dari {{ totalRecords }} baris
         </div>
       </ng-template>
 
     </p-table>
-  </p-card>
+  </div>
 
 </div>

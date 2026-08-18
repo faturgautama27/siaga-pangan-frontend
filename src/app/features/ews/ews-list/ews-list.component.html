@@ -1,4 +1,4 @@
-<div class="ews-page">
+<div class="flex flex-col gap-5">
 
   <app-page-header
     title="Early Warning System (EWS)"
@@ -7,10 +7,10 @@
     (export)="onExportPdf()"
   ></app-page-header>
 
-  <!-- Header Bar: Filter Tanggal + Countdown -->
-  <div class="ews-header-bar">
-    <div class="ews-header-bar__filter" [formGroup]="filterForm">
-      <label class="filter-label">Tanggal Pantau</label>
+  <!-- Filter Tanggal + Countdown -->
+  <div class="flex flex-wrap items-end gap-4 bg-white border border-gray-200 rounded-xl p-4">
+    <div class="flex flex-col gap-1.5" [formGroup]="filterForm">
+      <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal Pantau</label>
       <p-datepicker
         formControlName="tanggal"
         dateFormat="dd/mm/yy"
@@ -19,50 +19,57 @@
       ></p-datepicker>
     </div>
 
-    <div class="ews-countdown">
-      <lucide-icon [img]="Clock" [size]="18" class="ews-countdown__icon"></lucide-icon>
-      <div class="ews-countdown__body">
-        <span class="ews-countdown__label">Batas Lapor (17:00 WIB)</span>
-        <span class="ews-countdown__value">{{ countdown$ | async }}</span>
+    <!-- Countdown -->
+    <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 flex-1">
+      <lucide-icon [img]="Clock" [size]="18" class="text-amber-600 flex-shrink-0"></lucide-icon>
+      <div class="flex flex-col gap-0.5">
+        <span class="text-xs text-amber-700 font-medium">Batas Lapor (17:00 WIB)</span>
+        <span class="text-xl font-bold text-amber-800 tabular-nums tracking-widest">{{ countdown$ | async }}</span>
       </div>
     </div>
 
-    <button class="btn-refresh" (click)="loadAlerts()" title="Refresh data">
+    <button
+      (click)="loadAlerts()"
+      title="Refresh data"
+      class="flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors flex-shrink-0"
+    >
       <lucide-icon [img]="RefreshCw" [size]="16"></lucide-icon>
     </button>
   </div>
 
   <!-- Summary Cards -->
   @if (alerts$ | async; as alerts) {
-    <div class="ews-summary">
-      <div class="summary-card summary-card--red">
-        <lucide-icon [img]="AlertTriangle" [size]="24"></lucide-icon>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="flex items-center gap-4 bg-red-50 border border-red-100 rounded-xl p-4">
+        <lucide-icon [img]="AlertTriangle" [size]="28" class="text-red-500 flex-shrink-0"></lucide-icon>
         <div>
-          <p class="summary-card__value">{{ alerts.length }}</p>
-          <p class="summary-card__label">Total Alert</p>
+          <p class="text-2xl font-bold text-red-700 leading-none">{{ alerts.length }}</p>
+          <p class="text-xs text-red-600 mt-1 font-medium">Total Alert</p>
         </div>
       </div>
-      <div class="summary-card summary-card--yellow">
-        <lucide-icon [img]="FileText" [size]="24"></lucide-icon>
+      <div class="flex items-center gap-4 bg-amber-50 border border-amber-100 rounded-xl p-4">
+        <lucide-icon [img]="FileText" [size]="28" class="text-amber-500 flex-shrink-0"></lucide-icon>
         <div>
-          <p class="summary-card__value">{{ getKoordinasiCount(alerts) }}</p>
-          <p class="summary-card__label">Perlu Koordinasi</p>
+          <p class="text-2xl font-bold text-amber-700 leading-none">{{ getKoordinasiCount(alerts) }}</p>
+          <p class="text-xs text-amber-600 mt-1 font-medium">Perlu Koordinasi</p>
         </div>
       </div>
-      <div class="summary-card summary-card--green">
-        <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
+      <div class="flex items-center gap-4 bg-green-50 border border-green-100 rounded-xl p-4">
+        <lucide-icon [img]="CheckCircle" [size]="28" class="text-green-500 flex-shrink-0"></lucide-icon>
         <div>
-          <p class="summary-card__value">{{ getAmanCount(alerts) }}</p>
-          <p class="summary-card__label">Sudah Aman</p>
+          <p class="text-2xl font-bold text-green-700 leading-none">{{ getAmanCount(alerts) }}</p>
+          <p class="text-xs text-green-600 mt-1 font-medium">Sudah Aman</p>
         </div>
       </div>
     </div>
   }
 
   <!-- EWS Table -->
-  <p-card id="ews-content">
+  <div id="ews-content" class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
     @if (isLoading$ | async) {
-      <p-skeleton height="350px"></p-skeleton>
+      <div class="p-6">
+        <p-skeleton height="350px"></p-skeleton>
+      </div>
     } @else {
       <p-table
         [value]="(alerts$ | async) ?? []"
@@ -85,25 +92,33 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-row>
-          <tr [class.row--koordinasi]="row.status_laporan !== 'Aman'">
-            <td class="font-medium">{{ row.wilayah }}</td>
-            <td>{{ row.komoditi }}</td>
-            <td class="text-right">{{ row.harga | rupiah }}</td>
-            <td class="text-right text-gray">{{ row.rata_provinsi | rupiah }}</td>
+          <tr [class.bg-amber-50]="row.status_laporan !== 'Aman'">
+            <td class="font-medium text-gray-800">{{ row.wilayah }}</td>
+            <td class="text-gray-700">{{ row.komoditi }}</td>
+            <td class="text-right font-semibold text-gray-900">{{ row.harga | rupiah }}</td>
+            <td class="text-right text-gray-400 text-sm">{{ row.rata_provinsi | rupiah }}</td>
             <td class="text-right">
-              <span [class]="row.deviasi_persen > 0 ? 'deviasi--pos' : 'deviasi--neg'">
+              <span
+                class="font-semibold text-sm"
+                [class.text-red-600]="row.deviasi_persen > 0"
+                [class.text-green-600]="row.deviasi_persen <= 0"
+              >
                 {{ row.deviasi_persen > 0 ? '+' : '' }}{{ row.deviasi_persen | number:'1.1-1' }}%
               </span>
             </td>
             <td class="text-center">
               <app-status-badge [status]="row.status_laporan"></app-status-badge>
             </td>
-            <td class="text-sm">{{ row.pic ?? '-' }}</td>
-            <td class="text-sm">{{ row.koordinator ?? '-' }}</td>
+            <td class="text-sm text-gray-600">{{ row.pic ?? '-' }}</td>
+            <td class="text-sm text-gray-600">{{ row.koordinator ?? '-' }}</td>
             <td class="text-center">
               @if (isAllowedToReport) {
-                <button class="btn-lapor" (click)="openLaporanDialog(row)" title="Isi Laporan">
-                  <lucide-icon [img]="FileText" [size]="14"></lucide-icon>
+                <button
+                  (click)="openLaporanDialog(row)"
+                  title="Isi Laporan"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors"
+                >
+                  <lucide-icon [img]="FileText" [size]="12"></lucide-icon>
                   <span>Lapor</span>
                 </button>
               }
@@ -113,16 +128,16 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="9" class="empty-state">
-              <lucide-icon [img]="CheckCircle" [size]="32" class="text-green-500 mx-auto block mb-2"></lucide-icon>
-              Tidak ada alert EWS untuk tanggal ini.
+            <td colspan="9" class="text-center py-12">
+              <lucide-icon [img]="CheckCircle" [size]="36" class="text-green-400 mx-auto block mb-3"></lucide-icon>
+              <p class="text-sm text-gray-400">Tidak ada alert EWS untuk tanggal ini.</p>
             </td>
           </tr>
         </ng-template>
 
       </p-table>
     }
-  </p-card>
+  </div>
 
   <!-- Dialog Form Laporan -->
   <app-laporan-form

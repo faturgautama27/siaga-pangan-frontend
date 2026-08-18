@@ -1,18 +1,17 @@
-<div class="page-header">
-  <div class="page-header__text">
-    <h1 class="page-header__title">{{ title }}</h1>
+<div class="flex items-start justify-between gap-4 mb-6">
+  <div class="flex flex-col gap-1 min-w-0">
+    <h1 class="text-xl font-bold text-gray-900 truncate">{{ title }}</h1>
     @if (subtitle) {
-      <p class="page-header__subtitle">{{ subtitle }}</p>
+      <p class="text-sm text-gray-500">{{ subtitle }}</p>
     }
   </div>
   @if (showExport) {
     <button
-      class="page-header__export-btn"
       (click)="onExport()"
       [disabled]="isExporting"
-      title="{{ exportLabel }}"
+      class="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-medium rounded-xl transition-colors flex-shrink-0"
     >
-      <lucide-icon [img]="FileDown" [size]="16"></lucide-icon>
+      <lucide-icon [img]="FileDown" [size]="15"></lucide-icon>
       <span>{{ exportLabel }}</span>
     </button>
   }
