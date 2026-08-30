@@ -12,7 +12,7 @@ const IMAGE_MAP: Record<string, string> = {
   'daging ayam': 'daging_ayam.png',
   'daging sapi': 'daging_sapi.png',
   'telur': 'telur.png',
-  'minyak goreng': 'minyakita.png',
+  'minyak': 'minyakita.png',
   'gula': 'gula_pasir.png',
   'tomat': 'tomat.png',
   'tepung': 'tepung_terigu.png',
