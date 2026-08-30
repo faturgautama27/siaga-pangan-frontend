@@ -89,7 +89,7 @@ export class PublicDisplayComponent implements OnInit, OnDestroy {
 
     this.isLoading.set(true);
     
-    const apiUrl = environment.apiUrl || 'http://localhost:8000';
+    const apiUrl = environment.apiBaseUrl || 'http://localhost:8000';
     
     this.http.get<any>(`${apiUrl}/api/harga-rata-rata`, {
       params: {
