@@ -68,27 +68,40 @@ export class PublicDisplayComponent implements OnInit, OnDestroy {
   private loadPrices() {
     this.isLoading.set(true);
     
-    // Mock data - ganti dengan API call sebenarnya
-    // this.http.get<any>(`${environment.apiUrl}/public/harga-harian`).subscribe({...})
+    const apiUrl = environment.apiUrl || 'http://localhost:8000';
     
-    // Temporary mock data
-    setTimeout(() => {
-      this.prices.set([
-        { komoditi: 'Beras Premium', harga: 13500, selisih: -200, persentase: -1.5, satuan: 'kg' },
-        { komoditi: 'Bawang Merah', harga: 42000, selisih: 2000, persentase: 5.0, satuan: 'kg' },
-        { komoditi: 'Bawang Putih', harga: 38000, selisih: -1000, persentase: -2.6, satuan: 'kg' },
-        { komoditi: 'Cabai Merah', harga: 55000, selisih: 5000, persentase: 10.0, satuan: 'kg' },
-        { komoditi: 'Cabai Rawit', harga: 68000, selisih: 8000, persentase: 13.3, satuan: 'kg' },
-        { komoditi: 'Daging Ayam', harga: 38000, selisih: 0, persentase: 0, satuan: 'kg' },
-        { komoditi: 'Daging Sapi', harga: 135000, selisih: -3000, persentase: -2.2, satuan: 'kg' },
-        { komoditi: 'Telur Ayam', harga: 28000, selisih: 1000, persentase: 3.7, satuan: 'kg' },
-        { komoditi: 'Minyak Goreng', harga: 16500, selisih: -500, persentase: -2.9, satuan: 'liter' },
-        { komoditi: 'Gula Pasir', harga: 15000, selisih: 0, persentase: 0, satuan: 'kg' },
-        { komoditi: 'Tomat', harga: 12000, selisih: 2000, persentase: 20.0, satuan: 'kg' },
-        { komoditi: 'Tepung Terigu', harga: 10500, selisih: -200, persentase: -1.9, satuan: 'kg' },
-      ]);
-      this.isLoading.set(false);
-    }, 500);
+    this.http.get<any>(`${apiUrl}/api/public/display-harga`).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.prices.set(response.data);
+        }
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Failed to load prices', err);
+        this.isLoading.set(false);
+        // Fallback ke mock data jika API gagal
+        this.loadMockData();
+      }
+    });
+  }
+
+  private loadMockData() {
+    // Fallback mock data jika API tidak tersedia
+    this.prices.set([
+      { komoditi: 'Beras Premium', harga: 13500, selisih: -200, persentase: -1.5, satuan: 'kg' },
+      { komoditi: 'Bawang Merah', harga: 42000, selisih: 2000, persentase: 5.0, satuan: 'kg' },
+      { komoditi: 'Bawang Putih', harga: 38000, selisih: -1000, persentase: -2.6, satuan: 'kg' },
+      { komoditi: 'Cabai Merah', harga: 55000, selisih: 5000, persentase: 10.0, satuan: 'kg' },
+      { komoditi: 'Cabai Rawit', harga: 68000, selisih: 8000, persentase: 13.3, satuan: 'kg' },
+      { komoditi: 'Daging Ayam', harga: 38000, selisih: 0, persentase: 0, satuan: 'kg' },
+      { komoditi: 'Daging Sapi', harga: 135000, selisih: -3000, persentase: -2.2, satuan: 'kg' },
+      { komoditi: 'Telur Ayam', harga: 28000, selisih: 1000, persentase: 3.7, satuan: 'kg' },
+      { komoditi: 'Minyak Goreng', harga: 16500, selisih: -500, persentase: -2.9, satuan: 'liter' },
+      { komoditi: 'Gula Pasir', harga: 15000, selisih: 0, persentase: 0, satuan: 'kg' },
+      { komoditi: 'Tomat', harga: 12000, selisih: 2000, persentase: 20.0, satuan: 'kg' },
+      { komoditi: 'Tepung Terigu', harga: 10500, selisih: -200, persentase: -1.9, satuan: 'kg' },
+    ]);
   }
 
   getTrendIcon(selisih: number): string {
