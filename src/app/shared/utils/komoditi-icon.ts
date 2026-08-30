@@ -2,17 +2,22 @@ import {
   Package, Wheat, Egg, Beef, Drumstick, Fish, Flame, Droplets, Layers, Candy, Sprout,
 } from 'lucide-angular';
 
-// Image path mapping for commodities with real images
+// Image path mapping untuk komoditas dengan gambar real dari folder public
 const IMAGE_MAP: Record<string, string> = {
-  'bawang merah': 'assets/komoditi/bawang-merah.png',
-  'bawang putih': 'assets/komoditi/bawang-putih.png',
-  'cabai merah': 'assets/komoditi/cabai-merah.png',
-  'cabai rawit': 'assets/komoditi/cabai-rawit.png',
-  'daging ayam': 'assets/komoditi/daging-ayam.png',
-  'daging sapi': 'assets/komoditi/daging-sapi.png',
-  'minyak goreng': 'assets/komoditi/minyak-goreng.png',
-  'telur ayam': 'assets/komoditi/telur-ayam.png',
-  'tomat': 'assets/komoditi/tomat.png',
+  'beras': 'beras_medium.png',
+  'bawang merah': 'bawang_merah.png',
+  'bawang putih': 'bawang_putih.png',
+  'cabai merah': 'cabai_merah.png',
+  'cabai rawit': 'cabai_rawit.png',
+  'daging ayam': 'daging_ayam.png',
+  'daging sapi': 'daging_sapi.png',
+  'telur': 'telur.png',
+  'minyak goreng': 'minyakita.png',
+  'gula': 'gula_pasir.png',
+  'tomat': 'tomat.png',
+  'tepung': 'tepung_terigu.png',
+  'ikan': 'ikan.png',
+  'kedelai': 'kedelai.png'
 };
 
 const ICON_MAP: [string, any][] = [
@@ -28,7 +33,7 @@ const ICON_MAP: [string, any][] = [
   ['kedelai', Sprout],
 ];
 
-/** Get image path for commodity if available, otherwise return null */
+/** Get image path untuk komoditi, return path dari folder public */
 export function komoditiImage(nama: string): string | null {
   const n = nama.toLowerCase().trim();
   
@@ -47,7 +52,7 @@ export function komoditiImage(nama: string): string | null {
   return null;
 }
 
-/** Ikon tematik berdasarkan kata kunci nama komoditi. */
+/** Ikon fallback lucide berdasarkan kata kunci nama komoditi */
 export function komoditiIcon(nama: string): any {
   const n = nama.toLowerCase();
   for (const [keyword, icon] of ICON_MAP) {
@@ -55,4 +60,5 @@ export function komoditiIcon(nama: string): any {
   }
   return Package;
 }
+
 
