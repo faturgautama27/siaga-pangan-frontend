@@ -1,165 +1,149 @@
-<!-- ══════════════════════════════════════════════════════════════════════════
-     SATRIA HARGA - Modern Login Page
-     Split-screen design with branded left panel and form on right
-     ══════════════════════════════════════════════════════════════════════════ -->
-
-<div class="min-h-screen bg-slate-50 flex font-['Inter'] overflow-hidden">
+<!-- SATRIA HARGA Login Page -->
+<div class="min-h-screen flex font-['Inter']">
   
-  <!-- ═══════════ LEFT PANEL - Brand Identity ═══════════ -->
-  <div class="hidden lg:flex lg:w-1/2 xl:w-3/5 relative bg-gradient-to-br from-[#0B2A5B] via-[#061B3A] to-[#0B2A5B] p-12 flex-col justify-between overflow-hidden">
+  <!-- Left Side - Visual Brand Experience -->
+  <div class="hidden lg:flex lg:w-[55%] relative bg-[#0B2A5B] overflow-hidden">
     
-    <!-- Decorative Elements -->
-    <div class="absolute inset-0 opacity-10">
-      <!-- Animated Circles -->
-      <div class="absolute -top-24 -left-24 w-96 h-96 bg-[#16A34A] rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute top-1/3 -right-32 w-[500px] h-[500px] bg-[#D4A017] rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-      <div class="absolute -bottom-32 left-1/4 w-80 h-80 bg-[#16A34A] rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
-      
-      <!-- Grid Pattern -->
-      <div class="absolute inset-0" style="background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 50px 50px;"></div>
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-[0.07]">
+      <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
     </div>
 
-    <!-- Logo & Branding -->
-    <div class="relative z-10">
-      <div class="flex items-center gap-4 mb-8">
-        <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl p-3 border border-white/20 shadow-2xl">
-          <img src="logo_transparent.png" alt="SATRIA HARGA Logo" class="w-full h-full object-contain" />
+    <!-- Floating Shapes -->
+    <div class="absolute top-20 right-32 w-72 h-72 bg-[#D4A017] rounded-full mix-blend-multiply filter blur-[128px] opacity-30 animate-blob"></div>
+    <div class="absolute bottom-32 left-20 w-80 h-80 bg-[#16A34A] rounded-full mix-blend-multiply filter blur-[128px] opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 flex flex-col justify-between p-16 text-white w-full">
+      
+      <div>
+        <!-- Logo Badge -->
+        <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-2xl px-5 py-3 border border-white/20">
+          <img src="logo_transparent.png" alt="Logo" class="w-10 h-10 object-contain" />
+          <div>
+            <div class="text-lg font-bold">SATRIA HARGA</div>
+            <div class="text-[10px] text-[#D4A017] font-semibold tracking-[0.15em]">JAWA TENGAH</div>
+          </div>
         </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="max-w-md space-y-8">
         <div>
-          <h1 class="text-2xl font-extrabold text-white tracking-tight">SATRIA HARGA</h1>
-          <p class="text-sm text-[#D4A017] font-semibold tracking-wider">JAWA TENGAH</p>
+          <div class="text-5xl font-bold leading-tight mb-4">
+            Pantau Harga<br/>
+            <span class="text-[#D4A017]">Real-time</span>
+          </div>
+          <p class="text-xl text-white/80 leading-relaxed">
+            Platform monitoring harga komoditas strategis untuk stabilitas ekonomi daerah
+          </p>
         </div>
-      </div>
-      
-      <div class="max-w-lg space-y-6 mt-12">
-        <h2 class="text-4xl font-extrabold text-white leading-tight">
-          Sistem Analisis dan Transparansi Informasi Harga
-        </h2>
-        <p class="text-lg text-slate-300 leading-relaxed">
-          Platform monitoring dan analisis harga komoditas strategis untuk stabilitas pangan dan ekonomi daerah.
-        </p>
-      </div>
-    </div>
 
-    <!-- Features -->
-    <div class="relative z-10 grid grid-cols-3 gap-4">
-      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 group">
-        <div class="w-10 h-10 bg-[#16A34A]/20 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <i class="pi pi-chart-line text-[#16A34A] text-lg"></i>
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+            <div class="text-3xl font-bold text-[#16A34A] mb-1">35</div>
+            <div class="text-xs text-white/60 uppercase tracking-wider">Wilayah</div>
+          </div>
+          <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+            <div class="text-3xl font-bold text-[#D4A017] mb-1">24/7</div>
+            <div class="text-xs text-white/60 uppercase tracking-wider">Monitor</div>
+          </div>
+          <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+            <div class="text-3xl font-bold text-white mb-1">100%</div>
+            <div class="text-xs text-white/60 uppercase tracking-wider">Akurat</div>
+          </div>
         </div>
-        <p class="text-xs font-semibold text-white mb-1">Real-time</p>
-        <p class="text-[10px] text-slate-400 leading-tight">Monitoring harga harian</p>
       </div>
-      
-      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 group">
-        <div class="w-10 h-10 bg-[#D4A017]/20 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <i class="pi pi-shield text-[#D4A017] text-lg"></i>
-        </div>
-        <p class="text-xs font-semibold text-white mb-1">Akurat</p>
-        <p class="text-[10px] text-slate-400 leading-tight">Data terverifikasi</p>
-      </div>
-      
-      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 group">
-        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <i class="pi pi-map text-blue-400 text-lg"></i>
-        </div>
-        <p class="text-xs font-semibold text-white mb-1">Menyeluruh</p>
-        <p class="text-[10px] text-slate-400 leading-tight">35 Kab/Kota</p>
-      </div>
-    </div>
 
-    <!-- Footer -->
-    <div class="relative z-10 mt-8">
-      <p class="text-xs text-slate-400">
-        © 2026 Dinas Perindustrian dan Perdagangan Provinsi Jawa Tengah
-      </p>
+      <!-- Footer -->
+      <div class="text-sm text-white/40">
+        Dinas Perindustrian dan Perdagangan Prov. Jateng
+      </div>
     </div>
   </div>
 
-  <!-- ═══════════ RIGHT PANEL - Login Form ═══════════ -->
-  <div class="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center p-6 sm:p-8 lg:p-12">
-    <div class="w-full max-w-md">
+  <!-- Right Side - Login Form -->
+  <div class="w-full lg:w-[45%] flex items-center justify-center p-8 bg-white">
+    <div class="w-full max-w-[420px]">
       
-      <!-- Mobile Logo (hidden on desktop) -->
-      <div class="lg:hidden text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0B2A5B] to-[#061B3A] rounded-2xl p-3 mb-4 shadow-lg">
-          <img src="logo_transparent.png" alt="SATRIA HARGA Logo" class="w-full h-full object-contain brightness-0 invert" />
-        </div>
-        <h1 class="text-2xl font-bold text-[#0B2A5B] tracking-tight">SATRIA HARGA</h1>
-        <p class="text-sm text-slate-500 mt-1">Jawa Tengah</p>
-      </div>
-
-      <!-- Welcome Text -->
-      <div class="mb-8">
-        <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Selamat Datang!</h2>
-        <p class="text-sm text-slate-500">Masukkan kredensial Anda untuk mengakses dashboard</p>
-      </div>
-
-      <!-- Error Message -->
-      @if (errorMessage) {
-        <div class="flex items-center gap-3 bg-red-50 border-l-4 border-red-500 rounded-lg px-4 py-3.5 mb-6 animate-in slide-in-from-top-2 duration-300">
-          <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <i class="pi pi-exclamation-triangle text-red-600 text-sm"></i>
+      <!-- Mobile Header -->
+      <div class="lg:hidden mb-10 text-center">
+        <div class="inline-flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 bg-[#0B2A5B] rounded-xl flex items-center justify-center">
+            <img src="logo_transparent.png" alt="Logo" class="w-8 h-8 object-contain brightness-0 invert" />
           </div>
-          <p class="text-sm text-red-800 font-medium">{{ errorMessage }}</p>
+        </div>
+        <h1 class="text-2xl font-bold text-[#0B2A5B]">SATRIA HARGA</h1>
+      </div>
+
+      <!-- Header -->
+      <div class="mb-10">
+        <h2 class="text-3xl font-bold text-slate-900 mb-2">Masuk</h2>
+        <p class="text-slate-500">Gunakan akun resmi Anda untuk melanjutkan</p>
+      </div>
+
+      <!-- Error Alert -->
+      @if (errorMessage) {
+        <div class="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-6 flex items-start gap-3">
+          <div class="flex-shrink-0 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center mt-0.5">
+            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-red-800">{{ errorMessage }}</p>
+          </div>
         </div>
       }
 
-      <!-- Login Form -->
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
 
-        <!-- Email Field -->
-        <div class="space-y-2">
-          <label class="block text-sm font-semibold text-slate-700">
-            Email Address
-          </label>
-          <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <i class="pi pi-envelope text-slate-400 text-sm group-focus-within:text-[#0B2A5B] transition-colors"></i>
-            </div>
-            <input
-              pInputText
-              type="email"
-              formControlName="username"
-              placeholder="nama@satriaharga.id"
-              class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-slate-200 focus:border-[#0B2A5B] focus:ring-4 focus:ring-[#0B2A5B]/10 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all duration-200"
-              [class.border-red-400]="form.get('username')?.invalid && form.get('username')?.touched"
-              [class.focus:border-red-500]="form.get('username')?.invalid && form.get('username')?.touched"
-              [class.focus:ring-red-500/10]="form.get('username')?.invalid && form.get('username')?.touched"
-            />
-          </div>
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+          <input
+            pInputText
+            type="email"
+            formControlName="username"
+            placeholder="nama@satriaharga.id"
+            class="w-full px-4 py-3.5 rounded-xl border-2 text-sm font-medium transition-all duration-200"
+            [ngClass]="{
+              'border-slate-200 focus:border-[#0B2A5B] focus:ring-4 focus:ring-[#0B2A5B]/10': !(form.get('username')?.invalid && form.get('username')?.touched),
+              'border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/10': form.get('username')?.invalid && form.get('username')?.touched
+            }"
+          />
           @if (form.get('username')?.invalid && form.get('username')?.touched) {
-            <p class="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5">
-              <i class="pi pi-info-circle"></i>
-              Email wajib diisi dengan format yang benar
-            </p>
+            <p class="text-xs text-red-600 mt-2 font-medium">Email tidak valid</p>
           }
         </div>
 
-        <!-- Password Field -->
-        <div class="space-y-2">
-          <label class="block text-sm font-semibold text-slate-700">
-            Password
-          </label>
-          <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-              <i class="pi pi-lock text-slate-400 text-sm group-focus-within:text-[#0B2A5B] transition-colors"></i>
-            </div>
-            <p-password
-              formControlName="password"
-              placeholder="Masukkan password"
-              [feedback]="false"
-              [toggleMask]="true"
-              styleClass="w-full"
-              inputStyleClass="w-full !pl-11 !pr-12 !py-3 !rounded-xl !border-2 !border-slate-200 focus:!border-[#0B2A5B] focus:!ring-4 focus:!ring-[#0B2A5B]/10 !text-sm !font-medium !text-slate-900 placeholder:!text-slate-400 !transition-all !duration-200"
-              [inputStyle]="form.get('password')?.invalid && form.get('password')?.touched ? {'border-color': '#f87171', 'outline': 'none'} : {}"
-            ></p-password>
-          </div>
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+          <p-password
+            formControlName="password"
+            placeholder="Masukkan password Anda"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full !px-4 !py-3.5 !rounded-xl !border-2 !text-sm !font-medium !transition-all !duration-200"
+            [ngClass]="{
+              '!border-slate-200 focus:!border-[#0B2A5B] focus:!ring-4 focus:!ring-[#0B2A5B]/10': !(form.get('password')?.invalid && form.get('password')?.touched),
+              '!border-red-300 focus:!border-red-500 focus:!ring-4 focus:!ring-red-500/10': form.get('password')?.invalid && form.get('password')?.touched
+            }"
+          ></p-password>
           @if (form.get('password')?.invalid && form.get('password')?.touched) {
-            <p class="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5">
-              <i class="pi pi-info-circle"></i>
-              Password wajib diisi
-            </p>
+            <p class="text-xs text-red-600 mt-2 font-medium">Password wajib diisi</p>
           }
         </div>
 
@@ -167,30 +151,26 @@
         <button
           type="submit"
           [disabled]="form.invalid || ((isLoading$ | async) ?? false)"
-          class="relative w-full group mt-6 overflow-hidden"
+          class="w-full bg-[#0B2A5B] hover:bg-[#061B3A] text-white font-semibold py-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#0B2A5B]/25 hover:shadow-xl hover:shadow-[#0B2A5B]/30 hover:-translate-y-0.5 active:translate-y-0"
         >
-          <div class="absolute inset-0 bg-gradient-to-r from-[#0B2A5B] via-[#16A34A] to-[#0B2A5B] bg-size-200 bg-pos-0 group-hover:bg-pos-100 transition-all duration-500 ease-out rounded-xl"></div>
-          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 rounded-xl"></div>
-          <div class="relative flex items-center justify-center gap-2.5 py-3.5 px-6 text-white font-bold text-sm tracking-wide disabled:opacity-60 disabled:cursor-not-allowed">
-            @if ((isLoading$ | async)) {
+          @if ((isLoading$ | async)) {
+            <span class="flex items-center justify-center gap-2">
               <i class="pi pi-spin pi-spinner"></i>
-              <span>Memproses...</span>
-            } @else {
-              <i class="pi pi-sign-in group-hover:translate-x-0.5 transition-transform"></i>
-              <span>Masuk ke Dashboard</span>
-              <i class="pi pi-arrow-right text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"></i>
-            }
-          </div>
+              Memproses...
+            </span>
+          } @else {
+            <span>Masuk ke Dashboard</span>
+          }
         </button>
 
       </form>
 
-      <!-- Additional Info -->
-      <div class="mt-8 pt-6 border-t border-slate-200">
-        <p class="text-xs text-center text-slate-500">
-          Butuh bantuan akses sistem? Hubungi administrator di
+      <!-- Help Text -->
+      <div class="mt-8 text-center">
+        <p class="text-sm text-slate-500">
+          Lupa password? Hubungi 
           <a href="mailto:admin@satriaharga.id" class="text-[#0B2A5B] font-semibold hover:text-[#16A34A] transition-colors">
-            admin@satriaharga.id
+            administrator
           </a>
         </p>
       </div>
@@ -201,20 +181,21 @@
 </div>
 
 <style>
-  @keyframes gradient-x {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
   }
-  
-  .bg-size-200 {
-    background-size: 200% auto;
+
+  .animate-blob {
+    animation: blob 7s infinite;
   }
-  
-  .bg-pos-0 {
-    background-position: 0% center;
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
   }
-  
-  .bg-pos-100 {
-    background-position: 100% center;
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
   }
 </style>
