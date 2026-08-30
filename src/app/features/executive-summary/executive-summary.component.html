@@ -1,134 +1,318 @@
-<div class="executive-page" id="executive-content">
+<div class="flex flex-col gap-5" id="executive-content">
 
-  <!-- Header + Filter -->
-  <div class="executive-header">
-    <app-page-header
-      title="Executive Summary"
-      subtitle="Ringkasan kondisi harga pangan Jawa Tengah"
-      [showExport]="!!summaryData"
-      (export)="onExportPdf()"
-    ></app-page-header>
+  <!-- ═══ Header Band ═══ -->
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center gap-2 text-xs text-slate-400 mb-1.5">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        @if (lastUpdated()) {
+          <span>Data terakhir diperbarui pukul {{ lastUpdated() }} WIB</span>
+        } @else {
+          <span>Memuat data terbaru…</span>
+        }
+      </div>
+      <h1 class="text-xl font-bold text-slate-900 tracking-tight">Ringkasan Eksekutif</h1>
+      <p class="text-sm text-slate-500 mt-0.5">{{ tanggalLabel }}</p>
+    </div>
 
-    <div class="date-filter" [formGroup]="filterForm">
-      <label class="date-label">Tanggal</label>
-      <p-datepicker
-        formControlName="tanggal"
-        dateFormat="dd/mm/yy"
-        (onSelect)="onTanggalChange()"
-        [showButtonBar]="true"
-      ></p-datepicker>
+    <div class="flex items-end gap-3">
+      <div class="flex flex-col gap-1.5" [formGroup]="filterForm">
+        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal</label>
+        <p-datepicker
+          formControlName="tanggal"
+          dateFormat="dd/mm/yy"
+          (onSelect)="onTanggalChange()"
+          [showButtonBar]="true"
+        ></p-datepicker>
+      </div>
+      <button
+        (click)="onExportPdf()"
+        [disabled]="!summaryData()"
+        class="inline-flex items-center gap-2 px-4 py-[9px] text-sm font-semibold text-white bg-slate-900 hover:bg-slate-700 disabled:opacity-50 rounded-lg transition-colors"
+      >
+        <i class="pi pi-file-pdf text-xs"></i>
+        <span>Ekspor PDF</span>
+      </button>
     </div>
   </div>
 
-  @if (isLoading) {
-    <div class="loading-grid">
-      <p-skeleton height="120px"></p-skeleton>
-      <p-skeleton height="120px"></p-skeleton>
-      <p-skeleton height="120px"></p-skeleton>
+  <!-- ═══ KPI Strip ═══ -->
+  @if (isLoading()) {
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+      @for (i of [1,2,3,4,5]; track i) {
+        <p-skeleton height="92px" borderRadius="12px"></p-skeleton>
+      }
     </div>
-    <p-skeleton height="350px" styleClass="mt-4"></p-skeleton>
+  } @else if (summaryData(); as s) {
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+
+      <!-- Komoditi dipantau -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between min-h-[92px] shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Komoditi Dipantau</span>
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100">
+            <lucide-icon [img]="Package" [size]="14" class="text-slate-500"></lucide-icon>
+          </span>
+        </div>
+        <span class="text-2xl font-bold text-slate-900 tabular-nums leading-none mt-2">{{ totalKomoditi }}</span>
+        <span class="text-[11px] text-slate-400 mt-1">varian komoditi pangan</span>
+      </div>
+
+      <!-- Di atas HET/HAP -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between min-h-[92px] shadow-[0_1px_2px_rgba(15,23,42,0.04)] relative overflow-hidden">
+        <span class="absolute left-0 top-0 bottom-0 w-1 bg-red-400"></span>
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Di Atas HET/HAP</span>
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-red-50">
+            <lucide-icon [img]="AlertTriangle" [size]="14" class="text-red-500"></lucide-icon>
+          </span>
+        </div>
+        <span class="text-2xl font-bold tabular-nums leading-none mt-2" [class.text-red-600]="s.kpi.komoditi_di_atas_het_hap > 0" [class.text-slate-900]="s.kpi.komoditi_di_atas_het_hap === 0">{{ s.kpi.komoditi_di_atas_het_hap }}</span>
+        <span class="text-[11px] text-slate-400 mt-1">melampaui harga acuan</span>
+      </div>
+
+      <!-- Alert EWS -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between min-h-[92px] shadow-[0_1px_2px_rgba(15,23,42,0.04)] relative overflow-hidden">
+        <span class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400"></span>
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Alert EWS Aktif</span>
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-50">
+            <lucide-icon [img]="TrendingUp" [size]="14" class="text-amber-500"></lucide-icon>
+          </span>
+        </div>
+        <span class="text-2xl font-bold tabular-nums leading-none mt-2" [class.text-amber-600]="s.kpi.alert_ews_aktif > 0" [class.text-slate-900]="s.kpi.alert_ews_aktif === 0">{{ s.kpi.alert_ews_aktif }}</span>
+        <span class="text-[11px] text-slate-400 mt-1">deviasi melewati ambang batas</span>
+      </div>
+
+      <!-- Wilayah koordinasi -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between min-h-[92px] shadow-[0_1px_2px_rgba(15,23,42,0.04)] relative overflow-hidden">
+        <span class="absolute left-0 top-0 bottom-0 w-1 bg-orange-400"></span>
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Perlu Koordinasi</span>
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-orange-50">
+            <lucide-icon [img]="MapPin" [size]="14" class="text-orange-500"></lucide-icon>
+          </span>
+        </div>
+        <span class="text-2xl font-bold tabular-nums leading-none mt-2">
+          <span class="text-orange-600">{{ statusCounts().koordinasi }}</span>
+          <span class="text-sm font-medium text-slate-300">/</span>
+          <span class="text-base text-slate-500">35 wilayah</span>
+        </span>
+        <span class="text-[11px] text-slate-400 mt-1">{{ statusCounts().waspada }} waspada · {{ statusCounts().aman }} aman</span>
+      </div>
+
+      <!-- Laporan masuk -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between min-h-[92px] shadow-[0_1px_2px_rgba(15,23,42,0.04)] relative overflow-hidden col-span-2 md:col-span-1">
+        <span class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-400"></span>
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Laporan Masuk</span>
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50">
+            <lucide-icon [img]="FileText" [size]="14" class="text-emerald-500"></lucide-icon>
+          </span>
+        </div>
+        <span class="text-2xl font-bold tabular-nums leading-none mt-2" [class.text-slate-900]="s.kpi.laporan_masuk > 0" [class.text-slate-300]="s.kpi.laporan_masuk === 0">{{ s.kpi.laporan_masuk }}</span>
+        <span class="text-[11px] text-slate-400 mt-1">koordinasi hari ini</span>
+      </div>
+
+    </div>
   }
 
-  @if (summaryData && !isLoading) {
-    <!-- KPI Cards -->
-    <div class="kpi-grid">
-      <p-card styleClass="kpi-card kpi-card--red">
-        <div class="kpi-inner">
-          <lucide-icon [img]="AlertTriangle" [size]="28"></lucide-icon>
-          <div class="kpi-body">
-            <span class="kpi-value">{{ summaryData.kpi.komoditi_di_atas_het_hap }}</span>
-            <span class="kpi-label">Komoditi Di Atas HET/HAP</span>
+  <!-- ═══ Map + Distribusi ═══ -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+
+    <p-card styleClass="!border-slate-200 !shadow-[0_1px_2px_rgba(15,23,42,0.04)] xl:col-span-8">
+      <ng-template pTemplate="header">
+        <div class="flex items-center justify-between px-5 pt-4">
+          <div class="flex items-center gap-2.5">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50">
+              <lucide-icon [img]="MapPin" [size]="14" class="text-emerald-600"></lucide-icon>
+            </span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 leading-none">Sebaran Status Wilayah</h3>
+              <p class="text-xs text-slate-400 mt-1">35 kabupaten/kota · ukuran titik = jumlah alert</p>
+            </div>
           </div>
         </div>
-      </p-card>
-      <p-card styleClass="kpi-card kpi-card--yellow">
-        <div class="kpi-inner">
-          <lucide-icon [img]="AlertTriangle" [size]="28"></lucide-icon>
-          <div class="kpi-body">
-            <span class="kpi-value">{{ summaryData.kpi.alert_ews_aktif }}</span>
-            <span class="kpi-label">Alert EWS Aktif</span>
-          </div>
+      </ng-template>
+      <div #jatengMap class="w-full h-[340px] rounded-lg bg-emerald-50/60 z-0 mt-3"></div>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 pt-3 border-t border-slate-100">
+        <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
+          <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>Aman
+          <b class="text-slate-700 tabular-nums ml-0.5">{{ statusCounts().aman }}</b>
+        </span>
+        <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>Waspada
+          <b class="text-slate-700 tabular-nums ml-0.5">{{ statusCounts().waspada }}</b>
+        </span>
+        <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>Koordinasi
+          <b class="text-slate-700 tabular-nums ml-0.5">{{ statusCounts().koordinasi }}</b>
+        </span>
+        <span class="ml-auto text-[11px] text-slate-300">Peta © OpenStreetMap</span>
+      </div>
+    </p-card>
+
+    <!-- Donut distribusi -->
+    <div class="xl:col-span-4 bg-white border border-slate-200 rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-5 flex flex-col">
+      <h3 class="text-sm font-bold text-slate-800">Distribusi Status Wilayah</h3>
+      <p class="text-xs text-slate-400 mt-0.5 mb-2">Klasifikasi otomatis dari jumlah alert</p>
+
+      <apx-chart
+        [series]="donutSeries()"
+        [chart]="donutOptions"
+      ></apx-chart>
+
+      <div class="mt-auto pt-3 border-t border-slate-100 space-y-2">
+        <div class="flex items-center gap-2.5 text-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0"></span>
+          <span class="text-slate-500 flex-1">Aman — tanpa alert</span>
+          <b class="tabular-nums text-slate-700">{{ statusCounts().aman }}</b>
         </div>
-      </p-card>
-      <p-card styleClass="kpi-card kpi-card--green">
-        <div class="kpi-inner">
-          <lucide-icon [img]="FileText" [size]="28"></lucide-icon>
-          <div class="kpi-body">
-            <span class="kpi-value">{{ summaryData.kpi.laporan_masuk }}</span>
-            <span class="kpi-label">Laporan Masuk</span>
-          </div>
+        <div class="flex items-center gap-2.5 text-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500 flex-shrink-0"></span>
+          <span class="text-slate-500 flex-1">Waspada — 1–2 alert</span>
+          <b class="tabular-nums text-slate-700">{{ statusCounts().waspada }}</b>
         </div>
-      </p-card>
+        <div class="flex items-center gap-2.5 text-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 flex-shrink-0"></span>
+          <span class="text-slate-500 flex-1">Koordinasi — ≥3 alert</span>
+          <b class="tabular-nums text-slate-700">{{ statusCounts().koordinasi }}</b>
+        </div>
+      </div>
     </div>
 
-    <div class="main-grid">
+  </div>
 
-      <!-- Peta Choropleth -->
-      <p-card header="Status Wilayah">
-        <div id="jateng-map" class="leaflet-map"></div>
-        <div class="map-legend">
-          <span class="legend-item legend-item--green">Aman</span>
-          <span class="legend-item legend-item--yellow">Waspada</span>
-          <span class="legend-item legend-item--red">Koordinasi</span>
-        </div>
-      </p-card>
+  <!-- ═══ Volatil + Tren ═══ -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
 
-      <!-- Komoditi Volatil -->
-      <p-card header="5 Komoditi Paling Volatil (7 Hari)">
-        <p-table [value]="summaryData.komoditi_volatil" styleClass="p-datatable-sm">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Komoditi</th>
-              <th class="text-right">Range Harga</th>
-              <th class="text-right">Rata-rata</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row let-i="rowIndex">
-            <tr>
-              <td>
-                <div class="rank-cell">
-                  <span class="rank">{{ i + 1 }}</span>
-                  <span>{{ row.nama }}</span>
+    <!-- Volatil list dengan progress bar proporsional -->
+    <div class="xl:col-span-5 bg-white border border-slate-200 rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-5">
+      <h3 class="text-sm font-bold text-slate-800">Volatilitas Tertinggi · 7 Hari</h3>
+      <p class="text-xs text-slate-400 mt-0.5">Selisih harga tertinggi–terendah antar wilayah</p>
+
+      @if (!isLoading() && volatilList().length === 0) {
+        <p class="text-sm text-slate-400 py-10 text-center">Belum ada data volatilitas.</p>
+      } @else {
+        <div class="mt-4 space-y-4">
+          @for (v of volatilList(); track v.id; let i = $index) {
+            <div class="group">
+              <div class="flex items-baseline justify-between gap-3 mb-1.5">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span
+                    class="inline-flex items-center justify-center w-6 h-6 rounded-md text-[11px] font-bold flex-shrink-0"
+                    [class.bg-slate-900]="i === 0"
+                    [class.text-white]="i === 0"
+                    [class.bg-slate-100]="i !== 0"
+                    [class.text-slate-500]="i !== 0"
+                  >{{ i + 1 }}</span>
+                  <span class="text-sm font-medium text-slate-700 truncate">{{ v.nama }}</span>
                 </div>
-              </td>
-              <td class="text-right text-red font-semibold">{{ row.range_harga | rupiah }}</td>
-              <td class="text-right text-gray">{{ row.rata | rupiah }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-card>
-
+                <span class="text-sm font-bold text-slate-900 tabular-nums flex-shrink-0">{{ v.range_harga | rupiah }}</span>
+              </div>
+              <div class="pl-8.5 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                <div
+                  class="h-full rounded-full bg-gradient-to-r transition-all duration-500"
+                  [class.from-emerald-400]="i > 0"
+                  [class.to-emerald-600]="i > 0"
+                  [class.from-slate-700]="i === 0"
+                  [class.to-slate-900]="i === 0"
+                  [style.width.%]="barWidth(v.range_harga)"
+                ></div>
+              </div>
+              <p class="pl-8.5 text-[11px] text-slate-400 mt-1">rata-rata {{ v.rata | rupiah }}</p>
+            </div>
+          }
+        </div>
+      }
     </div>
 
-    <!-- Tindak Lanjut EWS -->
-    @if (summaryData.tindak_lanjut.length > 0) {
-      <p-card header="Tindak Lanjut EWS">
+    <!-- Tren 7 hari -->
+    <div class="xl:col-span-7 bg-white border border-slate-200 rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-sm font-bold text-slate-800">Tren Harga 7 Hari Terakhir</h3>
+          <p class="text-xs text-slate-400 mt-0.5">
+            @if (trendTitle()) {
+              Rata-rata provinsi · <b class="text-slate-600">{{ trendTitle() }}</b>
+            } @else {
+              Menunggu identifikasi komoditi…
+            }
+          </p>
+        </div>
+        <span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-2.5 py-1">
+          <lucide-icon [img]="TrendingDown" [size]="11"></lucide-icon>
+          Harian
+        </span>
+      </div>
+
+      <div class="mt-3">
+        @if (trendSeries().length > 0) {
+          <app-apex-line-chart
+            [series]="trendSeries()"
+            [height]="280"
+            yAxisLabel="Harga (Rp)"
+          ></app-apex-line-chart>
+        } @else {
+          <div class="flex flex-col items-center justify-center py-16 text-slate-300">
+            <lucide-icon [img]="TrendingUp" [size]="32" class="mb-2"></lucide-icon>
+            <p class="text-sm text-slate-400">
+              {{ isLoading() ? 'Memuat tren…' : 'Data tren belum tersedia.' }}
+            </p>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ Tindak Lanjut ═══ -->
+  @if (summaryData(); as s) {
+    @if (s.tindak_lanjut.length > 0 && !isLoading()) {
+      <div class="bg-white border border-slate-200 rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-50">
+              <lucide-icon [img]="FileText" [size]="14" class="text-amber-600"></lucide-icon>
+            </span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 leading-none">Tindak Lanjut Koordinasi</h3>
+              <p class="text-xs text-slate-400 mt-1">Laporan yang belum berstatus aman</p>
+            </div>
+          </div>
+          <span class="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-100 rounded-full px-2.5 py-1 tabular-nums">
+            {{ s.tindak_lanjut.length }} item
+          </span>
+        </div>
+
         <p-table
-          [value]="summaryData.tindak_lanjut"
-          styleClass="p-datatable-sm p-datatable-striped"
+          [value]="s.tindak_lanjut"
+          styleClass="p-datatable-sm"
         >
           <ng-template pTemplate="header">
             <tr>
               <th>Wilayah</th>
               <th>Komoditi</th>
               <th>Isi Laporan</th>
-              <th class="text-center">Status</th>
+              <th class="text-center w-32">Status</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row>
             <tr>
-              <td class="font-medium">{{ row.wilayah }}</td>
-              <td>{{ row.komoditi }}</td>
-              <td class="text-sm laporan-text">{{ row.isi_laporan }}</td>
+              <td class="font-medium text-slate-800">{{ row.wilayah }}</td>
+              <td class="text-slate-600">{{ row.komoditi }}</td>
+              <td class="text-sm text-slate-500 max-w-[360px] truncate" [title]="row.isi_laporan">{{ row.isi_laporan }}</td>
               <td class="text-center">
                 <app-status-badge [status]="row.status" size="sm"></app-status-badge>
               </td>
             </tr>
           </ng-template>
         </p-table>
-      </p-card>
+      </div>
     }
-
   }
 
 </div>

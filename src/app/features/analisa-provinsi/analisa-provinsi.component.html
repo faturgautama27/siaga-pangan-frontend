@@ -100,8 +100,19 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row let-i="rowIndex">
-          <tr>
-            <td class="text-gray-400 text-sm">{{ i + 1 }}</td>
+          <tr
+            [class.!bg-red-50/60]="i < 3"
+            [class.!bg-emerald-50/40]="data.length > 6 && i >= data.length - 3"
+          >
+            <td>
+              <span
+                class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold"
+                [class.bg-red-100]="i < 3"
+                [class.text-red-600]="i < 3"
+                [class.bg-slate-100]="i >= 3"
+                [class.text-slate-500]="i >= 3"
+              >{{ i + 1 }}</span>
+            </td>
             <td class="font-medium text-gray-800">{{ row.wilayah }}</td>
             <td class="text-right font-semibold text-gray-900">{{ row.harga | rupiah }}</td>
             <td class="text-center">

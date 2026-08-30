@@ -2,19 +2,20 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { SkeletonModule } from 'primeng/skeleton';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
-import { LucideAngularModule, BarChart2 } from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { ApexBarChartComponent, BarChartSeries } from '../../shared/components/apex-bar-chart/apex-bar-chart.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
+import { komoditiIcon } from '../../shared/utils/komoditi-icon';
 import { ApiService } from '../../core/services/api.service';
 import { MasterState } from '../../store/master/master.state';
 import { LoadMaster } from '../../store/master/master.actions';
+import { formatDateToYYYYMMDD, getTodayYYYYMMDD } from '../../shared/utils/date-utils';
 
 export interface IhkRow {
   komoditi_id: number;
@@ -22,8 +23,10 @@ export interface IhkRow {
   satuan: string;
   harga_tanggal1: number | null;
   harga_tanggal2: number | null;
+  rata_provinsi: number | null;
   status_perubahan: { status: string; selisih: number } | null;
   status_het_hap: string | null;
+  status_provinsi: string | null;
 }
 
 @Component({
@@ -32,7 +35,6 @@ export interface IhkRow {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
     TableModule,
     SkeletonModule,
     SelectModule,
@@ -51,13 +53,11 @@ export class IhkComponent implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
 
-  readonly BarChart2 = BarChart2;
-
   data: IhkRow[] = [];
   isLoading = false;
   errorMessage = '';
+  wilayahIhkOptions: { label: string; value: any }[] = [];
 
-  // ApexCharts bar chart data
   chartSeries: BarChartSeries[] = [];
   chartCategories: string[] = [];
 
@@ -67,15 +67,23 @@ export class IhkComponent implements OnInit {
     tanggal2:  [null as Date | null],
   });
 
-  get wilayahIhkOptions() {
-    return this.store.selectSnapshot(MasterState.wilayahIhk).map((w) => ({
-      label: w.nama,
-      value: w.id,
-    }));
+  get tanggal1Label(): string {
+    const d = this.filterForm.value.tanggal1;
+    return d ? d.toLocaleDateString('id-ID', { weekday: 'long' }) : '—';
+  }
+
+  get tanggal2Label(): string {
+    const d = this.filterForm.value.tanggal2;
+    return d ? d.toLocaleDateString('id-ID', { weekday: 'long' }) : '—';
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new LoadMaster());
+    this.store.dispatch(new LoadMaster()).subscribe(() => {
+      this.wilayahIhkOptions = this.store.selectSnapshot(MasterState.wilayahIhk).map((w) => ({
+        label: w.nama.toUpperCase(),
+        value: w.id,
+      }));
+    });
   }
 
   onFilter(): void {
@@ -116,27 +124,25 @@ export class IhkComponent implements OnInit {
       const html2pdf = mod.default ?? mod;
       html2pdf().from(el).set({
         margin: 10,
-        filename: `ihk-${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `analisa-ihk-${getTodayYYYYMMDD()}.pdf`,
         html2canvas: { scale: 2 },
         jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' },
       }).save();
     });
   }
 
-  private buildChart(): void {
-    const tanggal1Label = this.formatDate(this.filterForm.value.tanggal1!);
-    const tanggal2Label = this.formatDate(this.filterForm.value.tanggal2!);
+  protected komoditiIcon = komoditiIcon;
 
-    // Ambil max 10 komoditi untuk chart agar tidak terlalu padat
+  private buildChart(): void {
     const slice = this.data.slice(0, 10);
     this.chartCategories = slice.map((r) => r.komoditi);
     this.chartSeries = [
-      { name: tanggal1Label, data: slice.map((r) => r.harga_tanggal1 ?? 0) },
-      { name: tanggal2Label, data: slice.map((r) => r.harga_tanggal2 ?? 0) },
+      { name: this.tanggal1Label, data: slice.map((r) => r.harga_tanggal1 ?? 0) },
+      { name: this.tanggal2Label, data: slice.map((r) => r.harga_tanggal2 ?? 0) },
     ];
   }
 
   private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return formatDateToYYYYMMDD(date);
   }
 }

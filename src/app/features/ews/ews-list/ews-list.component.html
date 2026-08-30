@@ -7,17 +7,38 @@
     (export)="onExportPdf()"
   ></app-page-header>
 
-  <!-- Filter Tanggal + Countdown -->
+  <!-- Filter Tanggal + Wilayah + Countdown -->
   <div class="flex flex-wrap items-end gap-4 bg-white border border-gray-200 rounded-xl p-4">
     <div class="flex flex-col gap-1.5" [formGroup]="filterForm">
       <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal Pantau</label>
       <p-datepicker
         formControlName="tanggal"
         dateFormat="dd/mm/yy"
-        (onSelect)="onTanggalChange()"
         [showButtonBar]="true"
       ></p-datepicker>
     </div>
+
+    <div class="flex flex-col gap-1.5 min-w-[240px]" [formGroup]="filterForm">
+      <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Filter Wilayah</label>
+      <p-select
+        formControlName="wilayah_id"
+        [options]="(wilayahOptions$ | async) ?? []"
+        optionLabel="nama"
+        optionValue="id"
+        placeholder="Semua Wilayah"
+        [showClear]="true"
+        [filter]="true"
+        filterPlaceholder="Cari wilayah..."
+      ></p-select>
+    </div>
+
+    <button
+      (click)="onSearchClick()"
+      class="flex items-center gap-2 px-4 h-10 rounded-xl border border-blue-500 bg-blue-500 text-white hover:bg-blue-600 transition-colors font-medium text-sm"
+    >
+      <lucide-icon [img]="Search" [size]="16"></lucide-icon>
+      <span>Cari</span>
+    </button>
 
     <!-- Countdown -->
     <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 flex-1">
@@ -38,30 +59,85 @@
   </div>
 
   <!-- Summary Cards -->
-  @if (alerts$ | async; as alerts) {
+  @if (summary$ | async; as summary) {
     <div class="grid grid-cols-3 gap-4">
       <div class="flex items-center gap-4 bg-red-50 border border-red-100 rounded-xl p-4">
         <lucide-icon [img]="AlertTriangle" [size]="28" class="text-red-500 flex-shrink-0"></lucide-icon>
         <div>
-          <p class="text-2xl font-bold text-red-700 leading-none">{{ alerts.length }}</p>
+          <p class="text-2xl font-bold text-red-700 leading-none">{{ summary.total_alerts }}</p>
           <p class="text-xs text-red-600 mt-1 font-medium">Total Alert</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 bg-blue-50 border border-blue-100 rounded-xl p-4">
+        <lucide-icon [img]="MapPin" [size]="28" class="text-blue-500 flex-shrink-0"></lucide-icon>
+        <div>
+          <p class="text-2xl font-bold text-blue-700 leading-none">{{ summary.total_wilayah_terdampak }}</p>
+          <p class="text-xs text-blue-600 mt-1 font-medium">Wilayah Terdampak</p>
         </div>
       </div>
       <div class="flex items-center gap-4 bg-amber-50 border border-amber-100 rounded-xl p-4">
         <lucide-icon [img]="FileText" [size]="28" class="text-amber-500 flex-shrink-0"></lucide-icon>
         <div>
-          <p class="text-2xl font-bold text-amber-700 leading-none">{{ getKoordinasiCount(alerts) }}</p>
+          <p class="text-2xl font-bold text-amber-700 leading-none">{{ getKoordinasiCount(summary.total_alerts > 0 ? (alerts$ | async) ?? [] : []) }}</p>
           <p class="text-xs text-amber-600 mt-1 font-medium">Perlu Koordinasi</p>
         </div>
       </div>
-      <div class="flex items-center gap-4 bg-green-50 border border-green-100 rounded-xl p-4">
-        <lucide-icon [img]="CheckCircle" [size]="28" class="text-green-500 flex-shrink-0"></lucide-icon>
-        <div>
-          <p class="text-2xl font-bold text-green-700 leading-none">{{ getAmanCount(alerts) }}</p>
-          <p class="text-xs text-green-600 mt-1 font-medium">Sudah Aman</p>
-        </div>
-      </div>
     </div>
+  }
+
+  <!-- Wilayah Terdampak Table -->
+  @if (summary$ | async; as summary) {
+    @if (summary.wilayah_terdampak && summary.wilayah_terdampak.length > 0) {
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-semibold text-gray-800">Wilayah dengan EWS Aktif</h3>
+            <p class="text-xs text-gray-500 mt-0.5">Klik "Lihat Detail" untuk filter berdasarkan wilayah</p>
+          </div>
+          @if (filterForm.value.wilayah_id) {
+            <button
+              (click)="clearWilayahFilter()"
+              class="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-1.5"
+            >
+              <i class="pi pi-times text-[10px]"></i>
+              <span>Hapus Filter</span>
+            </button>
+          }
+        </div>
+        <p-table
+          [value]="summary.wilayah_terdampak"
+          styleClass="p-datatable-sm"
+          [rowHover]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="w-12 text-center">#</th>
+              <th>Kabupaten/Kota</th>
+              <th class="text-center">Jumlah Komoditi Alert</th>
+              <th class="text-center w-32">Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+            <tr>
+              <td class="text-center text-xs text-gray-500">{{ rowIndex + 1 }}</td>
+              <td class="font-medium text-gray-800">{{ row.wilayah }}</td>
+              <td class="text-center">
+                <p-tag [value]="row.jumlah_komoditi_alert" severity="danger" [rounded]="true"></p-tag>
+              </td>
+              <td class="text-center">
+                <button
+                  (click)="filterByWilayah(row.wilayah_id)"
+                  class="text-xs px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg transition-colors inline-flex items-center gap-1.5"
+                >
+                  <lucide-icon [img]="MapPin" [size]="12"></lucide-icon>
+                  <span>Lihat Detail</span>
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    }
   }
 
   <!-- EWS Table -->
@@ -99,10 +175,15 @@
             <td class="text-right text-gray-400 text-sm">{{ row.rata_provinsi | rupiah }}</td>
             <td class="text-right">
               <span
-                class="font-semibold text-sm"
+                class="font-semibold text-sm tabular-nums inline-flex items-center gap-1 justify-end"
                 [class.text-red-600]="row.deviasi_persen > 0"
-                [class.text-green-600]="row.deviasi_persen <= 0"
+                [class.text-emerald-600]="row.deviasi_persen <= 0"
               >
+                <i
+                  class="pi text-[9px]"
+                  [class.pi-arrow-up]="row.deviasi_persen > 0"
+                  [class.pi-arrow-down]="row.deviasi_persen <= 0"
+                ></i>
                 {{ row.deviasi_persen > 0 ? '+' : '' }}{{ row.deviasi_persen | number:'1.1-1' }}%
               </span>
             </td>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -8,6 +8,7 @@ import { LucideAngularModule, TrendingUp, TrendingDown, Package } from 'lucide-a
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
 import { ApiService } from '../../core/services/api.service';
+import { formatDateToYYYYMMDD, getTodayYYYYMMDD } from '../../shared/utils/date-utils';
 
 export interface PrognosaItem {
   komoditi_id: number;
@@ -41,9 +42,9 @@ export class PrognosaStokComponent implements OnInit {
   readonly TrendingDown = TrendingDown;
   readonly Package = Package;
 
-  data: PrognosaItem[] = [];
-  isLoading = false;
-  tanggal = new Date().toISOString().split('T')[0];
+  data = signal<PrognosaItem[]>([]);
+  isLoading = signal(false);
+  tanggal = getTodayYYYYMMDD();
 
   filterForm = this.fb.group({
     tanggal: [new Date() as Date | null],
@@ -56,16 +57,16 @@ export class PrognosaStokComponent implements OnInit {
   loadData(): void {
     const tanggal = this.filterForm.value.tanggal;
     if (!tanggal) return;
-    this.tanggal = tanggal.toISOString().split('T')[0];
-    this.isLoading = true;
-    this.data = [];
+    this.tanggal = formatDateToYYYYMMDD(tanggal);
+    this.isLoading.set(true);
+    this.data.set([]);
 
     this.api.get<any>('/prognosa-stok', { tanggal: this.tanggal }).subscribe({
       next: (res) => {
-        this.data = res.data ?? [];
-        this.isLoading = false;
+        this.data.set(res.data ?? []);
+        this.isLoading.set(false);
       },
-      error: () => { this.isLoading = false; },
+      error: () => this.isLoading.set(false),
     });
   }
 

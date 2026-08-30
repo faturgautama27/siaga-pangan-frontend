@@ -12,6 +12,7 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
 import { ApiService } from '../../../core/services/api.service';
 import { MasterState } from '../../../store/master/master.state';
 import { LoadMaster } from '../../../store/master/master.actions';
+import { formatDateToYYYYMMDD } from '../../../shared/utils/date-utils';
 
 export interface LaporanKoordinasi {
   id: string;
@@ -103,6 +104,6 @@ export class LaporanRiwayatComponent implements OnInit {
   onPageChange(event: any): void { this.loadData(Math.floor(event.first / event.rows) + 1); }
 
   private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return formatDateToYYYYMMDD(date);
   }
 }

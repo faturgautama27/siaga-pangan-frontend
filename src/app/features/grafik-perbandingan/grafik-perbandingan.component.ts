@@ -16,6 +16,7 @@ import { ApexLineChartComponent, LineChartSeries } from '../../shared/components
 import { ApiService } from '../../core/services/api.service';
 import { MasterState } from '../../store/master/master.state';
 import { LoadMaster } from '../../store/master/master.actions';
+import { formatDateToYYYYMMDD, getTodayYYYYMMDD } from '../../shared/utils/date-utils';
 
 @Component({
   selector: 'app-grafik-perbandingan',
@@ -107,7 +108,7 @@ export class GrafikPerbandinganComponent implements OnInit {
       const html2pdf = mod.default ?? mod;
       html2pdf().from(el).set({
         margin: 10,
-        filename: `grafik-perbandingan-${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `grafik-perbandingan-${getTodayYYYYMMDD()}.pdf`,
         html2canvas: { scale: 2 },
         jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' },
       }).save();
@@ -152,6 +153,6 @@ export class GrafikPerbandinganComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return formatDateToYYYYMMDD(date);
   }
 }

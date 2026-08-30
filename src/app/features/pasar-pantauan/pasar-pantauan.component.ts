@@ -47,23 +47,22 @@ export class PasarPantauanComponent implements OnInit {
 
   data: PasarItem[] = [];
   isLoading = false;
+  wilayahOptions: { label: string; value: any }[] = [];
 
   filterForm = this.fb.group({
     wilayahId: [null as number | null],
   });
 
-  get wilayahOptions() {
-    return [
-      { label: 'Semua Wilayah', value: null },
-      ...this.store.selectSnapshot(MasterState.wilayah).map((w) => ({
-        label: w.nama,
-        value: w.id,
-      })),
-    ];
-  }
-
   ngOnInit(): void {
-    this.store.dispatch(new LoadMaster());
+    this.store.dispatch(new LoadMaster()).subscribe(() => {
+      this.wilayahOptions = [
+        { label: 'Semua Wilayah', value: null },
+        ...this.store.selectSnapshot(MasterState.wilayah).map((w) => ({
+          label: w.nama,
+          value: w.id,
+        })),
+      ];
+    });
     this.loadData();
   }
 

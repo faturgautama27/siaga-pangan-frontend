@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
@@ -10,6 +10,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, History, CheckCircle, AlertTriangle, RefreshCw } from 'lucide-angular';
 import { ApiService } from '../../../core/services/api.service';
 import { PageHeaderComponent } from '../../../shared/components/page-header/page-header.component';
+import { formatDateToYYYYMMDD } from '../../../shared/utils/date-utils';
 
 export interface UploadLog {
   id: string;
@@ -43,6 +44,7 @@ export interface UploadLog {
 export class RiwayatUploadComponent implements OnInit {
   private api = inject(ApiService);
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   readonly History = History;
   readonly CheckCircle = CheckCircle;
@@ -85,9 +87,11 @@ export class RiwayatUploadComponent implements OnInit {
         this.logs = res.data ?? [];
         this.totalRecords = res.meta?.total ?? 0;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -115,6 +119,6 @@ export class RiwayatUploadComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return formatDateToYYYYMMDD(date);
   }
 }

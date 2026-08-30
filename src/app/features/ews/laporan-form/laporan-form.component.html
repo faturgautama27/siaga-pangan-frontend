@@ -10,82 +10,98 @@
 
   @if (alert) {
     <!-- Alert Info -->
-    <div class="alert-info">
-      <div class="alert-info__row">
-        <span class="alert-info__label">Wilayah</span>
-        <span class="alert-info__value">{{ alert.wilayah }}</span>
-      </div>
-      <div class="alert-info__row">
-        <span class="alert-info__label">Komoditi</span>
-        <span class="alert-info__value">{{ alert.komoditi }}</span>
-      </div>
-      <div class="alert-info__row">
-        <span class="alert-info__label">Harga</span>
-        <span class="alert-info__value font-semibold">{{ alert.harga | rupiah }}</span>
-      </div>
-      <div class="alert-info__row">
-        <span class="alert-info__label">Deviasi</span>
-        <span class="alert-info__value" [class.text-red]="alert.deviasi_persen > 0" [class.text-green]="alert.deviasi_persen < 0">
+    <div class="rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-4 mb-5">
+      <div class="grid grid-cols-[84px_1fr] gap-x-4 gap-y-2 items-baseline">
+        <span class="text-xs text-slate-500">Wilayah</span>
+        <span class="text-sm font-medium text-slate-800">{{ alert.wilayah }}</span>
+
+        <span class="text-xs text-slate-500">Komoditi</span>
+        <span class="text-sm font-medium text-slate-800">{{ alert.komoditi }}</span>
+
+        <span class="text-xs text-slate-500">Harga</span>
+        <span class="text-sm font-semibold text-slate-900 tabular-nums">{{ alert.harga | rupiah }}</span>
+
+        <span class="text-xs text-slate-500">Deviasi</span>
+        <span
+          class="text-sm font-semibold tabular-nums inline-flex items-center gap-1"
+          [class.text-red-600]="alert.deviasi_persen > 0"
+          [class.text-green-600]="alert.deviasi_persen < 0"
+        >
+          <i
+            class="pi text-[10px]"
+            [class.pi-arrow-up]="alert.deviasi_persen > 0"
+            [class.pi-arrow-down]="alert.deviasi_persen < 0"
+          ></i>
           {{ alert.deviasi_persen > 0 ? '+' : '' }}{{ alert.deviasi_persen }}%
         </span>
-      </div>
-      <div class="alert-info__row">
-        <span class="alert-info__label">Status</span>
-        <app-status-badge [status]="alert.status_laporan"></app-status-badge>
+
+        <span class="text-xs text-slate-500">Status</span>
+        <span><app-status-badge [status]="alert.status_laporan"></app-status-badge></span>
       </div>
     </div>
 
     <!-- Form -->
     @if (!isReadOnly) {
-      <form [formGroup]="form" class="laporan-form">
+      <form [formGroup]="form" class="flex flex-col gap-4">
 
         @if (errorMessage) {
-          <p-message severity="error" [text]="errorMessage" styleClass="w-full mb-3"></p-message>
+          <p-message severity="error" [text]="errorMessage" styleClass="w-full"></p-message>
         }
 
-        <div class="field">
-          <label class="field-label">Isi Laporan <span class="required">*</span></label>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-slate-700">
+            Isi Laporan <span class="text-red-400">*</span>
+          </label>
           <textarea
             pTextarea
             formControlName="isi_laporan"
             rows="4"
             placeholder="Jelaskan kondisi harga, penyebab, dan tindakan yang sudah dilakukan..."
-            style="width: 100%"
+            class="w-full resize-none text-sm leading-relaxed"
             [class.ng-invalid]="form.get('isi_laporan')?.invalid && form.get('isi_laporan')?.touched"
           ></textarea>
           @if (form.get('isi_laporan')?.invalid && form.get('isi_laporan')?.touched) {
-            <small class="field-error">Isi laporan minimal 10 karakter.</small>
+            <small class="text-xs text-red-500">Isi laporan minimal 10 karakter.</small>
           }
         </div>
 
-        <div class="field">
-          <label class="field-label">Status Penanganan</label>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-slate-700">Status Penanganan</label>
           <p-select
             formControlName="status"
             [options]="statusOptions"
             optionLabel="label"
             optionValue="value"
+            appendTo="body"
           ></p-select>
         </div>
 
-        <div class="form-meta">
-          <span class="form-meta__label">Dilaporkan oleh:</span>
-          <span class="form-meta__value">{{ userNama }}</span>
+        <div class="flex items-center gap-2 text-xs text-slate-400 border-t border-slate-100 pt-3">
+          <i class="pi pi-user text-[11px]"></i>
+          Dilaporkan oleh
+          <span class="font-medium text-slate-600">{{ userNama }}</span>
         </div>
 
       </form>
     } @else {
-      <p class="readonly-notice">Anda memiliki akses baca saja. Hanya PIC, Koordinator, dan Admin yang dapat mengisi laporan.</p>
+      <p class="text-sm text-slate-500 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 leading-relaxed">
+        Anda memiliki akses baca saja. Hanya PIC, Koordinator, dan Admin yang dapat mengisi laporan.
+      </p>
     }
   }
 
   <ng-template pTemplate="footer">
-    <button class="btn btn--secondary" (click)="onHide()">Tutup</button>
+    <button
+      (click)="onHide()"
+      class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors"
+    >
+      Tutup
+    </button>
     @if (!isReadOnly) {
       <button
-        class="btn btn--primary"
         (click)="onSubmit()"
         [disabled]="form.invalid || isSaving"
+        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors"
       >
         <lucide-icon [img]="Send" [size]="14"></lucide-icon>
         <span>{{ isSaving ? 'Menyimpan...' : 'Simpan Laporan' }}</span>

@@ -3,7 +3,7 @@
   <app-page-header
     title="Prognosa Stok"
     subtitle="Potensi defisit dan surplus berdasarkan disparitas harga wilayah"
-    [showExport]="data.length > 0"
+    [showExport]="data().length > 0"
     (export)="onExportPdf()"
   ></app-page-header>
 
@@ -21,16 +21,16 @@
   </div>
 
   <!-- Content -->
-  @if (isLoading) {
+  @if (isLoading()) {
     <p-skeleton height="400px"></p-skeleton>
-  } @else if (data.length === 0) {
+  } @else if (data().length === 0) {
     <div class="flex flex-col items-center gap-3 bg-white rounded-xl border border-gray-200 py-16">
       <lucide-icon [img]="Package" [size]="40" class="text-gray-300"></lucide-icon>
       <p class="text-sm text-gray-400">Tidak ada data prognosa untuk tanggal ini.</p>
     </div>
   } @else {
     <div id="prognosa-content" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      @for (item of data; track item.komoditi_id) {
+      @for (item of data(); track item.komoditi_id) {
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
 
           <!-- Komoditi Header -->

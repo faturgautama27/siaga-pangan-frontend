@@ -5,7 +5,22 @@ import { AuthState } from '../../store/auth/auth.state';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);
-  const token = store.selectSnapshot(AuthState.token);
+
+  // Coba baca token dari NGXS store dulu
+  let token = store.selectSnapshot(AuthState.token);
+
+  // Fallback: baca langsung dari localStorage jika store belum hydrated
+  if (!token) {
+    try {
+      const raw = localStorage.getItem('auth');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        token = parsed?.token ?? null;
+      }
+    } catch {
+      token = null;
+    }
+  }
 
   if (token) {
     req = req.clone({

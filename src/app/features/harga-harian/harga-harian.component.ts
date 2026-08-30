@@ -1,27 +1,26 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Store } from '@ngxs/store';
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
+import { DatePickerModule } from 'primeng/datepicker';
 import { SkeletonModule } from 'primeng/skeleton';
-import { LucideAngularModule, TrendingUp, TrendingDown, Minus } from 'lucide-angular';
+import {
+  LucideAngularModule,
+} from 'lucide-angular';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { FilterBarComponent } from '../../shared/components/filter-bar/filter-bar.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
+import { komoditiIcon } from '../../shared/utils/komoditi-icon';
 import { ApiService } from '../../core/services/api.service';
-import { MasterState } from '../../store/master/master.state';
-import { LoadMaster } from '../../store/master/master.actions';
+import { formatDateToYYYYMMDD } from '../../shared/utils/date-utils';
 
-export interface HargaHarian {
-  id: string;
-  tanggal: string;
-  harga: number;
-  wilayah: string;
-  kode_kemendagri: string;
+export interface RataRataRow {
+  komoditi_id: number;
   komoditi: string;
-  satuan: string;
+  ref_type: 'HET' | 'HAP' | null;
+  ref_min: number | null;
+  ref_max: number | null;
+  rata_sebelum: number | null;
+  rata_hari_ini: number | null;
+  selisih: number | null;
 }
 
 @Component({
@@ -30,13 +29,10 @@ export interface HargaHarian {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
-    TableModule,
-    TagModule,
+    DatePickerModule,
     SkeletonModule,
     LucideAngularModule,
     PageHeaderComponent,
-    FilterBarComponent,
     RupiahPipe,
   ],
   templateUrl: './harga-harian.component.html',
@@ -44,91 +40,104 @@ export interface HargaHarian {
 })
 export class HargaHarianComponent implements OnInit {
   private api = inject(ApiService);
-  private store = inject(Store);
   private fb = inject(FormBuilder);
 
-  readonly TrendingUp = TrendingUp;
-  readonly TrendingDown = TrendingDown;
-  readonly Minus = Minus;
+  protected readonly komoditiIcon = komoditiIcon;
 
-  data: HargaHarian[] = [];
-  isLoading = false;
-  totalRecords = 0;
-  currentPage = 1;
-  pageSize = 50;
+  rows = signal<RataRataRow[]>([]);
+  isLoading = signal(false);
+  errorMessage = '';
+
+  tanggalSebelum = new Date();
+  tanggalHariIni = new Date();
 
   filterForm = this.fb.group({
-    dateRange: [null as Date[] | null],
-    wilayahId: [null as number | null],
-    komoditiId: [null as number | null],
+    tanggalSebelum: [this.defaultYesterday() as Date | null],
+    tanggalHariIni: [new Date() as Date | null],
   });
 
-  get wilayahOptions() {
-    return this.store.selectSnapshot(MasterState.wilayah).map((w) => ({
-      label: w.nama,
-      value: w.id,
-    }));
-  }
-
-  get komoditiOptions() {
-    return this.store.selectSnapshot(MasterState.komoditi).map((k) => ({
-      label: k.nama,
-      value: k.id,
-    }));
-  }
-
   ngOnInit(): void {
-    this.store.dispatch(new LoadMaster());
     this.loadData();
   }
 
-  loadData(page = 1): void {
-    this.isLoading = true;
-    this.currentPage = page;
+  loadData(): void {
+    let { tanggalSebelum, tanggalHariIni } = this.filterForm.value;
+    if (!tanggalSebelum || !tanggalHariIni) return;
 
-    const params: Record<string, any> = {
-      page,
-      limit: this.pageSize,
-    };
+    // Auto-swap bila urutan terbalik
+    if (tanggalSebelum > tanggalHariIni) {
+      [tanggalSebelum, tanggalHariIni] = [tanggalHariIni, tanggalSebelum];
+      this.filterForm.patchValue({ tanggalSebelum, tanggalHariIni });
+    }
 
-    const dateRange = this.filterForm.value.dateRange as Date[] | null;
-    const wilayahId = this.filterForm.value.wilayahId;
-    const komoditiId = this.filterForm.value.komoditiId;
+    this.tanggalSebelum = tanggalSebelum;
+    this.tanggalHariIni = tanggalHariIni;
 
-    if (dateRange?.[0]) params['start'] = this.formatDate(dateRange[0]);
-    if (dateRange?.[1]) params['end'] = this.formatDate(dateRange[1]);
-    if (wilayahId) params['wilayah_id'] = wilayahId;
-    if (komoditiId) params['komoditi_id'] = komoditiId;
+    this.isLoading.set(true);
+    this.errorMessage = '';
+    this.rows.set([]);
 
-    this.api.get<any>('/harga-harian', params).subscribe({
+    this.api.get<any>('/harga-rata-rata', {
+      tanggal_sebelum: this.formatDate(tanggalSebelum),
+      tanggal_hari_ini: this.formatDate(tanggalHariIni),
+    }).subscribe({
       next: (res) => {
-        this.data = res.data ?? [];
-        this.totalRecords = res.meta?.total ?? 0;
-        this.isLoading = false;
+        this.rows.set(res.data ?? []);
+        this.isLoading.set(false);
       },
-      error: () => { this.isLoading = false; },
+      error: () => {
+        this.isLoading.set(false);
+        this.errorMessage = 'Gagal memuat data harga rata-rata.';
+      },
     });
   }
 
-  onFilter(): void { this.loadData(1); }
-  onReset(): void { this.filterForm.reset(); this.loadData(1); }
-  onPageChange(event: any): void { this.loadData(Math.floor(event.first / event.rows) + 1); }
+  onReset(): void {
+    this.filterForm.setValue({ tanggalSebelum: this.defaultYesterday(), tanggalHariIni: new Date() });
+    this.loadData();
+  }
+
+  dayName(date: Date): string {
+    return date.toLocaleDateString('id-ID', { weekday: 'long' });
+  }
+
+  refText(row: RataRataRow): string {
+    if (!row.ref_type || row.ref_min === null) return 'TIDAK ADA HAP/HET';
+    if (row.ref_max !== null) {
+      return `${row.ref_type}: ${row.ref_min | 0} - ${row.ref_max | 0}`;
+    }
+    return `${row.ref_type}: Rp ${Math.round(row.ref_min).toLocaleString('id-ID')}`;
+  }
+
+  /** Hari ini melebihi plafon acuan? (di atas HET / di atas HAP maks) */
+  isAboveRef(row: RataRataRow): boolean {
+    if (!row.ref_type || row.rata_hari_ini === null) return false;
+    if (row.ref_type === 'HET') return row.rata_hari_ini > (row.ref_min ?? Infinity);
+    if (row.ref_max !== null) return row.rata_hari_ini > row.ref_max;
+    return row.rata_hari_ini > (row.ref_min ?? Infinity);
+  }
 
   onExportPdf(): void {
-    const el = document.getElementById('harga-harian-table');
+    const el = document.getElementById('harga-content');
     if (!el) return;
     import('html2pdf.js').then((mod) => {
       const html2pdf = mod.default ?? mod;
       html2pdf().from(el).set({
         margin: 10,
-        filename: `harga-harian-${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `harga-rata-rata-${this.formatDate(this.tanggalHariIni)}.pdf`,
         html2canvas: { scale: 2 },
-        jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' },
       }).save();
     });
   }
 
   private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return formatDateToYYYYMMDD(date);
+  }
+
+  private defaultYesterday(): Date {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d;
   }
 }

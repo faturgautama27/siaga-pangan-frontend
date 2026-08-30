@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CardModule } from 'primeng/card';
@@ -8,14 +9,17 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import {
   LucideAngularModule,
-  Upload, CheckCircle, XCircle, AlertTriangle, FileSpreadsheet
+  Upload, CheckCircle, XCircle, AlertTriangle, FileSpreadsheet, ShieldCheck
 } from 'lucide-angular';
 import { ApiService } from '../../core/services/api.service';
+import { Store } from '@ngxs/store';
+import { AuthState } from '../../store/auth/auth.state';
 
 export interface SkipDetail {
-  row: number;
+  row: number | string;
   reason: string;
 }
 
@@ -24,6 +28,7 @@ export interface UploadResult {
   updated: number;
   skipped: number;
   skip_detail: SkipDetail[];
+  mode?: string;
 }
 
 @Component({
@@ -31,6 +36,7 @@ export interface UploadResult {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     FileUploadModule,
     CardModule,
     TableModule,
@@ -38,6 +44,7 @@ export interface UploadResult {
     ToastModule,
     MessageModule,
     ProgressBarModule,
+    RadioButtonModule,
     LucideAngularModule,
   ],
   providers: [MessageService],
@@ -47,16 +54,27 @@ export interface UploadResult {
 export class UploadComponent {
   private api = inject(ApiService);
   private messageService = inject(MessageService);
+  private store = inject(Store);
 
   readonly Upload = Upload;
   readonly CheckCircle = CheckCircle;
   readonly XCircle = XCircle;
   readonly AlertTriangle = AlertTriangle;
   readonly FileSpreadsheet = FileSpreadsheet;
+  readonly ShieldCheck = ShieldCheck;
 
   isUploading = false;
   result: UploadResult | null = null;
   errorMessage = '';
+  
+  // Upload mode
+  uploadMode: 'insert_only' | 'full_upsert' = 'insert_only';
+  
+  // Check if user is admin
+  get isAdmin(): boolean {
+    const role = this.store.selectSnapshot(AuthState.role);
+    return role === 'admin';
+  }
 
   onUpload(event: any): void {
     const file = event.files[0];
@@ -68,15 +86,27 @@ export class UploadComponent {
 
     const formData = new FormData();
     formData.append('file', file);
+    
+    // Build query params based on mode
+    const params: any = {};
+    if (this.isAdmin && this.uploadMode === 'full_upsert') {
+      params.mode = 'full_upsert';
+    }
 
-    this.api.postForm<any>('/upload', formData).subscribe({
+    this.api.postForm<any>('/upload', formData, { params }).subscribe({
       next: (res) => {
         this.isUploading = false;
         this.result = res.data;
+        
+        const mode = res.data.mode === 'insert_only' ? 'Insert Only' : 'Full Upsert';
+        const detail = this.uploadMode === 'insert_only' 
+          ? `${res.data.inserted} data baru ditambahkan`
+          : `${res.data.inserted} data baru, ${res.data.updated} diperbarui`;
+        
         this.messageService.add({
           severity: 'success',
-          summary: 'Upload Berhasil',
-          detail: `${res.data.inserted} data baru, ${res.data.updated} diperbarui`,
+          summary: `Upload Berhasil (${mode})`,
+          detail: detail,
         });
       },
       error: (err) => {
@@ -89,5 +119,17 @@ export class UploadComponent {
         });
       },
     });
+  }
+  
+  getModeLabel(): string {
+    return this.uploadMode === 'insert_only' 
+      ? 'Insert Only (Aman)' 
+      : 'Full Upsert (Koreksi)';
+  }
+  
+  getModeDescription(): string {
+    return this.uploadMode === 'insert_only'
+      ? 'Hanya insert tanggal baru, skip tanggal yang sudah ada (Recommended untuk upload harian)'
+      : 'Insert tanggal baru DAN update tanggal existing (Gunakan untuk koreksi data)';
   }
 }

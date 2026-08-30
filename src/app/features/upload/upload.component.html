@@ -8,6 +8,62 @@
 
   <!-- Upload Card -->
   <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-4">
+    <!-- Admin Only: Mode Selector -->
+    @if (isAdmin) {
+      <div class="flex flex-col gap-3 pb-4 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <lucide-icon [img]="ShieldCheck" [size]="16" class="text-blue-600"></lucide-icon>
+          <h4 class="text-sm font-semibold text-gray-700">Mode Upload (Admin Only)</h4>
+        </div>
+        
+        <div class="flex flex-col gap-2">
+          <label class="flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer transition-colors"
+                 [class.border-green-500]="uploadMode === 'insert_only'"
+                 [class.bg-green-50]="uploadMode === 'insert_only'"
+                 [class.border-gray-200]="uploadMode !== 'insert_only'">
+            <p-radiobutton 
+              name="uploadMode" 
+              value="insert_only" 
+              [(ngModel)]="uploadMode"
+            ></p-radiobutton>
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-900">Insert Only</span>
+                <p-tag value="Recommended" severity="success" [rounded]="true"></p-tag>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">Hanya insert tanggal baru, skip tanggal yang sudah ada (aman untuk upload harian)</p>
+            </div>
+          </label>
+          
+          <label class="flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer transition-colors"
+                 [class.border-amber-500]="uploadMode === 'full_upsert'"
+                 [class.bg-amber-50]="uploadMode === 'full_upsert'"
+                 [class.border-gray-200]="uploadMode !== 'full_upsert'">
+            <p-radiobutton 
+              name="uploadMode" 
+              value="full_upsert" 
+              [(ngModel)]="uploadMode"
+            ></p-radiobutton>
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-900">Full Upsert</span>
+                <p-tag value="Koreksi Data" severity="warn" [rounded]="true"></p-tag>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">Insert tanggal baru DAN update tanggal existing (gunakan untuk koreksi data)</p>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Current mode info -->
+        <div class="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+          <i class="pi pi-info-circle text-blue-600 text-xs"></i>
+          <span class="text-xs text-blue-700">
+            Mode saat ini: <strong>{{ getModeLabel() }}</strong> - {{ getModeDescription() }}
+          </span>
+        </div>
+      </div>
+    }
+    
     <!-- Format hint -->
     <div class="flex items-center gap-2.5 bg-green-50 border border-green-100 rounded-lg px-4 py-2.5">
       <lucide-icon [img]="FileSpreadsheet" [size]="15" class="text-green-600 flex-shrink-0"></lucide-icon>
@@ -61,6 +117,18 @@
       </div>
 
       <div class="p-6 flex flex-col gap-6">
+        <!-- Mode Badge -->
+        @if (result.mode) {
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-500">Mode Upload:</span>
+            @if (result.mode === 'insert_only') {
+              <p-tag value="Insert Only" severity="success" [rounded]="true"></p-tag>
+            } @else {
+              <p-tag value="Full Upsert" severity="warn" [rounded]="true"></p-tag>
+            }
+          </div>
+        }
+        
         <!-- Summary Stats -->
         <div class="grid grid-cols-3 gap-4">
           <div class="flex items-center gap-4 bg-green-50 border border-green-100 rounded-xl p-4">

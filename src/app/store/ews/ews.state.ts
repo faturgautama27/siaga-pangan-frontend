@@ -18,8 +18,21 @@ export interface EwsAlert {
   status_laporan: string;
 }
 
+export interface WilayahTerdampak {
+  wilayah_id: number;
+  wilayah: string;
+  jumlah_komoditi_alert: number;
+}
+
+export interface EwsSummary {
+  total_alerts: number;
+  total_wilayah_terdampak: number;
+  wilayah_terdampak: WilayahTerdampak[];
+}
+
 export interface EwsStateModel {
   alerts: EwsAlert[];
+  summary: EwsSummary | null;
   tanggal: string | null;
   countdown: string;
   isLoading: boolean;
@@ -27,7 +40,7 @@ export interface EwsStateModel {
 
 @State<EwsStateModel>({
   name: 'ews',
-  defaults: { alerts: [], tanggal: null, countdown: '--:--:--', isLoading: false },
+  defaults: { alerts: [], summary: null, tanggal: null, countdown: '--:--:--', isLoading: false },
 })
 @Injectable()
 export class EwsState {
@@ -36,6 +49,11 @@ export class EwsState {
   @Selector()
   static alerts(state: EwsStateModel): EwsAlert[] {
     return state.alerts;
+  }
+
+  @Selector()
+  static summary(state: EwsStateModel): EwsSummary | null {
+    return state.summary;
   }
 
   @Selector()
@@ -51,14 +69,25 @@ export class EwsState {
   @Action(LoadEws)
   loadEws(ctx: StateContext<EwsStateModel>, action: LoadEws) {
     ctx.patchState({ isLoading: true, tanggal: action.tanggal });
-    return this.api.get<any>(`/ews?tanggal=${action.tanggal}`).pipe(
-      tap((res) => ctx.dispatch(new LoadEwsSuccess(res.data ?? [])))
+    
+    // Build query params
+    let params = `tanggal=${action.tanggal}`;
+    if (action.wilayahId) {
+      params += `&wilayah_id=${action.wilayahId}`;
+    }
+    
+    return this.api.get<any>(`/ews?${params}`).pipe(
+      tap((res) => ctx.dispatch(new LoadEwsSuccess(res.data ?? [], res.summary)))
     );
   }
 
   @Action(LoadEwsSuccess)
   loadEwsSuccess(ctx: StateContext<EwsStateModel>, action: LoadEwsSuccess) {
-    ctx.patchState({ alerts: action.alerts, isLoading: false });
+    ctx.patchState({ 
+      alerts: action.alerts, 
+      summary: action.summary || null,
+      isLoading: false 
+    });
   }
 
   @Action(EwsTick)

@@ -1,15 +1,26 @@
-import { Component, inject, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+  Component, inject, OnInit, AfterViewInit, OnDestroy,
+  signal, viewChild, ElementRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { LucideAngularModule, AlertTriangle, FileText } from 'lucide-angular';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { Store } from '@ngxs/store';
+import {
+  LucideAngularModule,
+  AlertTriangle, FileText, Package, MapPin, TrendingUp, TrendingDown,
+} from 'lucide-angular';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
+import { ApexLineChartComponent, LineChartSeries } from '../../shared/components/apex-line-chart/apex-line-chart.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
 import { ApiService } from '../../core/services/api.service';
+import { MasterState } from '../../store/master/master.state';
+import { LoadMaster } from '../../store/master/master.actions';
+import { formatDateToYYYYMMDD, getTodayYYYYMMDD } from '../../shared/utils/date-utils';
 
 export interface ExecutiveSummaryData {
   tanggal: string;
@@ -49,9 +60,10 @@ export interface ExecutiveSummaryData {
     TableModule,
     SkeletonModule,
     DatePickerModule,
+    NgApexchartsModule,
     LucideAngularModule,
-    PageHeaderComponent,
     StatusBadgeComponent,
+    ApexLineChartComponent,
     RupiahPipe,
   ],
   templateUrl: './executive-summary.component.html',
@@ -60,25 +72,91 @@ export interface ExecutiveSummaryData {
 export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
   private api = inject(ApiService);
   private fb = inject(FormBuilder);
+  private store = inject(Store);
   private leafletMap: any = null;
+  private mapReady?: Promise<void>;
+
+  // Div map ada di luar blok @if sehingga persisten — tidak pernah dihancurkan
+  // saat ganti tanggal / loading state, jadi instance Leaflet selalu valid.
+  private jatengMapEl = viewChild<ElementRef<HTMLDivElement>>('jatengMap');
 
   readonly AlertTriangle = AlertTriangle;
   readonly FileText = FileText;
+  readonly Package = Package;
+  readonly MapPin = MapPin;
+  readonly TrendingUp = TrendingUp;
+  readonly TrendingDown = TrendingDown;
 
-  summaryData: ExecutiveSummaryData | null = null;
-  isLoading = false;
-  tanggal = new Date().toISOString().split('T')[0];
+  summaryData = signal<ExecutiveSummaryData | null>(null);
+  isLoading = signal(false);
+  lastUpdated = signal('');
+
+  statusCounts = signal({ aman: 0, waspada: 0, koordinasi: 0 });
+  donutSeries = signal<number[]>([0, 0, 0]);
+
+  volatilList = signal<{ id: number; nama: string; range_harga: number; rata: number }[]>([]);
+  maxRange = signal(1);
+
+  trendSeries = signal<LineChartSeries[]>([]);
+  trendTitle = signal('');
+
+  tanggal = getTodayYYYYMMDD();
 
   filterForm = this.fb.group({
     tanggal: [new Date() as Date | null],
   });
 
+  donutOptions: any = {
+    chart: {
+      type: 'donut',
+      height: 235,
+      fontFamily: 'inherit',
+      animations: { enabled: false },
+      toolbar: { show: false },
+    },
+    labels: ['Aman', 'Waspada', 'Koordinasi'],
+    colors: ['#22c55e', '#f59e0b', '#ef4444'],
+    dataLabels: { enabled: false },
+    legend: { show: false },
+    stroke: { width: 2, colors: ['#ffffff'] },
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '76%',
+          labels: {
+            show: true,
+            name: { fontSize: '11px', color: '#94a3b8', offsetY: 10 },
+            value: {
+              fontSize: '28px',
+              fontWeight: 700,
+              color: '#0f172a',
+              offsetY: -4,
+              fontFamily: 'Inter, sans-serif',
+            },
+            total: {
+              show: true,
+              label: 'TOTAL WILAYAH',
+              fontSize: '10px',
+              color: '#94a3b8',
+            },
+          },
+        },
+      },
+    },
+    tooltip: { enabled: true },
+  };
+
   ngOnInit(): void {
+    this.store.dispatch(new LoadMaster());
     this.loadData();
   }
 
   ngAfterViewInit(): void {
-    this.initMap();
+    // Div map sudah pasti ada (di luar @if) — init sekali di sini.
+    // Jika data sudah datang lebih dulu, langsung gambar markernya.
+    this.ensureMap().then(() => {
+      if (this.summaryData()) this.updateMapData();
+    });
   }
 
   ngOnDestroy(): void {
@@ -88,22 +166,48 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
+  get totalKomoditi(): number {
+    return this.store.selectSnapshot(MasterState.komoditi).length;
+  }
+
+  get tanggalLabel(): string {
+    return new Date(this.tanggal + 'T00:00:00').toLocaleDateString('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
   loadData(): void {
     const tanggal = this.filterForm.value.tanggal;
     if (!tanggal) return;
-    this.tanggal = tanggal.toISOString().split('T')[0];
-    this.isLoading = true;
+    this.tanggal = formatDateToYYYYMMDD(tanggal);
+    this.isLoading.set(true);
 
     this.api.get<any>('/executive-summary', { tanggal: this.tanggal }).subscribe({
       next: (res) => {
-        this.summaryData = res.data;
-        this.isLoading = false;
-        // Render ulang map dengan data baru
-        if (this.leafletMap) {
-          this.updateMapData();
+        const data: ExecutiveSummaryData = res.data;
+        this.summaryData.set(data);
+        this.isLoading.set(false);
+        this.lastUpdated.set(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
+
+        this.computeDistributions(data);
+        this.computeVolatil(data);
+
+        // Map persisten — cukup refresh marker, tidak perlu re-init
+        this.ensureMap().then(() => this.updateMapData());
+
+        // Tren 7 hari untuk komoditi paling volatil
+        const top = data.komoditi_volatil?.[0];
+        if (top?.id) {
+          this.loadTrend(top.id, top.nama);
+        } else {
+          this.trendSeries.set([]);
+          this.trendTitle.set('');
         }
       },
-      error: () => { this.isLoading = false; },
+      error: () => this.isLoading.set(false),
     });
   }
 
@@ -131,65 +235,132 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
     return '#ef4444';
   }
 
-  private async initMap(): Promise<void> {
-    // Lazy import Leaflet untuk menghindari SSR issue
-    const L = await import('leaflet').then(m => m.default ?? m);
+  barWidth(range: number): number {
+    const max = this.maxRange();
+    return max > 0 ? Math.max(6, Math.round((range / max) * 100)) : 0;
+  }
 
-    const mapEl = document.getElementById('jateng-map');
-    if (!mapEl) return;
-
-    this.leafletMap = L.map('jateng-map', {
-      center: [-7.15, 110.14],
-      zoom: 7,
-      zoomControl: true,
-      attributionControl: false,
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      opacity: 0.4,
-    }).addTo(this.leafletMap);
-
-    if (this.summaryData) {
-      this.updateMapData();
+  private computeDistributions(data: ExecutiveSummaryData): void {
+    const c = { aman: 0, waspada: 0, koordinasi: 0 };
+    for (const w of data.status_wilayah ?? []) {
+      if (w.status === 'Aman') c.aman++;
+      else if (w.status === 'Waspada') c.waspada++;
+      else c.koordinasi++;
     }
+    this.statusCounts.set(c);
+    this.donutSeries.set([c.aman, c.waspada, c.koordinasi]);
+  }
+
+  private computeVolatil(data: ExecutiveSummaryData): void {
+    const list = [...(data.komoditi_volatil ?? [])].sort((a, b) => b.range_harga - a.range_harga);
+    this.volatilList.set(list);
+    this.maxRange.set(list.length ? list[0].range_harga : 1);
+  }
+
+  /**
+   * Ambil tren harian 7 hari untuk satu komoditi, agregasi rata-rata
+   * seluruh wilayah menjadi satu garis tingkat provinsi.
+   */
+  private loadTrend(komoditiId: number, nama: string): void {
+    const end = new Date(this.tanggal + 'T00:00:00');
+    const start = new Date(end);
+    start.setDate(start.getDate() - 6);
+
+    this.api.get<any>('/grafik', {
+      komoditi_id: komoditiId,
+      mode: 'daily',
+      start: formatDateToYYYYMMDD(start),
+      end: formatDateToYYYYMMDD(end),
+    }).subscribe({
+      next: (res) => {
+        const rows: { periode: string; harga: string | null }[] = res.data ?? [];
+
+        // Agregasi rata-rata antar wilayah per tanggal
+        const byPeriode = new Map<string, { sum: number; n: number }>();
+        for (const r of rows) {
+          if (r.harga == null) continue;
+          const cur = byPeriode.get(r.periode) ?? { sum: 0, n: 0 };
+          cur.sum += parseFloat(String(r.harga));
+          cur.n += 1;
+          byPeriode.set(r.periode, cur);
+        }
+
+        const points = Array.from(byPeriode.entries())
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(([periode, v]) => ({
+            x: new Date(periode + 'T00:00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }),
+            y: Math.round(v.sum / v.n),
+          }));
+
+        this.trendTitle.set(nama);
+        this.trendSeries.set(points.length ? [{ name: 'Rata-rata Provinsi', data: points }] : []);
+      },
+      error: () => {
+        this.trendSeries.set([]);
+      },
+    });
+  }
+
+  /**
+   * Inisialisasi map tepat satu kali. Promise di-memoize sehingga pemanggilan
+   * berulang (dari ngAfterViewInit maupun loadData) aman dan terurut —
+   * updateMapData selalu jalan SETELAH async import Leaflet selesai.
+   */
+  private ensureMap(): Promise<void> {
+    this.mapReady ??= (async () => {
+      const L = await import('leaflet').then(m => m.default ?? m);
+
+      // Komponen bisa saja sudah destroy saat import selesai
+      const host = this.jatengMapEl()?.nativeElement;
+      if (!host) return;
+
+      this.leafletMap = L.map(host, {
+        center: [-7.15, 110.14],
+        zoom: 7,
+        zoomControl: true,
+        attributionControl: false,
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        opacity: 0.35,
+      }).addTo(this.leafletMap);
+    })();
+    return this.mapReady;
   }
 
   private async updateMapData(): Promise<void> {
-    if (!this.leafletMap || !this.summaryData) return;
+    const data = this.summaryData();
+    if (!this.leafletMap || !data) return;
 
     const L = await import('leaflet').then(m => m.default ?? m);
 
-    // Hapus layer lama
+    // Hapus layer marker lama (tile layer tetap)
     this.leafletMap.eachLayer((layer: any) => {
       if (layer.options?.pane !== 'tilePane') {
         this.leafletMap.removeLayer(layer);
       }
     });
 
-    // Tambahkan tile layer kembali
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      opacity: 0.4,
-    }).addTo(this.leafletMap);
-
     // Buat circle marker per wilayah berdasarkan status
-    this.summaryData.status_wilayah.forEach((w) => {
+    data.status_wilayah.forEach((w) => {
       const color = this.getStatusColor(w.status);
-      // Koordinat kab/kota Jawa Tengah (pusat approx)
       const coords = this.getWilayahCoords(w.kode_kemendagri);
       if (!coords) return;
 
       L.circleMarker(coords, {
-        radius: 8 + w.jumlah_alert,
+        radius: w.jumlah_alert > 0 ? 9 + w.jumlah_alert : 6,
         fillColor: color,
-        color: '#fff',
+        color: '#ffffff',
         weight: 2,
         opacity: 1,
-        fillOpacity: 0.8,
+        fillOpacity: 0.85,
       })
         .addTo(this.leafletMap)
-        .bindTooltip(`${w.wilayah}: ${w.status} (${w.jumlah_alert} alert)`, { permanent: false });
+        .bindTooltip(
+          `<strong>${w.wilayah}</strong><br>${w.status} · ${w.jumlah_alert} alert`,
+          { direction: 'top', offset: [0, -6] },
+        );
     });
   }
 

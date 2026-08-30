@@ -7,19 +7,23 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DatePickerModule } from 'primeng/datepicker';
+import { SelectModule } from 'primeng/select';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { LucideAngularModule,
-  AlertTriangle, CheckCircle, Clock, RefreshCw, FileText
+  AlertTriangle, CheckCircle, Clock, RefreshCw, FileText, MapPin, Search
 } from 'lucide-angular';
 import { PageHeaderComponent } from '../../../shared/components/page-header/page-header.component';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { LaporanFormComponent } from '../laporan-form/laporan-form.component';
 import { RupiahPipe } from '../../../shared/pipes/rupiah.pipe';
 import { AuthState } from '../../../store/auth/auth.state';
-import { EwsState, EwsAlert } from '../../../store/ews/ews.state';
+import { EwsState, EwsAlert, WilayahTerdampak } from '../../../store/ews/ews.state';
 import { LoadEws, EwsTick } from '../../../store/ews/ews.actions';
+import { MasterState } from '../../../store/master/master.state';
+import { LoadMaster } from '../../../store/master/master.actions';
+import { formatDateToYYYYMMDD, getTodayYYYYMMDD } from '../../../shared/utils/date-utils';
 
 @Component({
   selector: 'app-ews-list',
@@ -31,6 +35,7 @@ import { LoadEws, EwsTick } from '../../../store/ews/ews.actions';
     TableModule,
     SkeletonModule,
     DatePickerModule,
+    SelectModule,
     DialogModule,
     ButtonModule,
     TagModule,
@@ -53,17 +58,22 @@ export class EwsListComponent implements OnInit, OnDestroy {
   readonly Clock = Clock;
   readonly RefreshCw = RefreshCw;
   readonly FileText = FileText;
+  readonly MapPin = MapPin;
+  readonly Search = Search;
 
   alerts$ = this.store.select(EwsState.alerts);
+  summary$ = this.store.select(EwsState.summary);
   countdown$ = this.store.select(EwsState.countdown);
   isLoading$ = this.store.select(EwsState.isLoading);
+  wilayahOptions$ = this.store.select(MasterState.wilayah);
 
-  tanggal = new Date().toISOString().split('T')[0];
+  tanggal = getTodayYYYYMMDD();
   selectedAlert: EwsAlert | null = null;
   showLaporanDialog = false;
 
   filterForm = this.fb.group({
     tanggal: [new Date() as Date | null],
+    wilayah_id: [null as number | null],
   });
 
   get isAllowedToReport(): boolean {
@@ -80,6 +90,9 @@ export class EwsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Load master data wilayah dulu
+    this.store.dispatch(new LoadMaster());
+    
     this.loadAlerts();
     // Mulai countdown timer setiap detik via NGXS action
     this.timerSub = timer(0, 1000).subscribe(() => {
@@ -93,13 +106,25 @@ export class EwsListComponent implements OnInit, OnDestroy {
 
   loadAlerts(): void {
     const tanggal = this.filterForm.value.tanggal;
+    const wilayahId = this.filterForm.value.wilayah_id;
+    
     if (tanggal) {
-      this.tanggal = tanggal.toISOString().split('T')[0];
-      this.store.dispatch(new LoadEws(this.tanggal));
+      this.tanggal = formatDateToYYYYMMDD(tanggal);
+      this.store.dispatch(new LoadEws(this.tanggal, wilayahId ?? undefined));
     }
   }
 
-  onTanggalChange(): void {
+  onSearchClick(): void {
+    this.loadAlerts();
+  }
+
+  filterByWilayah(wilayahId: number): void {
+    this.filterForm.patchValue({ wilayah_id: wilayahId });
+    this.loadAlerts();
+  }
+
+  clearWilayahFilter(): void {
+    this.filterForm.patchValue({ wilayah_id: null });
     this.loadAlerts();
   }
 

@@ -15,6 +15,7 @@ import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
 import { ApiService } from '../../core/services/api.service';
 import { MasterState } from '../../store/master/master.state';
 import { LoadMaster } from '../../store/master/master.actions';
+import { formatDateToYYYYMMDD, getTodayYYYYMMDD } from '../../shared/utils/date-utils';
 
 export interface AnalisaRow {
   wilayah_id: number;
@@ -125,7 +126,7 @@ export class AnalisaProvinsiComponent implements OnInit {
       const html2pdf = mod.default ?? mod;
       html2pdf().from(el).set({
         margin: 10,
-        filename: `analisa-provinsi-${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `analisa-provinsi-${getTodayYYYYMMDD()}.pdf`,
         html2canvas: { scale: 2 },
         jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' },
       }).save();
@@ -147,6 +148,6 @@ export class AnalisaProvinsiComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return formatDateToYYYYMMDD(date);
   }
 }

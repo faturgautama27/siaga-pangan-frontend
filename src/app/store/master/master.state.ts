@@ -45,7 +45,8 @@ export class MasterState {
 
   @Selector()
   static wilayahIhk(state: MasterStateModel): Wilayah[] {
-    return state.wilayah.filter((w) => w.is_ihk === 1);
+    // Turso mengembalikan integer sebagai string — konversi sebelum bandingkan
+    return state.wilayah.filter((w) => Number(w.is_ihk) === 1);
   }
 
   @Selector()
