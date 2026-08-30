@@ -21,7 +21,7 @@
     <div class="flex items-center gap-2 pt-5">
       <button
         (click)="onFilter()"
-        class="px-4 py-2 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors"
+        class="px-4 py-2 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
       >Tampilkan</button>
       <button
         (click)="onReset()"
@@ -56,11 +56,11 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-log>
-        <tr class="border-b border-slate-100 hover:bg-emerald-50/40 transition-colors">
+        <tr class="border-b border-slate-100 hover:bg-green-50/40 transition-colors">
           <td>
             <div class="flex items-center gap-2.5">
-              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 flex-shrink-0">
-                <lucide-icon [img]="History" [size]="13" class="text-emerald-600"></lucide-icon>
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-50 border border-green-100 flex-shrink-0">
+                <lucide-icon [img]="History" [size]="13" class="text-green-600"></lucide-icon>
               </span>
               <span class="text-sm font-medium text-slate-800 truncate max-w-[260px]" [title]="log.nama_file">{{ log.nama_file }}</span>
             </div>
@@ -72,7 +72,7 @@
           </td>
           <td class="text-sm text-slate-400 tabular-nums">{{ log.uploaded_at | date:'dd MMM yy · HH:mm' }}</td>
           <td class="text-center">
-            <span class="inline-flex items-center justify-center min-w-8 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 tabular-nums">{{ log.jumlah_insert }}</span>
+            <span class="inline-flex items-center justify-center min-w-8 px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 tabular-nums">{{ log.jumlah_insert }}</span>
           </td>
           <td class="text-center">
             <span class="inline-flex items-center justify-center min-w-8 px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 tabular-nums">{{ log.jumlah_update }}</span>
@@ -94,7 +94,7 @@
                 tooltipPosition="left"
               ></lucide-icon>
             } @else {
-              <lucide-icon [img]="CheckCircle" [size]="15" class="text-emerald-400"></lucide-icon>
+              <lucide-icon [img]="CheckCircle" [size]="15" class="text-green-600"></lucide-icon>
             }
           </td>
         </tr>

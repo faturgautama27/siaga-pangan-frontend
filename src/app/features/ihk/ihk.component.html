@@ -59,7 +59,7 @@
       <button
         (click)="onFilter()"
         [disabled]="isLoading"
-        class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white text-sm font-semibold rounded-lg transition-colors"
+        class="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white text-sm font-semibold rounded-lg transition-colors"
       >Tampilkan</button>
       <button
         (click)="onReset()"
@@ -101,7 +101,7 @@
             <th>Komoditas</th>
             <th class="text-right">Tgl 1 <span class="normal-case font-medium text-slate-400">({{ tanggal1Label }})</span></th>
             <th class="text-center w-36">Status</th>
-            <th class="text-right">Tgl 2 <span class="normal-case font-medium text-emerald-600">({{ tanggal2Label }})</span></th>
+            <th class="text-right">Tgl 2 <span class="normal-case font-medium text-green-600">({{ tanggal2Label }})</span></th>
             <th class="text-center min-w-[150px]">Status HET/HAP</th>
             <th class="text-center min-w-[140px]">Rata-rata Prov</th>
           </tr>
@@ -113,7 +113,11 @@
             <td>
               <div class="flex items-center gap-3">
                 <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 flex-shrink-0">
-                  <lucide-icon [img]="komoditiIcon(row.komoditi)" [size]="16" class="text-slate-500"></lucide-icon>
+                  @if (komoditiImage(row.komoditi)) {
+                    <img [src]="komoditiImage(row.komoditi)" [alt]="row.komoditi" class="w-6 h-6 object-contain" />
+                  } @else {
+                    <lucide-icon [img]="komoditiIcon(row.komoditi)" [size]="16" class="text-slate-500"></lucide-icon>
+                  }
                 </span>
                 <div class="min-w-0">
                   <p class="text-sm font-semibold text-slate-800 truncate">{{ row.komoditi }}</p>
@@ -135,8 +139,8 @@
                     class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold tabular-nums"
                     [class.bg-red-50]="row.status_perubahan.selisih > 0"
                     [class.text-red-600]="row.status_perubahan.selisih > 0"
-                    [class.bg-emerald-50]="row.status_perubahan.selisih < 0"
-                    [class.text-emerald-700]="row.status_perubahan.selisih < 0"
+                    [class.bg-green-50]="row.status_perubahan.selisih < 0"
+                    [class.text-green-700]="row.status_perubahan.selisih < 0"
                   >
                     <i
                       class="pi text-[8px]"

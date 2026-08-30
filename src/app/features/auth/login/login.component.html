@@ -1,13 +1,13 @@
-<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex items-center justify-center p-4 font-['Inter']">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50 flex items-center justify-center p-4 font-['Inter']">
   <div class="w-full max-w-md">
 
     <!-- Header -->
     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-2xl mb-4">
-        <lucide-icon [img]="ShieldAlert" class="text-green-600" [size]="32"></lucide-icon>
+      <div class="inline-flex items-center justify-center w-16 h-16 mb-4">
+        <img src="logo_transparent.png" alt="SATRIA HARGA Logo" class="w-full h-full object-contain" />
       </div>
-      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">SIAGA PANGAN</h1>
-      <p class="text-sm text-gray-500 mt-1 leading-relaxed">Sistem Informasi Analisa Gejolak<br>dan Antisipasi Pangan</p>
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">SATRIA HARGA</h1>
+      <p class="text-sm text-gray-500 mt-1 leading-relaxed">Sistem Analisis dan Transparansi<br>Informasi Harga</p>
     </div>
 
     <!-- Form Card -->
@@ -30,7 +30,7 @@
             pInputText
             type="email"
             formControlName="username"
-            placeholder="admin@siagapangan.id"
+            placeholder="admin@satriaharga.id"
             class="w-full rounded-xl border-gray-200 text-sm"
             [class.border-red-400]="form.get('username')?.invalid && form.get('username')?.touched"
           />
@@ -59,7 +59,7 @@
         <button
           type="submit"
           [disabled]="form.invalid || ((isLoading$ | async) ?? false)"
-          class="mt-2 w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm py-3 px-4 rounded-xl transition-colors duration-150"
+          class="mt-2 w-full flex items-center justify-center gap-2 bg-[#0B2A5B] hover:bg-[#061B3A] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm py-3 px-4 rounded-xl transition-colors duration-150"
         >
           @if ((isLoading$ | async)) {
             <i class="pi pi-spin pi-spinner text-sm"></i>

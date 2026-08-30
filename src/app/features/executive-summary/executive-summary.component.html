@@ -5,8 +5,8 @@
     <div>
       <div class="inline-flex items-center gap-2 text-xs text-slate-400 mb-1.5">
         <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-600 opacity-60"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
         </span>
         @if (lastUpdated()) {
           <span>Data terakhir diperbarui pukul {{ lastUpdated() }} WIB</span>
@@ -106,11 +106,11 @@
 
       <!-- Laporan masuk -->
       <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between min-h-[92px] shadow-[0_1px_2px_rgba(15,23,42,0.04)] relative overflow-hidden col-span-2 md:col-span-1">
-        <span class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-400"></span>
+        <span class="absolute left-0 top-0 bottom-0 w-1 bg-green-600"></span>
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Laporan Masuk</span>
-          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50">
-            <lucide-icon [img]="FileText" [size]="14" class="text-emerald-500"></lucide-icon>
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-50">
+            <lucide-icon [img]="FileText" [size]="14" class="text-green-600"></lucide-icon>
           </span>
         </div>
         <span class="text-2xl font-bold tabular-nums leading-none mt-2" [class.text-slate-900]="s.kpi.laporan_masuk > 0" [class.text-slate-300]="s.kpi.laporan_masuk === 0">{{ s.kpi.laporan_masuk }}</span>
@@ -127,8 +127,8 @@
       <ng-template pTemplate="header">
         <div class="flex items-center justify-between px-5 pt-4">
           <div class="flex items-center gap-2.5">
-            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50">
-              <lucide-icon [img]="MapPin" [size]="14" class="text-emerald-600"></lucide-icon>
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-50">
+              <lucide-icon [img]="MapPin" [size]="14" class="text-green-600"></lucide-icon>
             </span>
             <div>
               <h3 class="text-sm font-bold text-slate-800 leading-none">Sebaran Status Wilayah</h3>
@@ -137,7 +137,7 @@
           </div>
         </div>
       </ng-template>
-      <div #jatengMap class="w-full h-[340px] rounded-lg bg-emerald-50/60 z-0 mt-3"></div>
+      <div #jatengMap class="w-full h-[340px] rounded-lg bg-green-50/60 z-0 mt-3"></div>
       <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 pt-3 border-t border-slate-100">
         <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
           <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>Aman
@@ -216,8 +216,8 @@
               <div class="pl-8.5 h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div
                   class="h-full rounded-full bg-gradient-to-r transition-all duration-500"
-                  [class.from-emerald-400]="i > 0"
-                  [class.to-emerald-600]="i > 0"
+                  [class.from-green-600]="i > 0"
+                  [class.to-green-700]="i > 0"
                   [class.from-slate-700]="i === 0"
                   [class.to-slate-900]="i === 0"
                   [style.width.%]="barWidth(v.range_harga)"
@@ -243,7 +243,7 @@
             }
           </p>
         </div>
-        <span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-2.5 py-1">
+        <span class="inline-flex items-center gap-1 text-[11px] font-medium text-green-700 bg-green-50 border border-green-100 rounded-full px-2.5 py-1">
           <lucide-icon [img]="TrendingDown" [size]="11"></lucide-icon>
           Harian
         </span>

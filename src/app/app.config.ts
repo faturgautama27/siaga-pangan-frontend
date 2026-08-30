@@ -16,20 +16,44 @@ import { EwsState } from './store/ews/ews.state';
 import { MessageService } from 'primeng/api';
 import { definePreset } from '@primeng/themes';
 
-const SiagaPanganPreset = definePreset(Aura, {
+const SatriaHargaPreset = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '{blue.50}',
-      100: '{blue.100}',
-      200: '{blue.200}',
-      300: '{blue.300}',
-      400: '{blue.400}',
-      500: '{blue.500}',
-      600: '{blue.600}',
-      700: '{blue.700}',
-      800: '{blue.800}',
-      900: '{blue.900}',
-      950: '{blue.950}',
+      50: '#E8F0FA',
+      100: '#D1E1F5',
+      200: '#A3C3EB',
+      300: '#75A5E1',
+      400: '#4787D7',
+      500: '#0B2A5B',
+      600: '#092252',
+      700: '#071A49',
+      800: '#061B3A',
+      900: '#04132B',
+      950: '#020A16',
+    },
+    colorScheme: {
+      light: {
+        primary: {
+          color: '#0B2A5B',
+          contrastColor: '#ffffff',
+          hoverColor: '#061B3A',
+          activeColor: '#071A49',
+        },
+        surface: {
+          0: '#ffffff',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          950: '#020617',
+        },
+      },
     },
   },
 });
@@ -42,7 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: SiagaPanganPreset,
+        preset: SatriaHargaPreset,
         options: {
           darkModeSelector: '.app-dark',
         },

@@ -8,7 +8,7 @@ import {
 } from 'lucide-angular';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
-import { komoditiIcon } from '../../shared/utils/komoditi-icon';
+import { komoditiIcon, komoditiImage } from '../../shared/utils/komoditi-icon';
 import { ApiService } from '../../core/services/api.service';
 import { formatDateToYYYYMMDD } from '../../shared/utils/date-utils';
 
@@ -43,6 +43,7 @@ export class HargaHarianComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   protected readonly komoditiIcon = komoditiIcon;
+  protected readonly komoditiImage = komoditiImage;
 
   rows = signal<RataRataRow[]>([]);
   isLoading = signal(false);

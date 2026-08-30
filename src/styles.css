@@ -4,6 +4,40 @@
 
 @source "./app/**/*.{html,ts}";
 
+/* ══════════════════════════════════════════════════════════════════════════
+   SATRIA HARGA - Color Palette
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Primary - Navy */
+  --color-primary: #0B2A5B;
+  --color-primary-dark: #061B3A;
+  --color-primary-light: #E8F0FA;
+  
+  /* Secondary - Green */
+  --color-secondary: #16A34A;
+  --color-secondary-dark: #087A3E;
+  --color-secondary-light: #DCFCE7;
+  
+  /* Accent - Gold */
+  --color-accent: #D4A017;
+  --color-accent-light: #FFF4CC;
+  
+  /* Neutral */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  
+  /* Semantic */
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-danger: #DC2626;
+  --color-info: #2563EB;
+}
+
 * {
   font-family: 'Inter', sans-serif;
 }
@@ -16,19 +50,21 @@
   display: none;
 }
 
-/* ── DataTable modern (berlaku global untuk semua p-table) ─────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   DataTable - Modern SATRIA HARGA Theme
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Header ── */
 .p-datatable .p-datatable-thead > tr > th {
-  background: #f8fafc !important;
+  background: var(--color-background) !important;
   padding: 0.8rem 1rem !important;
   font-size: 10.5px !important;
   font-weight: 700 !important;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: #64748b !important;
+  color: var(--color-text-secondary) !important;
   border-top: none !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  border-bottom: 1px solid var(--color-border) !important;
   white-space: nowrap;
 }
 .p-datatable .p-datatable-thead > tr > th:first-child { padding-left: 1.25rem !important; }
@@ -39,7 +75,7 @@
   padding: 0.95rem 1rem !important;
   font-size: 13.5px;
   line-height: 1.5;
-  color: #334155;
+  color: var(--color-text-primary);
   background: transparent;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
@@ -62,11 +98,11 @@
 
 /* ── Row states ── */
 .p-datatable .p-datatable-tbody > tr.p-highlight > td {
-  background: #ecfdf5 !important;
+  background: var(--color-secondary-light) !important;
 }
 .p-datatable .p-datatable-tbody > tr:hover > td,
 .p-datatable .p-datatable-tbody > tr:hover {
-  background: rgba(16, 185, 129, 0.05) !important;
+  background: var(--color-primary-light) !important;
   transition: background-color 0.12s ease;
 }
 
@@ -91,6 +127,6 @@
   border-radius: 8px;
 }
 .p-datatable .p-paginator .p-paginator-page.p-paginator-page-selected {
-  background: #059669;
-  color: #fff;
+  background: var(--color-secondary);
+  color: var(--color-surface);
 }

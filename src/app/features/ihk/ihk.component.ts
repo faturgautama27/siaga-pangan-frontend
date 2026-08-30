@@ -11,7 +11,7 @@ import { PageHeaderComponent } from '../../shared/components/page-header/page-he
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { ApexBarChartComponent, BarChartSeries } from '../../shared/components/apex-bar-chart/apex-bar-chart.component';
 import { RupiahPipe } from '../../shared/pipes/rupiah.pipe';
-import { komoditiIcon } from '../../shared/utils/komoditi-icon';
+import { komoditiIcon, komoditiImage } from '../../shared/utils/komoditi-icon';
 import { ApiService } from '../../core/services/api.service';
 import { MasterState } from '../../store/master/master.state';
 import { LoadMaster } from '../../store/master/master.actions';
@@ -132,6 +132,7 @@ export class IhkComponent implements OnInit {
   }
 
   protected komoditiIcon = komoditiIcon;
+  protected komoditiImage = komoditiImage;
 
   private buildChart(): void {
     const slice = this.data.slice(0, 10);
