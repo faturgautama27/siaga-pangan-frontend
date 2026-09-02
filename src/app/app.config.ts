@@ -10,6 +10,7 @@ import { withNgxsRouterPlugin } from '@ngxs/router-plugin';
 
 import { routes } from './app.routes';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { AuthState } from './store/auth/auth.state';
 import { MasterState } from './store/master/master.state';
 import { EwsState } from './store/ews/ews.state';
@@ -62,7 +63,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
