@@ -1,0 +1,428 @@
+{
+  "data": [
+    {
+      "kabupaten_kota": "KABUPATEN CILACAP",
+      "nomenklatur": "DINAS KOPERASI USAHA KECIL MENENGAH DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "Drs. OKTRIVIYANTO SUBEKTI, M.Si.", "whatsapp": "081327030485" },
+      "bidang": [
+        { "nama_bidang": "Sarana Distribusi Perdagangan", "kepala_bidang": "GALUH MEI WARDANA, S.E., M.M.", "whatsapp": "085747572666" },
+        { "nama_bidang": "Bina Usaha Perdagangan", "kepala_bidang": "SLAMET PRAMONO, S.H.", "whatsapp": "081226629048" },
+        { "nama_bidang": "Koperasi", "kepala_bidang": "BAMBANG SETIJAWAN, S.E., M.E.", "whatsapp": "082327683404" },
+        { "nama_bidang": "Usaha Mikro", "kepala_bidang": "SISMAHWATI, S.E., M.M.", "whatsapp": "081328763273" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN BANYUMAS",
+      "nomenklatur": "DINAS KOPERASI, USAHA KECIL DAN MENENGAH DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "GATOT EKO PURWADI, S.E.", "whatsapp": "082146779046" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "R. ALFIAN HARIANTONO, S.E.", "whatsapp": "08122666260" },
+        { "nama_bidang": "Pengembangan Perdagangan dan Pengendalian Bapokting", "kepala_bidang": "WIWID WIJAYADI, S.T., M.Si.", "whatsapp": "08158968854" },
+        { "nama_bidang": "Sarana Distribusi Perdagangan dan Metrologi Legal", "kepala_bidang": "GESANG TRI JOKO, S.Sos., M.Si.", "whatsapp": "0811266557" },
+        { "nama_bidang": "Usaha Kecil Menengah", "kepala_bidang": "PONIRI, S.E.", "whatsapp": "08122760431" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN PURBALINGGA",
+      "nomenklatur": "DINAS PERDAGANGAN, KOPERASI DAN USAHA KECIL MENENGAH",
+      "kepala_dinas": { "nama": "AGUNG WIDIARTO, S.E., M.Si.", "whatsapp": "0816697075" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "JATMIKO KURNIAWAN, S.E. (Plt)", "whatsapp": "081542919749" },
+        { "nama_bidang": "Usaha Mikro", "kepala_bidang": "WASIS PAMBUDI, S.E., M.Si.", "whatsapp": "083127743149" },
+        { "nama_bidang": "Sarana Distribusi dan Perdagangan", "kepala_bidang": "EDY SUWARNO, S.Sos.", "whatsapp": "081568214028" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN BANJARNEGARA",
+      "nomenklatur": "DINAS PERINDUSTRIAN, PERDAGANGAN, KOPERASI, USAHA KECIL MENENGAH",
+      "kepala_dinas": { "nama": "Drs. ADI CAHYONO PURWO SAPUTRO, M.M.", "whatsapp": "08122711572" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "YUSEP HANDOKO, S.Sos.", "whatsapp": "081391924761" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "ROKHANA KUDUS AL HAJJ, S.E., M.Akun.", "whatsapp": "08121590199" },
+        { "nama_bidang": "Pengelolaan Pasar", "kepala_bidang": "TIJUN HARTANTO, S.E., M.PH.", "whatsapp": "08122505022" },
+        { "nama_bidang": "Koperasi, Usaha Kecil dan Menengah", "kepala_bidang": "KIKI KADARWATI, S.E., M.Si.", "whatsapp": "085290495775" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN KEBUMEN",
+      "nomenklatur": "DINAS PERINDUSTRIAN, PERDAGANGAN, KOPERASI, USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "HARYONO WAHYUDI, S.T., M.T.", "whatsapp": "081915068393" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "TRI YANTO, S. KM., M.Si.", "whatsapp": "081327670190" },
+        { "nama_bidang": "Sarana Perdagangan", "kepala_bidang": "KHANIFUDIN, S.T. (Plt)", "whatsapp": "085799085688" },
+        { "nama_bidang": "Pengembangan Perdagangan", "kepala_bidang": "BASORI, S.IP.", "whatsapp": "082135956865" },
+        { "nama_bidang": "Koperasi, Usaha Kecil dan Menengah", "kepala_bidang": "DANANG DWI H, S.STP., M.Si.", "whatsapp": "081226633996" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN PURWOREJO",
+      "nomenklatur": "DINAS KOPERASI UKM DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "Wiyoto Harjono, S.T.", "whatsapp": "081325799281" },
+      "bidang": [
+        { "nama_bidang": "Koperasi dan Usaha Mikro", "kepala_bidang": "RIMI ANI, S.E., M.M.", "whatsapp": "081392213255" },
+        { "nama_bidang": "Perijinan, Barang Pokok dan Penting, dan Kemetrologian", "kepala_bidang": "WAKHIDUN, S.IP.", "whatsapp": "081227520535" },
+        { "nama_bidang": "Sarana Prasarana Pengembangan Perdagangan", "kepala_bidang": "ANDITO SIDIQ SWASTOMO, S.T., M.URP.", "whatsapp": "081328261661" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN WONOSOBO",
+      "nomenklatur": "DINAS PERDAGANGAN, KOPERASI DAN USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "ACHMAD FATHONI, S.Sos., M.T.", "whatsapp": "081328019338" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "SRI WAHYUNINGSIH, S.IP.", "whatsapp": "081225935184" },
+        { "nama_bidang": "Koperasi dan Usaha Kecil dan Menengah", "kepala_bidang": "ANGGOROWATI, M.H.", "whatsapp": "81339846793" },
+        { "nama_bidang": "Pasar", "kepala_bidang": "WAHYU EDY WIYONO, S.Sos., M.M.", "whatsapp": "085228111172" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN MAGELANG",
+      "nomenklatur": "DINAS PERDAGANGAN, KOPERASI, USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "EDI WASONO, S.H. (Plt)", "whatsapp": "087770398621" },
+      "bidang": [
+        { "nama_bidang": "Pasar", "kepala_bidang": "SRI NURYATI, S.E., M.M.", "whatsapp": "085799876784" },
+        { "nama_bidang": "Metrologi", "kepala_bidang": "ASLACHUDIN, S.Sos.", "whatsapp": "081328008969" },
+        { "nama_bidang": "Koperasi", "kepala_bidang": "BAMBANG SISWANTO, S.KM., M.M. (Plt)", "whatsapp": "081328889333" },
+        { "nama_bidang": "Usaha Mikro, Kecil, dan Menengah", "kepala_bidang": "PUJIANTO, S.E., M.Ag.", "whatsapp": "081215535932" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "KRISTIAWAN AGUS JATMIKO, S.Sos., M.AP.", "whatsapp": "082136546498" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN BOYOLALI",
+      "nomenklatur": "DINAS PERDAGANGAN DAN PERINDUSTRIAN",
+      "kepala_dinas": { "nama": "PURNAWAN RAHARJO, S.Pd., M.M.", "whatsapp": "08122684094" },
+      "bidang": [
+        { "nama_bidang": "Usaha Perdagangan", "kepala_bidang": "SRI SUPARTINI, S.E., M.M.", "whatsapp": "089649431498" },
+        { "nama_bidang": "Pendapatan", "kepala_bidang": "NUR WINANING R, S.E., M.M.", "whatsapp": "081393499022" },
+        { "nama_bidang": "Infrastruktur, Pembinaan dan Penataan Pedagang", "kepala_bidang": "BUDI INDRATNO, S.T.", "whatsapp": "088215543248" },
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "EL RIDNIA MATISKA LUWARNO, S.STP., M.Si.", "whatsapp": "085628141519" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN KLATEN",
+      "nomenklatur": "DINAS KOPERASI USAHA KECIL MENENGAH DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "ANANG WIDJATMOKO, S.H., M.M.", "whatsapp": "08122654397" },
+      "bidang": [
+        { "nama_bidang": "Koperasi, Usaha Kecil dan Menengah", "kepala_bidang": "HARMI, S.IP., M.M.", "whatsapp": "081329138995" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "JOKO PURNOMO, S.E.", "whatsapp": "085602073035" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN SUKOHARJO",
+      "nomenklatur": "DINAS KOPERASI, USAHA KECIL DAN MENENGAH DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "SUMARNO, S.Sos., M.H.", "whatsapp": "081217667399" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "Drs. ADE MIFTAHUDIN, M.M.", "whatsapp": "081808396445" },
+        { "nama_bidang": "Usaha Mikro dan Kecil dan Menengah", "kepala_bidang": "HARDIYANTO IBNU SAPUTRA, S.STP., M.Si.", "whatsapp": "081283257268" },
+        { "nama_bidang": "Sarana Distribusi Perdagangan", "kepala_bidang": "AGUS PONCOWARNO, S.E.", "whatsapp": "081226028928" },
+        { "nama_bidang": "Pengembangan Ekspor, dan Pemasaran Produk Dalam Negeri", "kepala_bidang": "ENDANG SRI HARYANTI, S.E., M.M.", "whatsapp": "085726256845" },
+        { "nama_bidang": "Pelayanan dan Pengembangan Perdagangan", "kepala_bidang": "ARIF ARDIANTORO, S.Sos., M.Hum.", "whatsapp": "087736241634" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN WONOGIRI",
+      "nomenklatur": "DINAS PERDAGANGAN DAN KOPERASI USAHA KECIL MENENGAH",
+      "kepala_dinas": { "nama": "WAHYU WIDAYATI, S.E., M.Pd.", "whatsapp": "081393073704" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "WAHYUDI, S.E., M.Si.", "whatsapp": "081329918678" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "NUGROHO LIESTYONO, S.E., M.Si.", "whatsapp": "081226157047" },
+        { "nama_bidang": "Usaha Mikro, Kecil, dan Menengah (UMKM)", "kepala_bidang": "DWI RAHAYUNINGSIH, S.E., M.M.", "whatsapp": "081226358935" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN KARANGANYAR",
+      "nomenklatur": "DINAS PERDAGANGAN, PERINDUSTRIAN DAN TENAGA KERJA",
+      "kepala_dinas": { "nama": "AGUNG WAHYU UTOMO, S.STP.", "whatsapp": "08122717276" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "PADIAN AGUNG WAHNATA, S.STP., M.M.", "whatsapp": "085642204715" },
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "YOSEA AGUS KUNTORO, S.T.", "whatsapp": "081226849851" },
+        { "nama_bidang": "Tenaga Kerja", "kepala_bidang": "MUH IBRAHIM YUWONO, S.H., M.M.", "whatsapp": "085876543915" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN SRAGEN",
+      "nomenklatur": "DINAS KOPERASI, USAHA KECIL DAN MENENGAH, PERINDUSTRIAN DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "COSMAS EDWI YUNANTO, S.Sos.", "whatsapp": "081327313789" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "E. BINA SRI ASTUTI, S.Sos.", "whatsapp": "081225801969" },
+        { "nama_bidang": "Perindustrian dan Usaha Mikro", "kepala_bidang": "GALIH SETYO NUGROHO, S.STP., M.Si.", "whatsapp": "081295959533" },
+        { "nama_bidang": "Pembinaan dan Pengembangan Perdagangan", "kepala_bidang": "R. WIDYA BUDI MUDHITA, S.Sos., M.Si.", "whatsapp": "081226006573" },
+        { "nama_bidang": "Sarana Distribusi Pedagangan", "kepala_bidang": "AAN SUYITNO, S.E.", "whatsapp": "081329995577" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN GROBOGAN",
+      "nomenklatur": "DINAS PERINDUSTRIAN DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "PRADANA SETYAWAN, S.Pt., M.P.", "whatsapp": "082134034449" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian, Energy dan Sumber daya Mineral", "kepala_bidang": "SRI RAHAYU, S.E.", "whatsapp": "08122848625" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "CHRISTINA SETYANINGSIH, S.P., M.P.", "whatsapp": "085225101101" },
+        { "nama_bidang": "Pasar Daerah", "kepala_bidang": "AMI PRIYONO, S.Kom.", "whatsapp": "081225106648" },
+        { "nama_bidang": "Metrologi Legal dan Perlindungan Konsumen", "kepala_bidang": "CHRISTINA SETYANINGSIH, S.P., M.P.", "whatsapp": "085225101101" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN BLORA",
+      "nomenklatur": "DINAS PERDAGANGAN KOPERASI DAN USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "KISWOYO, S.H., M.Si.", "whatsapp": "08122933936" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "YULI DEWI RATIH, S.E.", "whatsapp": "081326311295" },
+        { "nama_bidang": "Pasar Daerah", "kepala_bidang": "FIQRI HIDAYAT, S.Pd.I", "whatsapp": "082323477772" },
+        { "nama_bidang": "Koperasi, Usaha Mikro, Kecil dan Menengah", "kepala_bidang": "SRI SUDIYARNINGISH, S.E.", "whatsapp": "081325265822" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN REMBANG",
+      "nomenklatur": "DINAS PERDAGANGAN DAN KOPERASI, USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "MOHAMMAD MAHFUDZ, S.H., M.H.", "whatsapp": "082115914345" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "TRI HANDAYANI, S.Hut., M.Si.", "whatsapp": "081390002922" },
+        { "nama_bidang": "Pasar dan Pedagang Kaki Lima", "kepala_bidang": "HERRY MARTONO, S.E.", "whatsapp": "085385515991" },
+        { "nama_bidang": "Koperasi", "kepala_bidang": "BAGUS SATYOADI FAJARIANTO, S.STP., M.Si.", "whatsapp": "08985566621" },
+        { "nama_bidang": "Usaha Kecil dan Menengah", "kepala_bidang": "ACHMAD WIDODO, S.E.", "whatsapp": "089644196659" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN PATI",
+      "nomenklatur": "DINAS PERDAGANGAN DAN PERINDUSTRIAN",
+      "kepala_dinas": { "nama": "B.J. ISRHONY, S.STP., M.M.", "whatsapp": "081325024585" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "AKIYADI, S.Sos.", "whatsapp": "082138608181" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "INDYAH TRI ASTUTI, S.T.", "whatsapp": "082314001707" },
+        { "nama_bidang": "Pengelolaan Pasar", "kepala_bidang": "SETIYA NOVIYANA, S.E., M.M. (Plt.)", "whatsapp": "08122904847" },
+        { "nama_bidang": "Promosi Ekspor Impor", "kepala_bidang": "BISMA SUSILA UTAMA, S.T.", "whatsapp": "081325356060" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN KUDUS",
+      "nomenklatur": "DINAS PERDAGANGAN",
+      "kepala_dinas": { "nama": "CATUR SULISTIYANTO, S.Sos., M.M. (Plh)", "whatsapp": "085326279027" },
+      "bidang": [
+        { "nama_bidang": "Pengelolaan Pasar", "kepala_bidang": "AGUS SUMARSONO, S.E.", "whatsapp": "08122864809" },
+        { "nama_bidang": "Fasilitasi Perdagangan, Promosi dan Perlindungan Konsumen", "kepala_bidang": "SONHAJI, S.H.", "whatsapp": "085225177663" },
+        { "nama_bidang": "Pedagang Kaki Lima", "kepala_bidang": "AGUS SUMARSONO, S.E. (Plh)", "whatsapp": "08122864809" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN JEPARA",
+      "nomenklatur": "DINAS PERINDUSTRIAN DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "ANJAR JAMBORE WIDODO, S.Sos., M.H.", "whatsapp": "082138348350" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "DHAULA PATTA RAYA, S.T.", "whatsapp": "081326333325" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "ANIK ROSYIDAH, S.E., M.H.", "whatsapp": "081325296519" },
+        { "nama_bidang": "Pengelolaan Pasar dan Pedagang Kaki Lima", "kepala_bidang": "ABDUL GHOFUR, S.IP., M.H.", "whatsapp": "081326540900" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN DEMAK",
+      "nomenklatur": "DINAS PERDAGANGAN KOPERASI USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "Drs. ISKANDAR ZULKARNAIN, M.M.", "whatsapp": "081328118475" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "LILIS AGUSTANTI, S.Si., M.Kes.", "whatsapp": "081325864029" },
+        { "nama_bidang": "Koperasi, Usaha Mikro, Kecil, dan Menengah", "kepala_bidang": "LILIK AMBARWATI, S.H., M.H.", "whatsapp": "081390432100" },
+        { "nama_bidang": "Pengelolaan Pasar", "kepala_bidang": "SUNOTO, S.T.", "whatsapp": "082326250009" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN SEMARANG",
+      "nomenklatur": "DINAS KOPERASI USAHA MIKRO PERINDUSTRIAN DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "Drs. HERU SUBROTO, M.M.", "whatsapp": "08122886647" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "PURWADI, S.E., M.M.", "whatsapp": "" },
+        { "nama_bidang": "Usaha Mikro dan Perindustrian", "kepala_bidang": "SRI RETNO WIDAYATI, S.E., M.M.", "whatsapp": "081901488380" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "EMA PUSPITOSARI, S.E., M.M.", "whatsapp": "081325647080" },
+        { "nama_bidang": "Pasar dan Pedagang Kaki Lima", "kepala_bidang": "JOKO PRAYITNO, S.T., M.M.", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN TEMANGGUNG",
+      "nomenklatur": "DINAS KOPERASI, USAHA KECIL, MENENGAH DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "MANDA KARTIKO, S.STP., M.Kom. (Plt)", "whatsapp": "081326059699" },
+      "bidang": [
+        { "nama_bidang": "Koperasi dan Usaha Mikro", "kepala_bidang": "PONTJO MARBAGJO, S.ST. (Plt)", "whatsapp": "082227455292" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "PONTJO MARBAGJO, S.ST.", "whatsapp": "082227455292" },
+        { "nama_bidang": "Pengelolaan Pasar", "kepala_bidang": "SETYO WIDODO, S.IP., M.M.", "whatsapp": "081542228500" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN KENDAL",
+      "nomenklatur": "DINAS PERDAGANGAN, KOPERASI DAN USAHA KECIL DAN MENENGAH",
+      "kepala_dinas": { "nama": "TONI ARI WIBOWO, A.P., M.M.", "whatsapp": "085291194449" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "IRSADI, S.E., M.M.", "whatsapp": "0818820451" },
+        { "nama_bidang": "Koperasi", "kepala_bidang": "JUMAIYAH, S.E., M.M.", "whatsapp": "081229674640" },
+        { "nama_bidang": "Pemberdayaan Usaha Mikro", "kepala_bidang": "LYTRIA WANDWIATI, S.H., M.M.", "whatsapp": "081392234733" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN BATANG",
+      "nomenklatur": "DINAS PERINDUSTRIAN PERDAGANGAN KOPERASI DAN UKM",
+      "kepala_dinas": { "nama": "WAHYU BUDI SANTOSO, S.Sos., M.M.", "whatsapp": "085742228288" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "HANIYAH, S.H., M.M. (Plt)", "whatsapp": "085876872010" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "SRI WIYATI, S.H., M.Kn. (Plt)", "whatsapp": "081327770852" },
+        { "nama_bidang": "Pengelolaan Pasar dan Pedagang Kaki Lima", "kepala_bidang": "SRI WIYATI, S.H., M.Kn.", "whatsapp": "081327770852" },
+        { "nama_bidang": "Koperasi dan Usaha Kecil Menengah", "kepala_bidang": "HANIYAH, S.H., M.M.", "whatsapp": "085876872010" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN PEKALONGAN",
+      "nomenklatur": "DINAS PERINDUSTRIAN DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "SUSANTO WIDODO, S.E., M.Si., Ak.", "whatsapp": "081548161057" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "NUR HUDA, S.Sos.", "whatsapp": "081548138866" },
+        { "nama_bidang": "Pengembangan Perdagangan", "kepala_bidang": "RISTANTO, S.T.", "whatsapp": "081910280056" },
+        { "nama_bidang": "Sarana Distribusi Perdagangan", "kepala_bidang": "IDA SUPAATI, S.AP., M.A.", "whatsapp": "085868065575" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN PEMALANG",
+      "nomenklatur": "DINAS KOPERASI, USAHA MIKRO KECIL MENENGAH DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "ROSI KARTIKA DEWI, S.E.Ak., M.Si.", "whatsapp": "08179581875" },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "SRI AGUSTININGSIH, S.H., M.H.", "whatsapp": "087711852006" },
+        { "nama_bidang": "Usaha Mikro Kecil Menengah", "kepala_bidang": "RORO AYU M. ANGGRAENY, S.E., M.Par.", "whatsapp": "087705014400" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "RATIH HIDAYATI, S.T., M.En.", "whatsapp": "081380254018" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN TEGAL",
+      "nomenklatur": "DINAS KOPERASI UKM DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "IMAM RUDY KURNIANTO, S.Pt., M.Si.", "whatsapp": "085743767997" },
+      "bidang": [
+        { "nama_bidang": "Sarana Distribusi dan Perizinan Perdagangan", "kepala_bidang": "SAIFUL BAHRI, S.T.", "whatsapp": "082312127575" },
+        { "nama_bidang": "Pengembangan Perdagangan", "kepala_bidang": "AGUS HERIYANTO, S.Sos., M.E.", "whatsapp": "085799637273" },
+        { "nama_bidang": "Koperasi", "kepala_bidang": "ENDANG SUSILOWATI, S.H., M.M.", "whatsapp": "085842256828" },
+        { "nama_bidang": "Usaha Mikro Kecil dan Menengah", "kepala_bidang": "DYAH WAHYU INDRATI, S.E., A.KP., M.M.", "whatsapp": "08112603959" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KABUPATEN BREBES",
+      "nomenklatur": "DINAS KOPERASI USAHA MIKRO DAN PERDAGANGAN",
+      "kepala_dinas": {
+        "nama": "Drs. KHAERUL ABIDIN, M.Si.",
+        "whatsapp": "082327000098",
+        "catatan": "Status baris WhatsApp = 'Tetap' namun kolom data baru terisi angka berbeda (081911454325). Nomor eksisting dipakai sesuai aturan Status; mohon konfirmasi nomor mana yang benar."
+      },
+      "bidang": [
+        { "nama_bidang": "Koperasi", "kepala_bidang": "SAPTO AJI PAMUNGKAS, S.E.", "whatsapp": "085864140023" },
+        { "nama_bidang": "Usaha Mikro", "kepala_bidang": "EDI SUPENO, S.IP.", "whatsapp": "081542215187" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "AGUNG TIRTO KUMARA, S.T.", "whatsapp": "082242640193" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KOTA SURAKARTA",
+      "nomenklatur": "DINAS PERDAGANGAN",
+      "kepala_dinas": { "nama": "ARIF HANDOKO, S.Sos., M.H.", "whatsapp": "081329084555" },
+      "bidang": [
+        { "nama_bidang": "Pengembangan Ekspor, dan Pemasaran Produk Dalam Negeri", "kepala_bidang": "WULAN TENDRA DEWAYANI, S.H., M.M.", "whatsapp": "081325790951" },
+        { "nama_bidang": "Sarana Distribusi Pedagangan", "kepala_bidang": "INDAR DHANIEL WICAKSANA, S.E., M.M.", "whatsapp": "081329450084" },
+        { "nama_bidang": "Pelayanan dan Pengembangan Perdagangan", "kepala_bidang": "ARIK RAHMADHANI, S.H., M.M.", "whatsapp": "082231232526" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KOTA MAGELANG",
+      "nomenklatur": "DINAS PERDAGANGAN PERINDUSTRIAN KOPERASI DAN USAHA MIKRO",
+      "kepala_dinas": { "nama": "SYAIFULLAH, S.Sos., M.Si.", "whatsapp": "08122748343" },
+      "bidang": [
+        { "nama_bidang": "Perindustrian", "kepala_bidang": "HETY KUSUMAWATI, S.T., M.Si.", "whatsapp": "081392833303" },
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "HENDRA SUBIYANTO, S.E., M.Ec.Dev.", "whatsapp": "087739553599" },
+        { "nama_bidang": "Pasar", "kepala_bidang": "MIFTAKUL HUDA, S.H.I., M.M.", "whatsapp": "085643346025" },
+        { "nama_bidang": "Koperasi dan Usaha Mikro", "kepala_bidang": "PUTRO BAGUS PRASETIYO, S.H.", "whatsapp": "085729276426" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KOTA SALATIGA",
+      "nomenklatur": "DINAS PERDAGANGAN",
+      "kepala_dinas": { "nama": "AGUNG PITOYO, A.P., M.M.", "whatsapp": "081325911400" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "SUMINI, S.E.", "whatsapp": "081225866978" },
+        { "nama_bidang": "Pasar", "kepala_bidang": "BAGUS ARIFIANTO, S.H.", "whatsapp": "085609410970" },
+        { "nama_bidang": "Pedagang Kaki Lima", "kepala_bidang": "ZULI RAHAYU WIDATININGTYAS, S.STP., M.M.", "whatsapp": "081393545935" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KOTA SEMARANG",
+      "nomenklatur": "DINAS PERDAGANGAN",
+      "kepala_dinas": { "nama": "ANICETO MAGNO DA SILVA, AP, S.Sos., S.H., M.H.", "whatsapp": "081228440000" },
+      "bidang": [
+        { "nama_bidang": "Pengembangan Perdagangan dan Stabilisasi Harga", "kepala_bidang": "EDI SUBENO, S.T., M.M.", "whatsapp": "085177171701" },
+        { "nama_bidang": "Bina Usaha", "kepala_bidang": "KARDIMAN, S.E.", "whatsapp": "085640309991" },
+        { "nama_bidang": "Penataan dan Penetapan", "kepala_bidang": "BAGAS YUWONO ARIO NEGORO, S.STP., M.M.", "whatsapp": "087832101636" },
+        { "nama_bidang": "Pengembangan Prasarana dan Sarana Perdagangan", "kepala_bidang": "R. WISNU EFFENDY, S.E., M.M.", "whatsapp": "08112771680" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KOTA PEKALONGAN",
+      "nomenklatur": "DINAS PERDAGANGAN KOPERASI DAN UKM",
+      "kepala_dinas": { "nama": "WISMO ADITIYO, S.Pt., M.T.", "whatsapp": "085640083900" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "FITRIA YULIANI KARTIKA, S.E., M.Si.", "whatsapp": "081802753443" },
+        { "nama_bidang": "Koperasi dan Usaha Mikro Kecil dan Menengah", "kepala_bidang": "TIPUK PRASETIYOWATI, S.E., M.M.", "whatsapp": "085600060025" },
+        { "nama_bidang": "Pasar dan Pedagang Kaki Lima", "kepala_bidang": "FANNY ARDIANSYAH, S.E.", "whatsapp": "085702306818" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    },
+    {
+      "kabupaten_kota": "KOTA TEGAL",
+      "nomenklatur": "DINAS KOPERASI UKM DAN PERDAGANGAN",
+      "kepala_dinas": { "nama": "SIRAT MARDANUS, S.Pi., M.Si.", "whatsapp": "0818288708" },
+      "bidang": [
+        { "nama_bidang": "Perdagangan", "kepala_bidang": "MAKHSUN BUSTOMI, S.ST., M.Si.", "whatsapp": "081803991099" },
+        { "nama_bidang": "Koperasi Usaha Kecil dan Menengah", "kepala_bidang": "RANDY ADITYA, S.E., M.M.", "whatsapp": "082138753914" },
+        { "nama_bidang": "Pengeloaan Sarana Perdagangan", "kepala_bidang": "AGUS HARI NUGROHO, S.IP., M.M.", "whatsapp": "082326352810" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" },
+        { "nama_bidang": "", "kepala_bidang": "", "whatsapp": "" }
+      ]
+    }
+  ]
+}

@@ -81,6 +81,27 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'kabid',
+        loadComponent: () =>
+          import('./features/kabid/kabid-list.component').then(
+            (m) => m.KabidListComponent
+          ),
+      },
+      {
+        path: 'kontributor',
+        loadComponent: () =>
+          import('./features/kontributor/kontributor-list.component').then(
+            (m) => m.KontributorListComponent
+          ),
+      },
+      {
+        path: 'pasar-directory',
+        loadComponent: () =>
+          import('./features/pasar-directory/pasar-directory-list.component').then(
+            (m) => m.PasarDirectoryListComponent
+          ),
+      },
+      {
         path: 'upload',
         loadComponent: () =>
           import('./features/upload/upload.component').then((m) => m.UploadComponent),

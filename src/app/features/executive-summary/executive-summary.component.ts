@@ -3,6 +3,8 @@ import {
   signal, viewChild, ElementRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -12,7 +14,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { Store } from '@ngxs/store';
 import {
   LucideAngularModule,
-  AlertTriangle, FileText, Package, MapPin, TrendingUp, TrendingDown,
+  AlertTriangle, FileText, Package, MapPin, TrendingUp, TrendingDown, Building, UserCheck, Phone,
 } from 'lucide-angular';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { ApexLineChartComponent, LineChartSeries } from '../../shared/components/apex-line-chart/apex-line-chart.component';
@@ -50,11 +52,25 @@ export interface ExecutiveSummaryData {
   }[];
 }
 
+export interface KabidItem {
+  kabupaten_kota: string;
+  nomenklatur: string;
+  kepala_dinas: {
+    nama: string;
+    whatsapp: string;
+  };
+}
+
+export interface KabidResponse {
+  data: KabidItem[];
+}
+
 @Component({
   selector: 'app-executive-summary',
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     ReactiveFormsModule,
     CardModule,
     TableModule,
@@ -73,6 +89,7 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
   private api = inject(ApiService);
   private fb = inject(FormBuilder);
   private store = inject(Store);
+  private http = inject(HttpClient);
   private leafletMap: any = null;
   private mapReady?: Promise<void>;
 
@@ -86,10 +103,15 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
   readonly MapPin = MapPin;
   readonly TrendingUp = TrendingUp;
   readonly TrendingDown = TrendingDown;
+  readonly BuildingIcon = Building;
+  readonly UserCheckIcon = UserCheck;
+  readonly PhoneIcon = Phone;
 
   summaryData = signal<ExecutiveSummaryData | null>(null);
   isLoading = signal(false);
   lastUpdated = signal('');
+
+  kabidData = signal<KabidItem[]>([]);
 
   statusCounts = signal({ aman: 0, waspada: 0, koordinasi: 0 });
   donutSeries = signal<number[]>([0, 0, 0]);
@@ -149,6 +171,7 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
   ngOnInit(): void {
     this.store.dispatch(new LoadMaster());
     this.loadData();
+    this.loadKabidData();
   }
 
   ngAfterViewInit(): void {
@@ -387,5 +410,34 @@ export class ExecutiveSummaryComponent implements OnInit, AfterViewInit, OnDestr
       '3376': [-6.8690, 109.1421],
     };
     return coords[kode] ?? null;
+  }
+
+  loadKabidData(): void {
+    this.http.get<KabidResponse>('/kabid_datasource.json').subscribe({
+      next: (res) => {
+        this.kabidData.set(res.data ?? []);
+      },
+      error: () => {
+        this.kabidData.set([]);
+      },
+    });
+  }
+
+  formatPhoneKabid(phone: string): string {
+    if (!phone) return '';
+    const cleaned = phone.replace(/\D/g, '');
+    if (cleaned.length >= 11) {
+      return `${cleaned.slice(0, 4)}-${cleaned.slice(4, 8)}-${cleaned.slice(8)}`;
+    }
+    return phone;
+  }
+
+  openWhatsAppKabid(phone: string, name: string): void {
+    if (!phone) return;
+    const cleaned = phone.replace(/\D/g, '');
+    const intlPhone = cleaned.startsWith('0') ? '62' + cleaned.slice(1) : cleaned;
+    const message = encodeURIComponent(`Halo Bapak/Ibu ${name}, `);
+    const link = `https://wa.me/${intlPhone}?text=${message}`;
+    window.open(link, '_blank', 'noopener,noreferrer');
   }
 }

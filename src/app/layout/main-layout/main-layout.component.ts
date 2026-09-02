@@ -16,6 +16,7 @@ import {
   LucideAngularModule,
   LayoutDashboard, TrendingUp, BarChart2, PieChart, MapPin, AlertTriangle,
   TrendingDown, Map, Upload, History, LogOut, ShieldAlert, PanelLeft, Bell, Clock3,
+  Users, UserCheck,
 } from 'lucide-angular';
 import { AuthState } from '../../store/auth/auth.state';
 import { Logout } from '../../store/auth/auth.actions';
@@ -99,6 +100,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       items: [
         { label: 'Early Warning', icon: AlertTriangle, route: '/ews', dot: true },
         { label: 'Pasar Pantauan', icon: MapPin, route: '/pasar' },
+      ],
+    },
+    {
+      label: 'Directory',
+      items: [
+        { label: 'Kabid', icon: Users, route: '/kabid' },
+        { label: 'Kontributor Harga', icon: UserCheck, route: '/kontributor' },
+        { label: 'Pasar Pantauan', icon: MapPin, route: '/pasar-directory' },
       ],
     },
     {
