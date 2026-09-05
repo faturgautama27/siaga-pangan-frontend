@@ -81,6 +81,27 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'disparitas',
+        loadComponent: () =>
+          import('./features/disparitas/disparitas-dashboard.component').then(
+            (m) => m.DisparitasDashboardComponent
+          ),
+      },
+      {
+        path: 'disparitas/temporal',
+        loadComponent: () =>
+          import('./features/disparitas/disparitas-temporal.component').then(
+            (m) => m.DisparitasTemporalComponent
+          ),
+      },
+      {
+        path: 'disparitas/spatial',
+        loadComponent: () =>
+          import('./features/disparitas/disparitas-spatial.component').then(
+            (m) => m.DisparitasSpatialComponent
+          ),
+      },
+      {
         path: 'kabid',
         loadComponent: () =>
           import('./features/kabid/kabid-list.component').then(

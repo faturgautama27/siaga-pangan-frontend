@@ -14,6 +14,7 @@ import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { AuthState } from './store/auth/auth.state';
 import { MasterState } from './store/master/master.state';
 import { EwsState } from './store/ews/ews.state';
+import { DisparitasState } from './store/disparitas/disparitas.state';
 import { MessageService } from 'primeng/api';
 import { definePreset } from '@primeng/themes';
 
@@ -74,7 +75,7 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideStore(
-      [AuthState, MasterState, EwsState],
+      [AuthState, MasterState, EwsState, DisparitasState],
       withNgxsStoragePlugin({ keys: ['auth'] }),
       withNgxsRouterPlugin(),
     ),

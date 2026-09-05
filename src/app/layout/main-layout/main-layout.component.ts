@@ -16,10 +16,12 @@ import {
   LucideAngularModule,
   LayoutDashboard, TrendingUp, BarChart2, PieChart, MapPin, AlertTriangle,
   TrendingDown, Map, Upload, History, LogOut, ShieldAlert, PanelLeft, Bell, Clock3,
-  Users, UserCheck,
+  Users, UserCheck, Activity,
 } from 'lucide-angular';
 import { AuthState } from '../../store/auth/auth.state';
 import { Logout } from '../../store/auth/auth.actions';
+import { LoadMaster } from '../../store/master/master.actions';
+import { MasterState } from '../../store/master/master.state';
 
 interface NavItem {
   label: string;
@@ -92,6 +94,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       items: [
         { label: 'Analisa IHK', icon: PieChart, route: '/ihk' },
         { label: 'Analisa Provinsi', icon: Map, route: '/analisa-provinsi' },
+        { label: 'Disparitas Harga', icon: Activity, route: '/disparitas' },
         { label: 'Prognosa Stok', icon: TrendingDown, route: '/prognosa' },
       ],
     },
@@ -99,7 +102,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       label: 'Operasional',
       items: [
         { label: 'Early Warning', icon: AlertTriangle, route: '/ews', dot: true },
-        { label: 'Pasar Pantauan', icon: MapPin, route: '/pasar' },
+        { label: 'Pasar Pantauan', icon: MapPin, route: '/pasar-directory' },
       ],
     },
     {
@@ -107,7 +110,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       items: [
         { label: 'Kabid', icon: Users, route: '/kabid' },
         { label: 'Kontributor Harga', icon: UserCheck, route: '/kontributor' },
-        { label: 'Pasar Pantauan', icon: MapPin, route: '/pasar-directory' },
       ],
     },
     {
@@ -120,6 +122,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
+    // Load master data ONCE (wilayah & komoditi) - cache di state
+    const wilayah = this.store.selectSnapshot(MasterState.wilayah);
+    const komoditi = this.store.selectSnapshot(MasterState.komoditi);
+    
+    if (wilayah.length === 0 || komoditi.length === 0) {
+      this.store.dispatch(new LoadMaster());
+    }
+
     // Jam live — update tiap detik
     const timer = setInterval(() => this.clock.set(this.nowWib()), 1000);
     this.destroyRef.onDestroy(() => clearInterval(timer));
