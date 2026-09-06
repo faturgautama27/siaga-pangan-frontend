@@ -6,10 +6,10 @@ import { Store } from '@ngxs/store';
 import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SkeletonModule } from 'primeng/skeleton';
-import { LucideAngularModule, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, MapPin, Package, RefreshCw, Calculator } from 'lucide-angular';
+import { LucideAngularModule, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, MapPin, Package, RefreshCw, Clock } from 'lucide-angular';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { DisparitasState } from '../../store/disparitas/disparitas.state';
-import { LoadDisparitasSummary, CalculateDisparitas } from '../../store/disparitas/disparitas.actions';
+import { LoadDisparitasSummary } from '../../store/disparitas/disparitas.actions';
 import { getTodayYYYYMMDD } from '../../shared/utils/date-utils';
 
 @Component({
@@ -39,7 +39,7 @@ export class DisparitasDashboardComponent implements OnInit {
   readonly MapPin = MapPin;
   readonly Package = Package;
   readonly RefreshCw = RefreshCw;
-  readonly Calculator = Calculator;
+  readonly Clock = Clock;
 
   summary$ = this.store.select(DisparitasState.summary);
   
@@ -64,14 +64,6 @@ export class DisparitasDashboardComponent implements OnInit {
     
     const tahunNum = tahun.getFullYear();
     this.store.dispatch(new LoadDisparitasSummary(tahunNum));
-  }
-
-  calculateDisparitas(): void {
-    const tahun = this.filterForm.value.tahun;
-    if (!tahun) return;
-    
-    const tahunNum = tahun.getFullYear();
-    this.store.dispatch(new CalculateDisparitas(tahunNum));
   }
 
   get tahunLabel(): string {
